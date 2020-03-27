@@ -29,7 +29,7 @@ var studentsSchema = new Schema({
     hide_cgpa: {type: String}
   }] ,
   skills: [{
-      skid: {type: String}
+      name: {type: String}
   }]
 },
 {

@@ -16,7 +16,7 @@ class ProfilePic extends React.Component {
   }
   componentDidMount() {
     let data = { sid: localStorage.getItem('id'), call: "profile pic" }
-    axios.post("http://54.86.64.9:3001/studentData", data).then(res => {
+    axios.post("http://localhost:3001/studentData", data).then(res => {
       this.setState({
         data: res.data[0],
         profile_pic: res.data[0].profile_pic,
@@ -46,13 +46,13 @@ class ProfilePic extends React.Component {
     // let data = this.state;
     // data.sid = '1';
     // console.log(this.state);
-    // axios.post("http://54.86.64.9:3001/UpdateInfo", data).then(res => alert(res.data));
+    // axios.post("http://localhost:3001/UpdateInfo", data).then(res => alert(res.data));
     // this.props.action();
     let formData = new FormData();
     formData.append('file', this.state.profile_pic);
     formData.append('sid' , localStorage.getItem('id'));
     
-    axios.post('http://54.86.64.9:3001/student_profile_pic',
+    axios.post('http://localhost:3001/student_profile_pic',
       formData,
       {
         headers: {

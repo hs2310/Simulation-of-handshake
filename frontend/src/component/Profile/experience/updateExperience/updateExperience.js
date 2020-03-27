@@ -40,7 +40,7 @@ class UpdateExperience extends React.Component {
         data.sid = localStorage.getItem('id');
         // console.log(data);
         
-        axios.put("http://54.86.64.9:3001/updateExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
+        axios.put("http://localhost:3001/updateExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
         
         this.props.action();
         this.editJob();
@@ -50,7 +50,7 @@ class UpdateExperience extends React.Component {
         let data = {};
         data.id = this.props.item.id;
            
-        axios.post("http://54.86.64.9:3001/deleteExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
+        axios.post("http://localhost:3001/deleteExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
         
         this.props.action();
         this.editJob();

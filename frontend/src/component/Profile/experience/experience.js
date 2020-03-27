@@ -27,7 +27,7 @@ class Experience extends React.Component {
         let data ={
             sid : localStorage.getItem('id')
         }
-        axios.post("http://54.86.64.9:3001/studentExperience", data).then(res => {
+        axios.post("http://localhost:3001/studentExperience", data).then(res => {
     // this.state.experience.push(res.data)  
          this.setState({
         experience : res.data
@@ -45,7 +45,7 @@ class Experience extends React.Component {
         let { update, ...data } = this.state;
         data.sid = localStorage.getItem('id')
 
-        axios.post("http://54.86.64.9:3001/insertExperience", data).then(res => alert(res.data));
+        axios.post("http://localhost:3001/insertExperience", data).then(res => alert(res.data));
         this.update();
         this.experienceHandler();
     }

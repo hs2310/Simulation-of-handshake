@@ -13,7 +13,7 @@ class Events extends React.Component {
         }
     }
     async componentDidMount() {
-        await axios.post("http://54.86.64.9:3001/getEvents").then(r => {
+        await axios.post("http://localhost:3001/getEvents").then(r => {
             this.setState({
                 posted_events: r.data,
                 filteredEvents: r.data
@@ -37,9 +37,9 @@ class Events extends React.Component {
             sid: localStorage.getItem('id'),
             eid: eid
         }
-        axios.post('http://54.86.64.9:3001/getMajor', data).then(res => {
+        axios.post('http://localhost:3001/getMajor', data).then(res => {
             if (eligibility === res.data[0].major || eligibility === 'All Majors') {
-                axios.post("http://54.86.64.9:3001/registerEvent", data).then(res => {
+                axios.post("http://localhost:3001/registerEvent", data).then(res => {
                     this.setState({
                         applied: <div className="alert alert-primary" style={{ marginTop: '5%' }} >{res.data}</div>
                     })

@@ -16,7 +16,7 @@ class ContactInfo extends React.Component {
     }
     async componentDidMount() {
         let data = { sid: localStorage.getItem('id'), call: 'contact' }
-        await axios.post("http://54.86.64.9:3001/studentData", data).then(res => {
+        await axios.post("http://localhost:3001/studentData", data).then(res => {
             this.setState({
                 data: res.data[0],
                 email: res.data[0].email,
@@ -48,7 +48,7 @@ class ContactInfo extends React.Component {
         let data = this.state;
         data.sid = localStorage.getItem('id');
         console.log(this.state);
-        axios.post("http://54.86.64.9:3001/UpdateContactInfo", data).then(res => console.log(res.data));
+        axios.post("http://localhost:3001/UpdateContactInfo", data).then(res => console.log(res.data));
         
         this.contactInfoHandler();
     }

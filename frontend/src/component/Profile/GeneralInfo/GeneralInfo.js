@@ -19,7 +19,7 @@ class GeneralInfo extends React.Component {
     }
     async componentDidMount (){
       let data ={sid : localStorage.getItem('id') , call : "generalInfo"}
-      await axios.post("http://54.86.64.9:3001/studentData", data).then(res => {
+      await axios.post("http://localhost:3001/studentData", data).then(res => {
       this.setState({
         data: res.data[0],
         profile_pic: res.data[0].profile_pic,
@@ -52,7 +52,7 @@ class GeneralInfo extends React.Component {
         let data = this.state;
         data.sid = localStorage.getItem('id')
         console.log(this.state);
-        axios.post("http://54.86.64.9:3001/UpdateInfo", data).then(res => alert(res.data));
+        axios.post("http://localhost:3001/UpdateInfo", data).then(res => alert(res.data));
         this.props.action();
         this.generalInfoHandler();
     }

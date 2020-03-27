@@ -16,7 +16,7 @@ class CProfilePic extends React.Component {
   }
   async componentDidMount() {
     let data = { cid: localStorage.getItem('id'), call: "profile pic" }
-    await axios.post("http://54.86.64.9:3001/getCompanyDetails", data).then(res => {
+    await axios.post("http://localhost:3001/getCompanyDetails", data).then(res => {
       this.setState({
         data: res.data[0],
         profile_pic: res.data[0].profile_pic,
@@ -49,7 +49,7 @@ class CProfilePic extends React.Component {
     formData.append('cid' , localStorage.getItem('id'));
     console.log(formData.get('file'))
     
-    axios.post("http://54.86.64.9:3001/company_profile_pic",
+    axios.post("http://localhost:3001/company_profile_pic",
       formData,
       {
         headers: {

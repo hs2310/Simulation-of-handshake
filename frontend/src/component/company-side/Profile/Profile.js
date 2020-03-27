@@ -21,7 +21,7 @@ class CProfile extends React.Component {
             cid: localStorage.getItem("id")
         }
 
-        await axios.post("http://54.86.64.9:3001/getCompanyDetails", data).then(res => {
+        await axios.post("http://localhost:3001/getCompanyDetails", data).then(res => {
             this.setState({
                 data: res.data[0],
                 Info : true

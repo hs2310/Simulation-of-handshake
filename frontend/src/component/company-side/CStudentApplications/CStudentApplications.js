@@ -20,7 +20,7 @@ class CStudentApplications extends React.Component {
         let data = {
             cid: localStorage.getItem('id')
         }
-        await axios.post("http://54.86.64.9:3001/getPostedJobs", data).then(r => {
+        await axios.post("http://localhost:3001/getPostedJobs", data).then(r => {
             this.setState({
                 posted_jobs: r.data
             })
@@ -41,7 +41,7 @@ class CStudentApplications extends React.Component {
         let data = {
             jid: this.state.posted_jobs[i].jid
         }
-        axios.post("http://54.86.64.9:3001/getAllApplications", data).then(r => {
+        axios.post("http://localhost:3001/getAllApplications", data).then(r => {
             this.setState({
                 applications: r.data
             })
@@ -60,7 +60,7 @@ class CStudentApplications extends React.Component {
             sid: sid,
             jid: jid
         }
-        axios.post("http://54.86.64.9:3001/updateStatus", data).then(r => {
+        axios.post("http://localhost:3001/updateStatus", data).then(r => {
             // this.display(jid)
             // this.setState({
             //     applications: 

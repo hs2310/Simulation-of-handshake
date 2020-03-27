@@ -5,7 +5,7 @@
 //         return async function (action) {
 //             if (action.type === GET_JOBS) {
 //                 console.log(action.payload.id);
-//                 await axios.get("http://54.86.64.9:3001/getJobs").then(res =>{  
+//                 await axios.get("http://localhost:3001/getJobs").then(res =>{  
                       
 //                     // action.payload.sid = res.data[0].sid;
 //                     // action.payload.name=res.data[0].name;
@@ -22,10 +22,10 @@
 //                     action.payload = res.data;
 //                     // console.log("JOBS MIDDLEWARE: "+ action.payload)
 //                 })
-//                 // const res2 = axios.post("http://54.86.64.9:3001/studentSkills", action.payload.id)
-//                 // const res3 = axios.post("http://54.86.64.9:3001/studentEducation", action.payload.id)
-//                 // const res4 = axios.post("http://54.86.64.9:3001/studentExperience", action.payload.id)
-//                 // const res5 = axios.post("http://54.86.64.9:3001/getSkills", action.payload.id)
+//                 // const res2 = axios.post("http://localhost:3001/studentSkills", action.payload.id)
+//                 // const res3 = axios.post("http://localhost:3001/studentEducation", action.payload.id)
+//                 // const res4 = axios.post("http://localhost:3001/studentExperience", action.payload.id)
+//                 // const res5 = axios.post("http://localhost:3001/getSkills", action.payload.id)
 //                 // Promise.all([res1, res2, res3, res4, res5]).then(values => {
                     
 //                     // action.payload.skills = res2.then(r => {return r.data[0]});

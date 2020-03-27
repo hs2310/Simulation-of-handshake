@@ -25,7 +25,7 @@ class CompanyProfile extends React.Component {
         }
         // console.log(this.props.match.params);
         // const { match: { params } } = this.props;
-        axios.post("http://54.86.64.9:3001/getCompanyDetails",data).then(
+        axios.post("http://localhost:3001/getCompanyDetails",data).then(
            res=>{ 
                 console.log(res.data[0])   
             this.setState({

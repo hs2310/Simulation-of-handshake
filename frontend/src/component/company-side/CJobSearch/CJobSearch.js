@@ -26,7 +26,7 @@ class CJobSearch extends React.Component {
         let data = {
             cid: localStorage.getItem('id')
         }
-        await axios.post("http://54.86.64.9:3001/getPostedJobs", data).then(r => {
+        await axios.post("http://localhost:3001/getPostedJobs", data).then(r => {
             this.setState({
                 posted_jobs: r.data
             })
@@ -82,10 +82,10 @@ class CJobSearch extends React.Component {
             job_category: this.state.job_category
         }
         console.log(data)
-        await axios.post("http://54.86.64.9:3001/postJob", data).then(res => {
+        await axios.post("http://localhost:3001/postJob", data).then(res => {
             console.log(res.data)
         })
-        await axios.post("http://54.86.64.9:3001/getPostedJobs", data).then(r => {
+        await axios.post("http://localhost:3001/getPostedJobs", data).then(r => {
             this.setState({
                 posted_jobs: r.data
             })

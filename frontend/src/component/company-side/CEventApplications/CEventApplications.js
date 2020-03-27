@@ -14,7 +14,7 @@ class CEventApplications extends React.Component {
         let data = {
             cid: localStorage.getItem('id')
         }
-        await axios.post("http://54.86.64.9:3001/getPostedEvents", data).then(r => {
+        await axios.post("http://localhost:3001/getPostedEvents", data).then(r => {
             this.setState({
                 posted_events: r.data
             })
@@ -28,7 +28,7 @@ class CEventApplications extends React.Component {
         let data = {
             eid: eid
         }
-        axios.post("http://54.86.64.9:3001/getEventStudents", data).then(res => {
+        axios.post("http://localhost:3001/getEventStudents", data).then(res => {
             this.setState({
                 display: res.data
             })

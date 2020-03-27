@@ -25,7 +25,7 @@ class CEvents extends React.Component {
         let data = {
             cid: localStorage.getItem('id')
         }
-        await axios.post("http://54.86.64.9:3001/getPostedEvents", data).then(r => {
+        await axios.post("http://localhost:3001/getPostedEvents", data).then(r => {
             this.setState({
                 posted_events: r.data
             })
@@ -69,10 +69,10 @@ class CEvents extends React.Component {
             eligibility: this.state.eligibility
         }
         console.log(data)
-        await axios.post("http://54.86.64.9:3001/postEvent", data).then(res => {
+        await axios.post("http://localhost:3001/postEvent", data).then(res => {
             console.log(res.data)
         })
-        await axios.post("http://54.86.64.9:3001/getPostedEvents", data).then(r => {
+        await axios.post("http://localhost:3001/getPostedEvents", data).then(r => {
             this.setState({
                 posted_events: r.data
             })

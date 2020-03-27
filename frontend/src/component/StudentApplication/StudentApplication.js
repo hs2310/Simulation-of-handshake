@@ -16,7 +16,7 @@ class StudentApplication extends React.Component {
         let data = {
             sid: 1
         }
-        await axios.post("http://54.86.64.9:3001/getApplicaion", data).then(r => {
+        await axios.post("http://localhost:3001/getApplicaion", data).then(r => {
             this.setState({
                 application: r.data,
                 filteredApplicaion: r.data,

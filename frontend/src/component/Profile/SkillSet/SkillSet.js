@@ -19,14 +19,14 @@ class SkillSet extends React.Component {
     update = () => {
 
         let data = { sid: localStorage.getItem('id') }
-        axios.post("http://54.86.64.9:3001/studentSkills", data).then(res => {
+        axios.post("http://localhost:3001/studentSkills", data).then(res => {
             this.setState({
                 skillSet: res.data,
             });
             console.log(this.state.skillSet)
         })
         console.log(this.state.skillSet)
-        axios.post("http://54.86.64.9:3001/getSkills", data).then(res => {
+        axios.post("http://localhost:3001/getSkills", data).then(res => {
             this.setState({
                 skill: res.data
             });
@@ -74,9 +74,9 @@ class SkillSet extends React.Component {
             this.setState({ msg: <div className="alert alert-danger">"Skill already exists"</div> })
         else {
             console.log(this.state);
-            axios.post("http://54.86.64.9:3001/UpdateSkill", data).then(res => {
+            axios.post("http://localhost:3001/UpdateSkill", data).then(res => {
                 // console.log(res.data)
-                axios.post("http://54.86.64.9:3001/studentSkills", data).then(res => {
+                axios.post("http://localhost:3001/studentSkills", data).then(res => {
                     this.setState({
                         skillSet: res.data
                     });
@@ -90,8 +90,8 @@ class SkillSet extends React.Component {
     }
     deleteSkill = (id) => {
         let data = { id: id }
-        axios.post("http://54.86.64.9:3001/DeleteSkill", data).then(res => {
-            axios.post("http://54.86.64.9:3001/studentSkills", data).then(res => {
+        axios.post("http://localhost:3001/DeleteSkill", data).then(res => {
+            axios.post("http://localhost:3001/studentSkills", data).then(res => {
                 this.setState({
                     skillSet: res.data
                 });

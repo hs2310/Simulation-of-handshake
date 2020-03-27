@@ -23,7 +23,7 @@ class ApplicationForm extends React.Component {
     }
     onSubmitHandler = e =>{
         e.preventDefault();
-        const url = 'http://54.86.64.9:3001/applyJobs';
+        const url = 'http://localhost:3001/applyJobs';
         const formData = new FormData();
         formData.append('file', this.state.selectedFile)
         formData.append('jid', this.props.jobs.jid)
@@ -46,7 +46,7 @@ class ApplicationForm extends React.Component {
     //     // data.append('file', this.state.selectedFile)
     //     // data.append('jid', this.props.jobs.jid)
     //     // data.append('sid', 1)
-    //     // axios.post("http://54.86.64.9:3001/applyJobs", data, {
+    //     // axios.post("http://localhost:3001/applyJobs", data, {
     //     //     headers: {
     //     //         'content-type': 'multipart/form-data'
     //     //     }

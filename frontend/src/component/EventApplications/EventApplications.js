@@ -13,7 +13,7 @@ class EventApplications extends React.Component {
         let data = {
             sid: localStorage.getItem("id")
         }
-        await axios.post("http://54.86.64.9:3001/getAppliedEvents", data).then(res => {
+        await axios.post("http://localhost:3001/getAppliedEvents", data).then(res => {
             this.setState({
                 events: res.data
             })

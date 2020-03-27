@@ -18,5 +18,5 @@ var companysSchema = new Schema({
     versionKey: false
 }
 );
-const companyModel = mongoose.model('company',companysSchema);
+const companyModel = mongoose.model('company',companysSchema,'company');
 module.exports = companyModel;

@@ -28,7 +28,7 @@ class StudentProfile extends React.Component {
             sid: this.props.match.params.id
         }
         // const { match: { params } } = this.props;
-        await axios.post("http://54.86.64.9:3001/studentExperience", data).then(
+        await axios.post("http://localhost:3001/studentExperience", data).then(
             res => {
                 console.log(res.data)
                 this.setState({
@@ -36,7 +36,7 @@ class StudentProfile extends React.Component {
                 })
             })
         console.log(this.state.experience)
-        await axios.post("http://54.86.64.9:3001/studentSkills", data).then(
+        await axios.post("http://localhost:3001/studentSkills", data).then(
             res => {
                 this.setState({
                     skill: res.data
@@ -44,7 +44,7 @@ class StudentProfile extends React.Component {
             }
         )
         console.log(this.state.skill)
-        await axios.post("http://54.86.64.9:3001/studentEducation", data).then(
+        await axios.post("http://localhost:3001/studentEducation", data).then(
             res => {
                 this.setState({
                     education: res.data
@@ -52,7 +52,7 @@ class StudentProfile extends React.Component {
             }
         )
         console.log(this.state.education)
-        await axios.post("http://54.86.64.9:3001/studentData", data).then(
+        await axios.post("http://localhost:3001/studentData", data).then(
             res => {
                 this.setState({
                     data: res.data[0]

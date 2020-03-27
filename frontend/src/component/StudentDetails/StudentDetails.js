@@ -13,7 +13,7 @@ class StudentDetails extends React.Component {
         this.studentSearch =  this.studentSearch.bind(this)
     }
     componentDidMount() {
-        axios.get("http://54.86.64.9:3001/getAllStudents").then(r => {
+        axios.get("http://localhost:3001/getAllStudents").then(r => {
             this.setState({
                 student: r.data,
                 filtered_student: r.data

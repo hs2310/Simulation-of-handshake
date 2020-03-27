@@ -31,7 +31,7 @@ class JobSearch extends React.Component {
   }
   async componentDidMount() {
     // await this.props.getJobs();
-    await axios.get("http://54.86.64.9:3001/getJobs").then(res =>{  
+    await axios.get("http://localhost:3001/getJobs").then(res =>{  
     // console.log("JOBS " + this.props.jobs);
     this.setState({
       filteredJobs : res.data,
@@ -66,7 +66,7 @@ class JobSearch extends React.Component {
       jid: jid,
       sid: localStorage.getItem('id')
     }
-    axios.post("http://54.86.64.9:3001/checkapplied", data).then(res => {
+    axios.post("http://localhost:3001/checkapplied", data).then(res => {
       this.setState({
         apply: res.data
       })
@@ -79,7 +79,7 @@ class JobSearch extends React.Component {
   //   let data = {
   //     filter: this.state.filter1
   //   }
-  //   axios.post("http://54.86.64.9:3001/jobfilter1", data).then(res => {
+  //   axios.post("http://localhost:3001/jobfilter1", data).then(res => {
   //     this.setState({
   //       jobs: res.data
   //     })
