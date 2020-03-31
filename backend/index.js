@@ -26,7 +26,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 //Allow Access Control
 app.use(function (req, res, next) {

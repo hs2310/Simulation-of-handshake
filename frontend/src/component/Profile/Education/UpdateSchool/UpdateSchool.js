@@ -47,7 +47,7 @@ class UpdateSchool extends React.Component {
         data.sid = localStorage.getItem('id');
         // console.log(data);
 
-        axios.post("http://localhost:3001/updateEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
+        axios.post("http://localhost:3001/students/updateEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
 
         this.props.action();
         this.editSchool();
@@ -57,7 +57,7 @@ class UpdateSchool extends React.Component {
         let data = {};
         data.id = this.props.item.id;
 
-        axios.post("http://localhost:3001/deleteEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
+        axios.post("http://localhost:3001/students/deleteEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
         this.props.action();
         this.editSchool();
     }

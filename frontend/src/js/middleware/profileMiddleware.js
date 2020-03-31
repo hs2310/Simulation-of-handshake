@@ -5,7 +5,7 @@
 //         return async function (action) {
 //             if (action.type === GET_STUDENT) {
 //                 console.log("ID : " + action.payload.id);
-//                 await axios.post("http://localhost:3001/studentData",{"sid" : localStorage.getItem('id')} ).then(res =>{    
+//                 await axios.post("http://localhost:3001/students/studentData",{"sid" : localStorage.getItem('id')} ).then(res =>{    
 //                     console.log(res.data[0])
 //                     action.payload.sid = res.data[0].sid;
 //                     action.payload.name=res.data[0].name;

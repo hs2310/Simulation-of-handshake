@@ -15,10 +15,10 @@ class MyJourney extends React.Component {
     }
     async componentDidMount() {
         let data = { sid: localStorage.getItem('id') , call : 'myJourney' }
-        await axios.post("http://localhost:3001/studentData", data).then(res => {
+        await axios.post("http://localhost:3001/students/studentData", data).then(res => {
             this.setState({
-                data: res.data[0],
-                objective: res.data[0].objective
+                data: res.data,
+                objective: res.data.objective
             });
             console.log(this.state.data)
 
@@ -46,7 +46,7 @@ class MyJourney extends React.Component {
         let data = this.state;
         data.sid = localStorage.getItem('id')
         console.log(this.state);
-        axios.post("http://localhost:3001/UpdateJourney", data).then(res => console.log(res.data));
+        axios.post("http://localhost:3001/students/UpdateJourney", data).then(res => console.log(res.data));
         // this.props.action();
         this.myJourneyHandler();
     }

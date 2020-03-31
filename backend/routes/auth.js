@@ -6,32 +6,33 @@ var salt = bcrypt.genSaltSync(10);
 
 const Students = require('../Models/StudentModel');
 const Company = require('../Models/CompanyModel');
-
+const Education = require('../Models/EducationSchema');
 app.post('/student-signup', function (req, res) {
 
     Students.findOne({
         email: req.body.email
     }, function (error, results) {
         if (results !== null) {
+            console.log("Called : " + JSON.stringify(req.body) );
             res.send("User Already Exists !!");
         }
         else {
-            console.log("Called");
+            console.log("Called : " + JSON.stringify(req.body.college) );
+
             var hash = bcrypt.hashSync(req.body.password, salt);
             var newStudent = new Students({
                 sid: 3,
                 name: req.body.name,
                 password: hash,
                 email: req.body.email,
-                college: req.body.college,
                 objective: "",
                 dob: "",
                 city: "",
                 state: "",
-                college: "",
+                college: req.body.college,
                 mob: "",
                 profile_pic: "",
-                eductaion: [{
+                education: [{  
                     school_name: req.body.college,
                     edu_level: "",
                     start: "",
@@ -42,7 +43,9 @@ app.post('/student-signup', function (req, res) {
                     cgpa: "",
                     hide_gpa: "",
                     hide_cgpa: ""
-                }]
+                }],
+                skills: [],
+                experience : []
             });
             console.log(newStudent)
 

@@ -39,14 +39,14 @@ class Profile extends React.Component {
       let data = {
         sid: localStorage.getItem('id')
       }
-      // axios.post("http://localhost:3001/studentData", data).then(res => {
+      // axios.post("http://localhost:3001/students/studentData", data).then(res => {
       //   this.setState({
       //     data: res.data[0]
       //   });
       //   console.log(this.state.data)
         
       // }).catch(e => console.log(e));
-      axios.post("http://localhost:3001/studentSkills", data).then(res => {
+      axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
         this.setState({
           skills : res.data[0]
         });

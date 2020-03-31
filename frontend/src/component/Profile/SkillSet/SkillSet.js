@@ -19,14 +19,14 @@ class SkillSet extends React.Component {
     update = () => {
 
         let data = { sid: localStorage.getItem('id') }
-        axios.post("http://localhost:3001/studentSkills", data).then(res => {
+        axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
             this.setState({
                 skillSet: res.data,
             });
             console.log(this.state.skillSet)
         })
         console.log(this.state.skillSet)
-        axios.post("http://localhost:3001/getSkills", data).then(res => {
+        axios.post("http://localhost:3001/students/getSkills", data).then(res => {
             this.setState({
                 skill: res.data
             });
@@ -60,7 +60,7 @@ class SkillSet extends React.Component {
 
         e.preventDefault();
         this.setState({ msg: '' })
-        let data = this.state;
+        let data = {name : this.state.selectSkill};
         data.sid = localStorage.getItem('id');
         let flag = 0;
         this.state.skillSet.forEach(x => {
@@ -74,9 +74,9 @@ class SkillSet extends React.Component {
             this.setState({ msg: <div className="alert alert-danger">"Skill already exists"</div> })
         else {
             console.log(this.state);
-            axios.post("http://localhost:3001/UpdateSkill", data).then(res => {
+            axios.post("http://localhost:3001/students/UpdateSkill", data).then(res => {
                 // console.log(res.data)
-                axios.post("http://localhost:3001/studentSkills", data).then(res => {
+                axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
                     this.setState({
                         skillSet: res.data
                     });
@@ -90,8 +90,8 @@ class SkillSet extends React.Component {
     }
     deleteSkill = (id) => {
         let data = { id: id }
-        axios.post("http://localhost:3001/DeleteSkill", data).then(res => {
-            axios.post("http://localhost:3001/studentSkills", data).then(res => {
+        axios.post("http://localhost:3001/students/DeleteSkill", data).then(res => {
+            axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
                 this.setState({
                     skillSet: res.data
                 });
@@ -109,15 +109,11 @@ class SkillSet extends React.Component {
             skill = <div>
                 <div>{this.state.skillSet.map(item => <div key={item.id}>{item.name}<button type="button" onClick={() => { this.deleteSkill(item.id) }}>X</button></div>)}</div>
                 <form onSubmit={this.updateInfo}>
-                    <div className="form-group">
-                        <select name="selectSkill" className="form-control" onChange={this.educationChangeHandler}>
-                            <option value=""></option>
-                            {this.state.skill.map(item =>
-                                <option key={item.skid} value={item.skid}>{item.name}</option>
-                            )
-                            }
-                        </select>
-                    </div>
+                    
+                        <div className="form-group">
+                            <input type="text" name="selectSkill" className="form-control" onChange={this.educationChangeHandler}/>
+                        </div>    
+                    
 
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>

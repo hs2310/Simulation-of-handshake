@@ -1,6 +1,8 @@
 //Require Mongoose
 var mongoose = require('mongoose');
 
+var education = require('./EducationSchema');
+var experience  = require('./ExperienceSchema');
 //Define a schema
 var Schema = mongoose.Schema;
 
@@ -16,21 +18,11 @@ var studentsSchema = new Schema({
   college: {type: String},
   mob: {type: Number},
   profile_pic: {type: String},
-  eductaion: [{
-    school_name: {type: String},
-    edu_level: {type: String},
-    start: {type: String},
-    end: {type: String},
-    major: {type: String},
-    minor: {type: String},
-    gpa: {type: String},
-    cgpa: {type: String},
-    hide_gpa: {type: String},
-    hide_cgpa: {type: String}
-  }] ,
+  education: [ education ] ,
   skills: [{
       name: {type: String}
-  }]
+  }],
+  experience : [ experience ]
 },
 {
     versionKey: false

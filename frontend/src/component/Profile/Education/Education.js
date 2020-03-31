@@ -30,9 +30,10 @@ class Education extends React.Component {
   }
   update = () => {
     let data = { sid: localStorage.getItem('id') }
-    axios.post("http://localhost:3001/studentEducation", data).then(res => {
+    axios.post("http://localhost:3001/students/studentEducation", data).then(res => {
+      console.log(res.data);
       this.setState({
-        education: res.data
+        education: res.data.education
       });
     }).catch(e => console.log(e));
   }
@@ -46,7 +47,7 @@ class Education extends React.Component {
     let data = { ...this.state };
     data.sid = localStorage.getItem('id');
     console.log(data.sid + localStorage.getItem('id'))
-    axios.post("http://localhost:3001/insertEducation", data).then(res => console.log(res.data));
+    axios.post("http://localhost:3001/students/insertEducation", data).then(res => console.log(res.data));
     this.update();
     this.educationHandler();
   }
