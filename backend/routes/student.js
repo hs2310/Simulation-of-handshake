@@ -1,8 +1,25 @@
 var express = require('express')
 var app = express.Router()
+const multer = require('multer');
+var path = require('path');
 
 const Students = require('../Models/StudentModel');
 const Company = require('../Models/CompanyModel');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, callback) {
+        callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+});
+
+const upload = multer({
+    storage: storage,
+})
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
 
 app.post('/studentData', (req, res) => {
     Students.findOne({ _id: req.body.sid }, (error, results) => {
@@ -153,6 +170,15 @@ app.post('/UpdateJourney', (req, res) => {
      }},{ new  : true}, (error,results)=>{
         res.send(results);
     })
+})
+app.get('/getAllStudents', (req, res) => {
+    Students.find({},(err,results) =>{
+        res.send(results)
+    })
+})
+app.post('/student_profile_pic', upload.single('file'), (req, res) => {    
+    const filepath = "http://" + req.hostname + ":3001/" + req.file.destination + req.file.filename;
+    Students.findOneAndUpdate({_id : req.body.sid},{"profile_pic" : filepath},{new : true},(err,results) => res.send(results))
 })
 
 module.exports = app

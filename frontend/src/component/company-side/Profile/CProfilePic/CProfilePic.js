@@ -16,7 +16,7 @@ class CProfilePic extends React.Component {
   }
   async componentDidMount() {
     let data = { cid: localStorage.getItem('id'), call: "profile pic" }
-    await axios.post("http://localhost:3001/getCompanyDetails", data).then(res => {
+    await axios.post("http://localhost:3001/company/getCompanyDetails", data).then(res => {
       this.setState({
         data: res.data[0],
         profile_pic: res.data[0].profile_pic,

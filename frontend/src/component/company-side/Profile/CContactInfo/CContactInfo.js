@@ -41,7 +41,7 @@ class CContactInfo extends React.Component {
         let data = this.state;
         data.cid = this.props.data.cid;
         console.log(this.state);
-        axios.post("http://localhost:3001/UpdateCompanyContactInfo", data).then(res => console.log(res.data));
+        axios.post("http://localhost:3001/company/UpdateCompanyContactInfo", data).then(res => console.log(res.data));
         this.contactInfoHandler();
     }
 

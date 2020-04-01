@@ -42,7 +42,7 @@ describe("MochaTest", function() {
         //Search Results
         it("Should get company details", function(done) {
             server
-                .post("/getCompanyDetails")
+                .post("/company/getCompanyDetails")
                 .send
                 ({
                     cid : '1'

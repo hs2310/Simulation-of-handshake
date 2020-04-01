@@ -41,7 +41,7 @@ class CMyJourney extends React.Component {
         let data = this.state;
         data.cid = this.props.data.cid;
         console.log(this.state);
-        axios.post("http://localhost:3001/UpdateCompanyJourney", data).then(res => console.log(res.data));
+        axios.post("http://localhost:3001/company/UpdateCompanyJourney", data).then(res => console.log(res.data));
         // this.props.action();
         this.myJourneyHandler();
     }
