@@ -1,13 +1,19 @@
 var express = require('express');
 var app = express.Router();
-
+const { checkStudentAuth } = require('../utils/passport');
 var bcrypt = require('bcrypt');
 var salt = bcrypt.genSaltSync(10);
+const jwt = require('jsonwebtoken');
+const { secret } = require('../config');
+
+const { auth } = require("../utils/passport");
+auth();
 
 const Students = require('../Models/StudentModel');
 const Company = require('../Models/CompanyModel');
 const Education = require('../Models/EducationSchema');
-app.post('/student-signup', function (req, res) {
+
+app.post('/student-signup',checkStudentAuth, function (req, res) {
 
     Students.findOne({
         email: req.body.email
@@ -97,23 +103,30 @@ app.post('/company-signup', function (req, res) {
 app.post('/login', function (req, res) {
     console.log(req.body);
     let table = null;
+    // let type = null;
     console.log("Inside Login Post Request", req.body);
 
     console.log("Req Body : ", req.body.email);
-    if (req.body.company === false)
+    if (req.body.company === false){
         table = Students;
-    else
+    }
+    else{
         table = Company;
-
+    }
     table.findOne({
         email: req.body.email
     }, (error, results) => {
         if (results !== null) {
             if (bcrypt.compareSync(req.body.password, results.password)) {
-                res.cookie('cookie', req.session.id, { maxAge: 900000, httpOnly: false, path: '/' });
-                let id = results._id; 
-                // console.log(results[0].sid)
-                res.status(200).send(String(id));
+                // res.cookie('cookie', req.session.id, { maxAge: 900000, httpOnly: false, path: '/' });
+                let id = results._id;                
+                
+                const payload = { _id: id};
+                const token = jwt.sign(payload, secret, {
+                    expiresIn: 1008000
+                });
+                res.status(200).end("JWT " + token);
+                // res.status(200).send(String(id));
             } else {
                 res.status(401).send("error");
             }

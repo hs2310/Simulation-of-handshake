@@ -5,9 +5,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 // import cookie from 'react-cookies';
 import { Redirect, Link } from 'react-router-dom';
-// import { login } from '../../js/actions/index';
-// import { connect } from 'react-redux';
+import { login } from '../../js/actions/index';
+import { connect } from 'react-redux';
 // import {bindActionCreators} from 'redux'
+const jwt_decode = require('jwt-decode');
 //Define a Login Component
 class Login extends Component {
     //call the constructor method
@@ -59,43 +60,51 @@ class Login extends Component {
             college: this.state.college,
             company: this.state.company
         }
+        this.props.login(data);
         // //set the with credentials to true
-        axios.defaults.withCredentials = true;
-        //make a post request with the user data
-        axios.post('http://localhost:3001/login', data)
-            .then(response => {
-                console.log("Status Code : ", response.status);
-                if (response.status === 200) {
-                    this.setState({
-                        error: '',
-                        authFlag: true
-                    })
-
-                    localStorage.setItem('id', response.data)
-                    if (this.state.company) {
-                        localStorage.setItem('type', 'company');
-                    }
-                    else {
-                        localStorage.setItem('type', 'student');
-                    }
-                }
-            }).catch(e => {
-                console.log(e);
-                this.setState({
-                    error: <div className="alert alert-danger" style={{ marginTop: '5%' }}>Invalid Credentials!!</div>,
-                    authFlag: false
-                });
-            });
+        // axios.defaults.withCredentials = true;
+        // //make a post request with the user data
+        // axios.post('http://localhost:3001/login', data)
+        //     .then(response => {
+        //         console.log("Status Code : ", response.status);
+        //         if (response.status === 200) {
+        //             this.setState({
+        //                 error: '',
+        //                 authFlag: true
+        //             })
+        //             if (response.data.length > 0)
+        //             {
+        //                 var decoded = jwt_decode(response.data.split(' ')[1]);
+        //                 localStorage.setItem('id', decoded._id)
+        //             }
+                    
+        //             if (this.state.company) {
+        //                 localStorage.setItem('type', 'company');
+        //             }
+        //             else {
+        //                 localStorage.setItem('type', 'student');
+        //             }
+        //         }
+        //     }).catch(e => {
+        //         console.log(e);
+        //         this.setState({
+        //             error: <div className="alert alert-danger" style={{ marginTop: '5%' }}>Invalid Credentials!!</div>,
+        //             authFlag: false
+        //         });
+        //     });
+        
     }
     render() {
 
         let redirectVar = null;
         // if (this.state.authFlag) { return <Redirect to="/home" /> }
         let error = '';
-        if (localStorage.getItem('id')) {
+        if (localStorage.getItem('jwt')) {
             redirectVar = <Redirect to="/home" />
         }
-        if (this.state.error === '')
+        
+        
+        if (this.props.error === '')
             error = '';
         else {
             error = <div className="alert alert-danger">Invalid Credentials</div>
@@ -171,21 +180,21 @@ class Login extends Component {
         }
     }
 }
-// const mapStateToProps = state => {
-//     return {
-//         id: state.rootReducer.id,
-//         type: state.rootReducer.type,
-//         authFlag: state.rootReducer.authFlag,
-//         error: state.rootReducer.error
-//     };
-// };
+const mapStateToProps = state => {
+    return {
+        id: state.Login.id,
+        type: state.Login.type,
+        authFlag: state.Login.authFlag,
+        error: state.Login.error
+    };
+};
 
 // const mapDispatchToProps = dispatch => {
 //     return {
-//         login: rootReducer => dispatch(login(rootReducer))
+//         login: data => dispatch(login(data))
 //     };
 // }
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
-export default Login;
+export default connect(mapStateToProps, {login})(Login);
+// export default Login;
 
 

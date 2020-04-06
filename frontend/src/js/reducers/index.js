@@ -28,3 +28,13 @@
 // }
 
 // export default rootReducer;
+
+import { combineReducers } from 'redux';
+import loginReducer from './loginReducer';
+// import studentProfileReducer from './studentProfileReducer';
+
+const rootReducer = combineReducers({
+    Login: loginReducer
+})
+
+export default rootReducer;
