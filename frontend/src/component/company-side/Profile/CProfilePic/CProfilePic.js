@@ -1,6 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 
+import { connect } from 'react-redux';
+import { uploadProfile } from '../../../../js/actions/Cprofile-action'
 class CProfilePic extends React.Component {
   constructor(props) {
     super(props);
@@ -14,16 +15,11 @@ class CProfilePic extends React.Component {
     this.educationChangeHandler = this.educationChangeHandler.bind(this);
     this.updateInfo = this.updateInfo.bind(this);
   }
-  async componentDidMount() {
-    let data = { cid: localStorage.getItem('id'), call: "profile pic" }
-    await axios.post("http://localhost:3001/company/getCompanyDetails", data).then(res => {
-      this.setState({
-        data: res.data[0],
-        profile_pic: res.data[0].profile_pic,
-      });
-      console.log(this.state.data)
-
-    }).catch(e => console.log(e));
+  componentDidUpdate(prevProps, prevState) {
+    console.log("PROFILE PIC  : componentDidUpdate CALLED")
+    if (prevProps.profile_pic !== this.props.profile_pic) {
+      this.setState({ profile_pic : this.props.profile_pic})
+    }    
   }
   generalInfoHandler = () => {
     if (this.state.update_general_info === true)
@@ -47,24 +43,25 @@ class CProfilePic extends React.Component {
     let formData = new FormData();
     formData.append('file', this.state.profile_pic);
     formData.append('cid' , localStorage.getItem('id'));
-    console.log(formData.get('file'))
+    this.props.uploadProfile(formData);
+    // console.log(formData.get('file'))
     
-    axios.post("http://localhost:3001/company_profile_pic",
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    ).then( res => {
-      this.setState({
-        profile_pic : res.data
-      })
-      console.log(res.data);
-    })
-      .catch(function () {
-        console.log('FAILURE!!');
-      });
+    // axios.post("http://localhost:3001/company/company_profile_pic",
+    //   formData,
+    //   {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data'
+    //     }
+    //   }
+    // ).then( res => {
+    //   this.setState({
+    //     profile_pic : res.data
+    //   })
+    //   console.log(res.data);
+    // })
+    //   .catch(function () {
+    //     console.log('FAILURE!!');
+    //   });
     this.generalInfoHandler();
   }
 
@@ -81,7 +78,7 @@ class CProfilePic extends React.Component {
       </div>
     }
     else {
-      generalInfo = <div><img src={this.state.profile_pic} className="rounded-circle" width="100px" height="100px" alt="Not Uploaded!!!" />
+      generalInfo = <div><br/><img src={this.state.profile_pic} className="rounded-circle" width="100px" height="100px" alt="Not Uploaded!!!" /><br/><br/>
         </div>;
     }
     return <div>
@@ -90,4 +87,9 @@ class CProfilePic extends React.Component {
     </div>
   }
 }
-export default CProfilePic;
+const mapStateToProps = state => {
+  return {
+    profile_pic : state.CProfile.profile_pic
+  }
+}
+export default connect(mapStateToProps,{uploadProfile})(CProfilePic);

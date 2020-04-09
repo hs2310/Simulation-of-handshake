@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import CProfilePic from '../CProfilePic/CProfilePic';
+import {connect} from 'react-redux';
+import {updateGenInfo} from '../../../../js/actions/Cprofile-action'
 class CGeneralInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             update_general_info: false,
-            cid: '',
             
             name: '',
             location: ''
@@ -15,15 +16,15 @@ class CGeneralInfo extends React.Component {
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
-    componentDidMount() {
-        console.log(this.props.data.cid)
-        this.setState({
-            cid : this.props.data.cid,
-            
-            name: this.props.data.name,
-            location: this.props.data.location
-        });
-        
+    componentDidUpdate(prevProps, prevState) {
+      console.log("GENERAL INFO : componentDidUpdate CALLED")
+      if (prevProps.name !== this.props.name) {
+        this.setState({ name : this.props.name})
+      }
+      if (prevProps.location !== this.props.location) {
+        this.setState({ location : this.props.location})
+      }
+      
     }
     generalInfoHandler = () => {
         if (this.state.update_general_info === true)
@@ -44,9 +45,10 @@ class CGeneralInfo extends React.Component {
     updateInfo = (e) => {
         e.preventDefault();
         let data = this.state;
-        data.sid = this.props.data.cid;
-        console.log(this.state);
-        axios.post("http://localhost:3001/company/UpdateCompanyInfo", data).then(res => console.log(res.data));
+        data.cid = localStorage.getItem("id");
+        // console.log(this.state);
+        // axios.post("http://localhost:3001/company/UpdateCompanyInfo", data).then(res => console.log(res.data));
+        this.props.updateGenInfo(data);
         this.generalInfoHandler();
     }
     render(){
@@ -79,5 +81,10 @@ class CGeneralInfo extends React.Component {
         </div>
     }
 }
-
-export default CGeneralInfo;
+const mapStateToProps = state => {
+  return {
+    name : state.CProfile.name,
+    location : state.CProfile.location
+  }
+}
+export default connect(mapStateToProps , { updateGenInfo })(CGeneralInfo);

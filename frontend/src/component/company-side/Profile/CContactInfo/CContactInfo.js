@@ -1,5 +1,7 @@
 import React from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { updateConInfo } from '../../../../js/actions/Cprofile-action'
+
 
 class CContactInfo extends React.Component {
     constructor(props) {
@@ -13,13 +15,15 @@ class CContactInfo extends React.Component {
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
-    async componentDidMount() {
-            this.setState({
-                cid : this.props.data.cid,
-                email: this.props.data.email,
-                mob: this.props.data.mob
-            });
-    }
+    componentDidUpdate(prevProps, prevState) {
+        console.log("CONTACT INFO  : componentDidUpdate CALLED")
+        if (prevProps.mob !== this.props.mob) {
+          this.setState({ mob : this.props.mob})
+        }    
+        if (prevProps.email !== this.props.email) {
+            this.setState({ email : this.props.email})
+          }    
+      }
     contactInfoHandler = () => {
         if (this.state.update_contact_info === true)
             this.setState({
@@ -39,9 +43,8 @@ class CContactInfo extends React.Component {
     updateInfo = (e) => {
         e.preventDefault();
         let data = this.state;
-        data.cid = this.props.data.cid;
-        console.log(this.state);
-        axios.post("http://localhost:3001/company/UpdateCompanyContactInfo", data).then(res => console.log(res.data));
+        data.cid = localStorage.getItem('id');
+        this.props.updateConInfo(data);
         this.contactInfoHandler();
     }
 
@@ -72,4 +75,10 @@ class CContactInfo extends React.Component {
         </div>
     }
 }
-export default CContactInfo;
+const mapStateToProps = state => {
+    return {
+        mob : state.CProfile.mob,
+        email : state.CProfile.email
+    }
+}
+export default connect( mapStateToProps , { updateConInfo } )(CContactInfo);

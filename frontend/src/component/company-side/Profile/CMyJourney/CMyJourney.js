@@ -1,25 +1,25 @@
 import React from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { updateJourney } from '../../../../js/actions/Cprofile-action'
+
 
 class CMyJourney extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             update_journey: false,
-            objective: ''
+            description: ''
         }
         this.myJourneyHandler = this.myJourneyHandler.bind(this);
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
-    componentDidMount() {
-            this.setState({
-                cid: this.props.data.cid,
-                objective: this.props.data.description
-            });
-            
-        // alert(this.props.id)
-    }
+    componentDidUpdate(prevProps, prevState) {
+        console.log("MY JOURNEY  : componentDidUpdate CALLED")
+        if (prevProps.description !== this.props.description) {
+          this.setState({ description : this.props.description})
+        }    
+      }
     myJourneyHandler = () => {
         if (this.state.update_journey === true)
             this.setState({
@@ -39,9 +39,10 @@ class CMyJourney extends React.Component {
     updateInfo = (e) => {
         e.preventDefault();
         let data = this.state;
-        data.cid = this.props.data.cid;
+        data.cid = localStorage.getItem("id");
         console.log(this.state);
-        axios.post("http://localhost:3001/company/UpdateCompanyJourney", data).then(res => console.log(res.data));
+        // axios.post("http://localhost:3001/company/UpdateCompanyJourney", data).then(res => console.log(res.data));
+        this.props.updateJourney(data);
         // this.props.action();
         this.myJourneyHandler();
     }
@@ -53,7 +54,7 @@ class CMyJourney extends React.Component {
                 <form onSubmit={this.updateInfo}>
                     <div>
                         <div className="form-group">
-                            <textarea name="objective" placeholder="Enter your Journey" className="form-control" defaultValue={this.state.objective} onChange={this.educationChangeHandler}></textarea>
+                            <textarea name="description" placeholder="Enter your Journey" className="form-control" defaultValue={this.state.description} onChange={this.educationChangeHandler}></textarea>
                         </div>
                         <button type="submit" className="btn btn-primary">Update</button>
                     </div>
@@ -61,7 +62,7 @@ class CMyJourney extends React.Component {
             </div>
         }
         else {
-            myJourney = <div>{this.state.objective}</div>;
+            myJourney = <div>{this.state.description}</div>;
         }
         return <div>
             <button onClick={this.myJourneyHandler} className="btn btn-primary" style={{ float: "right" }} type="button">edit</button>
@@ -70,4 +71,10 @@ class CMyJourney extends React.Component {
         </div>
     }
 }
-export default CMyJourney;
+const mapStateToProps = state => {
+    return {
+        description : state.CProfile.description
+    }
+    
+}
+export default connect(mapStateToProps, {updateJourney})(CMyJourney);

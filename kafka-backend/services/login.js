@@ -64,8 +64,8 @@ function handle_request(msg, callback) {
                     name: msg.body.name,
                     email: msg.body.email,
                     password: hash,
-                    description: msg.body.location,
-                    location: "",
+                    description: "",
+                    location: msg.body.location,
                     mob: null,
                     profile_pic: ""
                 });

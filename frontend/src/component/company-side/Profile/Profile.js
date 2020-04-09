@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+
 import Navigate from '../../Navigate/Navigate';
 import {Container , Row , Col} from 'react-bootstrap';
 // import cookie from 'react-cookies';
@@ -8,6 +8,8 @@ import CGeneralInfo from './CGeneralInfo/CGeneralInfo';
 import CContactInfo from './CContactInfo/CContactInfo';
 import CMyJourney from './CMyJourney/CMyJourney';
 // import CProfilePic from './CProfilePic/CProfilePic';
+import { connect } from 'react-redux';
+import { getCompany } from '../../../js/actions/Cprofile-action'
 class CProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -21,13 +23,15 @@ class CProfile extends React.Component {
             cid: localStorage.getItem("id")
         }
 
-        await axios.post("http://localhost:3001/company/getCompanyDetails", data).then(res => {
-            this.setState({
-                data: res.data[0],
-                Info : true
-            })
-            console.log(this.state.data)
-        })
+        // await axios.post("http://localhost:3001/company/getCompanyDetails", data).then(res => {
+        //     this.setState({
+        //         data: res.data,
+        //         Info : true
+        //     })
+        //     console.log(this.state.data)
+        // })
+        this.props.getCompany(data);
+        this.setState({ Info : true })
     }
     render() {
         let style_box = { boxShadow: "1px 3px 5px grey", padding: "2%" };
@@ -81,4 +85,4 @@ class CProfile extends React.Component {
         }
     }
 }
-export default CProfile;
+export default connect( null , { getCompany })(CProfile);
