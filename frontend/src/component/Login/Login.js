@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 //import Main from './components/Main';
 // import {BrowserRouter} from 'react-router-dom';
 //import Register from './Register/Register';
-import axios from 'axios';
+// import axios from 'axios';
 // import cookie from 'react-cookies';
 import { Redirect, Link } from 'react-router-dom';
 import { login } from '../../js/actions/index';
 import { connect } from 'react-redux';
 // import {bindActionCreators} from 'redux'
-const jwt_decode = require('jwt-decode');
+// const jwt_decode = require('jwt-decode');
 //Define a Login Component
 class Login extends Component {
     //call the constructor method

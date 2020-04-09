@@ -31,10 +31,12 @@
 
 import { combineReducers } from 'redux';
 import loginReducer from './loginReducer';
+import SprofileReducer from './studentProfile';
 // import studentProfileReducer from './studentProfileReducer';
 
 const rootReducer = combineReducers({
-    Login: loginReducer
+    Login: loginReducer,
+    SProfile : SprofileReducer
 })
 
 export default rootReducer;

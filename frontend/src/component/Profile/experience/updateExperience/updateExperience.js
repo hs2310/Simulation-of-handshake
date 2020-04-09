@@ -1,6 +1,8 @@
 import React from 'react'
-import axios from 'axios';
-// import  {connect} from 'react-redux';
+// import axios from 'axios';
+import { connect } from 'react-redux';
+import { updateEx, deleteEx } from '../../../../js/actions/profile-action';
+
 class UpdateExperience extends React.Component {
     constructor(props) {
         super(props);
@@ -36,24 +38,24 @@ class UpdateExperience extends React.Component {
         
         e.preventDefault();
         let data = this.state;
-        data.id = this.props.item.id;
+        data.id = this.props.item._id;
         data.sid = localStorage.getItem('id');
         // console.log(data);
         
-        axios.put("http://localhost:3001/students/updateExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
+        // axios.put("http://localhost:3001/students/updateExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
         
-        this.props.action();
+        this.props.updateEx(data);
         this.editJob();
     }
     deleteJob = () => {
-        alert('called')
-        let data = {};
-        data.id = this.props.item.id;
-           
-        axios.post("http://localhost:3001/students/deleteExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
         
-        this.props.action();
-        this.editJob();
+        let data = {};
+        data.id = this.props.item._id;
+        data.sid = localStorage.getItem('id')   
+        // axios.post("http://localhost:3001/students/deleteExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
+        
+        this.props.deleteEx(data);
+        // this.editJob();
     }
     render() {
         let school = null;
@@ -66,7 +68,7 @@ class UpdateExperience extends React.Component {
                     <h6 class="card-subtitle mb-2 text-muted">{this.props.item.employer}</h6>
                     <h6 class="card-subtitle mb-2 text-muted">{this.props.item.start}{this.props.item.end}</h6>
                     <h6 class="card-subtitle mb-2 text-muted">{this.props.item.location}</h6>
-                    <p class="card-text">{this.props.item.Description}</p>
+                    <p class="card-text">{this.props.item.description}</p>
                 </div>
             </div>
         }
@@ -91,7 +93,7 @@ class UpdateExperience extends React.Component {
                     <input type="text" name="location" placeholder="Enter Location" className="form-control" onChange={this.experienceChangeHandler} defaultValue ={this.props.item.location}/>
                 </div>
                 <div className="form-group">
-                    <textarea name="description" className="form-control" placeholder="Enter Job Description" onChange={this.experienceChangeHandler} defaultValue ={this.props.item.Description}></textarea>
+                    <textarea name="description" className="form-control" placeholder="Enter Job Description" onChange={this.experienceChangeHandler} defaultValue ={this.props.item.description}></textarea>
                 </div>
                 <div className="form-group">
                     <button type="submit" className="btn btn-primary">Edit Work Experience</button>
@@ -99,7 +101,7 @@ class UpdateExperience extends React.Component {
             </form>
             </div>
         }
-        return <div className="card" key={this.props.item.id}>
+        return <div className="card" key={this.props.item._id}>
             {school}
         </div>
     }
@@ -111,4 +113,4 @@ class UpdateExperience extends React.Component {
 //         type: state.rootReducer.type
 //     };
 //   };
-  export default UpdateExperience;
+  export default connect(null, { updateEx, deleteEx })(UpdateExperience);

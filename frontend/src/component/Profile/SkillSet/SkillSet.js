@@ -1,6 +1,7 @@
 import React from 'react';
-import axios from 'axios';
-// import {connect} from 'react-redux';
+// import axios from 'axios';
+import {connect} from 'react-redux';
+import { deleteSkil , updateSkil } from '../../../js/actions/profile-action'
 class SkillSet extends React.Component {
     constructor(props) {
         super(props);
@@ -14,31 +15,29 @@ class SkillSet extends React.Component {
         this.skillHandler = this.skillHandler.bind(this);
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
-        this.update = this.update.bind(this);
+        // this.update = this.update.bind(this);
     }
-    update = () => {
+    // update = () => {
 
-        let data = { sid: localStorage.getItem('id') }
-        axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
-            this.setState({
-                skillSet: res.data,
-            });
-            console.log(this.state.skillSet)
-        })
-        console.log(this.state.skillSet)
-        axios.post("http://localhost:3001/students/getSkills", data).then(res => {
-            this.setState({
-                skill: res.data
-            });
-
-            console.log(this.state.skill)
-
-        })
-    }
-    componentDidMount() {
-        //console.log("ID : " + this.props.id)
-        this.update()
-    }
+    //     let data = { sid: localStorage.getItem('id') }
+    //     axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
+    //         this.setState({
+    //             skillSet: res.data,
+    //         });
+    //         console.log(this.state.skillSet)
+    //     })
+    
+    // }
+    // componentDidMount() {
+    //     //console.log("ID : " + this.props.id)
+    //     this.update()
+    // }
+    componentDidUpdate(prevProps, prevState) {
+        console.log("SKILLS : componentDidUpdate CALLED")
+        if (prevProps.skills !== this.props.skills) {
+          this.setState({ skillSet : this.props.skills})
+        }
+      }
     skillHandler = () => {
         this.setState({ msg: '' })
         if (this.state.update_skill === true)
@@ -62,10 +61,10 @@ class SkillSet extends React.Component {
         this.setState({ msg: '' })
         let data = {name : this.state.selectSkill};
         data.sid = localStorage.getItem('id');
-        let flag = 0;
+        var flag = 0;
         this.state.skillSet.forEach(x => {
 
-            if (x.skid === Number(data.selectSkill)) {
+            if (x.name === data.name) {
                 flag = 1;
             }
         })
@@ -73,33 +72,36 @@ class SkillSet extends React.Component {
         if (flag === 1)
             this.setState({ msg: <div className="alert alert-danger">"Skill already exists"</div> })
         else {
-            console.log(this.state);
-            axios.post("http://localhost:3001/students/UpdateSkill", data).then(res => {
-                // console.log(res.data)
-                axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
-                    this.setState({
-                        skillSet: res.data
-                    });
-                    // console.log(this.state.skillSet)
-                })
-            });
-            this.update();
+            // console.log(this.state);
+            // axios.post("http://localhost:3001/students/UpdateSkill", data).then(res => {
+            //     // console.log(res.data)
+            //     axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
+            //         this.setState({
+            //             skillSet: res.data
+            //         });
+            //         // console.log(this.state.skillSet)
+            //     })
+            // });
+            // this.update();
             // this.props.action();
+            this.props.updateSkil(data)
             this.skillHandler();
         }
     }
     deleteSkill = (id) => {
         let data = { id: id }
-        axios.post("http://localhost:3001/students/DeleteSkill", data).then(res => {
-            axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
-                this.setState({
-                    skillSet: res.data
-                });
-                // console.log(this.state.skillSet)
-            })
-        });
-        this.update();
+        data.sid = localStorage.getItem('id')
+        // axios.post("http://localhost:3001/students/DeleteSkill", data).then(res => {
+        //     axios.post("http://localhost:3001/students/studentSkills", data).then(res => {
+        //         this.setState({
+        //             skillSet: res.data
+        //         });
+        //         // console.log(this.state.skillSet)
+        //     })
+        // });
+        // this.update();
         // this.props.action();
+        this.props.deleteSkil(data)
         this.skillHandler();
     }
     render() {
@@ -107,20 +109,17 @@ class SkillSet extends React.Component {
 
         if (this.state.update_skill === true) {
             skill = <div>
-                <div>{this.state.skillSet.map(item => <div key={item.id}>{item.name}<button type="button" onClick={() => { this.deleteSkill(item.id) }}>X</button></div>)}</div>
+                <div>{this.state.skillSet.map(item => <div key={item._id}>{item.name}<button type="button" onClick={() => { this.deleteSkill(item._id) }}>X</button></div>)}</div>
                 <form onSubmit={this.updateInfo}>
-                    
-                        <div className="form-group">
-                            <input type="text" name="selectSkill" className="form-control" onChange={this.educationChangeHandler}/>
-                        </div>    
-                    
-
+                    <div className="form-group">
+                        <input type="text" name="selectSkill" className="form-control" onChange={this.educationChangeHandler}/>
+                    </div>    
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
             </div>
         }
         else {
-            skill = <div>{this.state.skillSet.map(item => <div key={item.id}>{item.name}</div>)}</div>
+            skill = <div>{this.state.skillSet.map(item => <div key={item._id}>{item.name}</div>)}</div>
         }
         return <div>
             <button onClick={this.skillHandler} className="btn btn-primary" style={{ float: "right" }} type="button">edit</button>
@@ -131,11 +130,10 @@ class SkillSet extends React.Component {
         </div>
     }
 }
-// const mapStateToProps = state => {
+const mapStateToProps = state => {
 
-//     return { 
-//         id: state.rootReducer.id,
-//         type: state.rootReducer.type
-//     };
-//   };
-export default SkillSet;
+    return { 
+        skills: state.SProfile.skills
+    };
+  };
+export default connect( mapStateToProps, { updateSkil, deleteSkil } )(SkillSet);

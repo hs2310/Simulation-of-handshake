@@ -37,7 +37,7 @@ app.post('/getSkills', (req, res) => {
     })
 });
 app.post('/DeleteSkill', (req, res) => {
-    console.log("Data : " + req.body.sid)
+    console.log("Data : " + req.body)
     Students.findOneAndUpdate({_id: req.body.sid} , {"$pull" : { "skills" : {"_id" : req.body.id}}},{ new  : true}, (error,results)=>{
         res.send(results);
     })
@@ -57,12 +57,14 @@ app.post('/studentEducation', (req, res) => {
 
 app.post('/insertEducation', (req, res) => {
     console.log(req.body);
-    Students.findOneAndUpdate({_id: req.body.sid} , {"$push" : { "education" : {"school_name" : req.body.school_name, "edu_level" : req.body.edu_level, "start" : req.body.start, "end" : req.body.end, "major" : req.body.major, "minor" : req.body.minor, "gpa" : req.body.gpa, "cgpa" : req.body.cgpa, "hide_gpa" : req.body.hide_gpa, "hide_cgpa" : req.body.hide_cgpa }}},{ new  : true}, (error,results)=>{
+    Students.findOneAndUpdate({_id: req.body.sid} , 
+        {"$push" : { "education" : {"school_name" : req.body.school_name, "edu_level" : req.body.edu_level, "start" : req.body.start, "end" : req.body.end, "major" : req.body.major, "minor" : req.body.minor, "gpa" : req.body.gpa, "cgpa" : req.body.cgpa, "hide_gpa" : req.body.hide_gpa, "hide_cgpa" : req.body.hide_cgpa }}},
+        { new  : true}, (error,results)=>{
         res.send(results);
     })    
 })
 app.post('/updateEducation', (req, res) => {
-    Students.updateOne({ "_id": req.body.sid } , 
+    Students.findOneAndUpdate({ "_id": req.body.sid } , 
     { "$set" : 
         { 
             "education.$[element].school_name" : req.body.school_name,
@@ -80,15 +82,16 @@ app.post('/updateEducation', (req, res) => {
     {
         arrayFilters: [
             {"element._id" :req.body.id } 
-        ]
+        ],
+        new : true
     },
     (error,results)=>{
         res.send(results);
     })  
 })
 app.post('/deleteEducation', (req, res) => {
-    console.log("Data : " + req.body.sid)
-    Students.findOneAndUpdate({_id: req.body.sid} , {"$pull" : { "experience" : {"_id" : req.body.id}}},{ new  : true}, (error,results)=>{
+    console.log("Data : " + req.body)
+    Students.findOneAndUpdate({_id: req.body.sid} , {"$pull" : { "education" : {"_id" : req.body.id}}},{ new  : true}, (error,results)=>{
         res.send(results);
     })
 })
@@ -121,7 +124,7 @@ app.post('/insertExperience', (req, res) => {
     })    
 })
 app.put('/updateExperience', (req, res) => {
-    Students.updateOne({ "_id": req.body.sid } , 
+    Students.findOneAndUpdate({ "_id": req.body.sid } , 
     { "$set" : 
         { 
             "experience.$[element].job_title" : req.body.job_title,
@@ -136,7 +139,8 @@ app.put('/updateExperience', (req, res) => {
     {
         arrayFilters: [
             {"element._id" :req.body.id } 
-        ]
+        ],
+        new : true
     },
     (error,results)=>{
         res.send(results);

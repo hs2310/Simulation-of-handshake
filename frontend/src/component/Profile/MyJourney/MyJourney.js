@@ -1,30 +1,25 @@
 import React from 'react';
-import axios from 'axios';
-// import {connect} from 'react-redux';
+// import axios from 'axios';
+import {connect} from 'react-redux';
+import { updateJourney } from '../../../js/actions/profile-action'
 class MyJourney extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             update_journey: false,
-            data: '',
             objective: ''
         }
         this.myJourneyHandler = this.myJourneyHandler.bind(this);
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
-    async componentDidMount() {
-        let data = { sid: localStorage.getItem('id') , call : 'myJourney' }
-        await axios.post("http://localhost:3001/students/studentData", data).then(res => {
-            this.setState({
-                data: res.data,
-                objective: res.data.objective
-            });
-            console.log(this.state.data)
-
-        }).catch(e => console.log(e));
-        // alert(this.props.id)
-    }
+    
+    componentDidUpdate(prevProps, prevState) {
+        console.log("MY JOURNEY : componentDidUpdate CALLED")
+        if (prevProps.objective !== this.props.objective) {
+          this.setState({ objective : this.props.objective})
+        }
+      }
     myJourneyHandler = () => {
         if (this.state.update_journey === true)
             this.setState({
@@ -43,11 +38,10 @@ class MyJourney extends React.Component {
     }
     updateInfo = (e) => {
         e.preventDefault();
-        let data = this.state;
+        let data = {};
+        data.objective = this.state.objective;
         data.sid = localStorage.getItem('id')
-        console.log(this.state);
-        axios.post("http://localhost:3001/students/UpdateJourney", data).then(res => console.log(res.data));
-        // this.props.action();
+        this.props.updateJourney(data);
         this.myJourneyHandler();
     }
 
@@ -75,11 +69,10 @@ class MyJourney extends React.Component {
         </div>
     }
 }
-// const mapStateToProps = state => {
+const mapStateToProps = state => {
 
-//     return { 
-//         id: state.rootReducer.id,
-//         type: state.rootReducer.type
-//     };
-//   };
-  export default MyJourney;
+    return { 
+        objective: state.SProfile.objective
+    };
+  };
+  export default connect(mapStateToProps , {updateJourney}) (MyJourney);

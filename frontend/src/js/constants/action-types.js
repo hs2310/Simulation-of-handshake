@@ -1,4 +1,10 @@
 export const LOGIN = "LOGIN";
 export const LOGOUT ="LOGOUT";
-// export const GET_STUDENT = "GET_STUDENT";
+export const GET_STUDENT = "GET_STUDENT";
+export const UPDATE_GENERAL_INFO = "UPDATE_GENERAL_INFO";
+export const UPDATE_CONTACT_INFO = "UPDATE_CONTACT_INFO";
+export const UPDATE_JOURNEY = "UPDATE_JOURNEY";
+export const INSERT_EDUCATION = "INSERT_EDUCATION";
+export const INSERT_EXPERIENCE = "INSERT_EXPERIENCE";
+export const INSERT_SKILLS = "INSERT_SKILLS";
 // export const GET_JOBS = "GET_JOBS";

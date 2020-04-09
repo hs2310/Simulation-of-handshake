@@ -1,7 +1,9 @@
 import React from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import UpdateExperience from './updateExperience/updateExperience';
-// import {connect} from 'react-redux';
+import {connect} from 'react-redux';
+import { insertEx } from '../../../js/actions/profile-action';
+
 class Experience extends React.Component {
     constructor(props) {
         super(props);
@@ -20,21 +22,13 @@ class Experience extends React.Component {
         this.experienceChangeHandler = this.experienceChangeHandler.bind(this);
         this.insertExp = this.insertExp.bind(this);
     }
-    componentDidMount(){
-        this.update()
-    }
-    update = () => {
-        let data ={
-            sid : localStorage.getItem('id')
+    
+    componentDidUpdate(prevProps, prevState) {
+        console.log("EXPERIENCE : componentDidUpdate CALLED")
+        if (prevProps.experience !== this.props.experience) {
+          this.setState({ experience : this.props.experience})
         }
-        axios.post("http://localhost:3001/students/studentExperience", data).then(res => {
-    // this.state.experience.push(res.data)  
-         this.setState({
-        experience : res.data.experience
-      });      
-      console.log(this.state.experience)
-    }).catch(e => console.log(e));
-    }
+      }
     experienceChangeHandler = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -42,11 +36,19 @@ class Experience extends React.Component {
     }
     insertExp = (e) => {
         e.preventDefault();
-        let { update, ...data } = this.state;
+        let data = {
+            job_title: this.state.job_title,
+            employer: this.state.employer,
+            start: this.state.start,
+            end: this.state.end,
+            current_position: this.state.current_position,
+            location: this.state.location,
+            description: this.state.description
+        }
         data.sid = localStorage.getItem('id')
-
-        axios.post("http://localhost:3001/students/insertExperience", data).then(res => alert(res.data));
-        this.update();
+        this.props.insertEx(data);
+        // axios.post("http://localhost:3001/students/insertExperience", data).then(res => alert(res.data));
+        
         this.experienceHandler();
     }
     experienceHandler = () => {
@@ -95,13 +97,13 @@ class Experience extends React.Component {
         } else {
             experience = <div>
                 {this.state.experience.map((item) =>
-                    <div className="card" key={item.id} >
+                    <div className="card" key={item._id} >
                         <div className="card-body">
                             <h5 className="card-title">{item.job_title}</h5>
                             <h6 className="card-subtitle mb-2 text-muted">{item.employer}</h6>
                             <h6 className="card-subtitle mb-2 text-muted">{item.start}{item.end}</h6>
                             <h6 className="card-subtitle mb-2 text-muted">{item.location}</h6>
-                            <p className="card-text">{item.Description}</p>
+                            <p className="card-text">{item.description}</p>
                         </div>
                     </div>
 
@@ -117,11 +119,10 @@ class Experience extends React.Component {
         </div>
     }
 }
-// const mapStateToProps = state => {
+const mapStateToProps = state => {
 
-//     return { 
-//         id: state.rootReducer.id,
-//         type: state.rootReducer.type
-//     };
-//   };
-  export default Experience;
+    return { 
+        experience : state.SProfile.experience
+    };
+  };
+export default connect(mapStateToProps , { insertEx })(Experience);

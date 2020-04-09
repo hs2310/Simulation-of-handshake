@@ -1,6 +1,7 @@
 import React from 'react'
-import axios from 'axios';
-
+// import axios from 'axios';
+import { connect } from 'react-redux';
+import { updateEduc , deleteEduc } from '../../../../js/actions/profile-action'
 class UpdateSchool extends React.Component {
     constructor(props) {
         super(props);
@@ -43,22 +44,22 @@ class UpdateSchool extends React.Component {
 
         e.preventDefault();
         let data = this.state;
-        data.id = this.props.item.id;
+        data.id = this.props.item._id;
         data.sid = localStorage.getItem('id');
         // console.log(data);
 
-        axios.post("http://localhost:3001/students/updateEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
-
-        this.props.action();
+        // axios.post("http://localhost:3001/students/updateEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
+        this.props.updateEduc(data);
         this.editSchool();
     }
     deleteSchool = () => {
         
         let data = {};
-        data.id = this.props.item.id;
-
-        axios.post("http://localhost:3001/students/deleteEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
-        this.props.action();
+        data.id = this.props.item._id;
+        data.sid = localStorage.getItem('id');
+        this.props.deleteEduc(data)
+        // axios.post("http://localhost:3001/students/deleteEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
+        // this.props.action();
         this.editSchool();
     }
     render() {
@@ -118,10 +119,10 @@ class UpdateSchool extends React.Component {
                 </form>
             </div>
         }
-        return <div className="card" key={this.props.item.id}>
+        return <div className="card" key={this.props.item._id}>
             {school}
         </div>
     }
 }
 
-export default UpdateSchool;
+export default connect(null , { updateEduc, deleteEduc }) (UpdateSchool);
