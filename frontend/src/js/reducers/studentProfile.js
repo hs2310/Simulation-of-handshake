@@ -1,4 +1,4 @@
-import { GET_STUDENT , UPDATE_GENERAL_INFO ,UPDATE_CONTACT_INFO, UPDATE_JOURNEY , INSERT_EDUCATION , INSERT_EXPERIENCE, INSERT_SKILLS } from "../constants/action-types"; 
+import { GET_STUDENT , UPDATE_GENERAL_INFO ,UPDATE_CONTACT_INFO, UPDATE_JOURNEY , INSERT_EDUCATION , INSERT_EXPERIENCE, INSERT_SKILLS , STUDENT_PROFILE } from "../constants/action-types"; 
 
 const initialState = {
 
@@ -71,6 +71,11 @@ function SprofileReducer(state = initialState, action) {
         console.log( action.payload )
         return Object.assign({} , state, {
             skills :action.payload.skills
+        })
+    } else if ( action.type ===  STUDENT_PROFILE){
+        console.log( action.payload )
+        return Object.assign({} , state, {
+            profile_pic : action.payload.profile_pic
         })
     }
 

@@ -153,7 +153,6 @@ class Education extends React.Component {
 	}
 }
 const mapStateToProps = state => {
-
 	return {
 		education: state.SProfile.education
 	};

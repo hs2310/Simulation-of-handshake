@@ -1,6 +1,7 @@
 import React from 'react';
-import axios from 'axios';
-
+// import axios from 'axios';
+import { connect } from 'react-redux';
+import { uploadProfile } from '../../../js/actions/profile-action';
 class ProfilePic extends React.Component {
   constructor(props) {
     super(props);
@@ -14,16 +15,22 @@ class ProfilePic extends React.Component {
     this.educationChangeHandler = this.educationChangeHandler.bind(this);
     this.updateInfo = this.updateInfo.bind(this);
   }
-  componentDidMount() {
-    let data = { sid: localStorage.getItem('id'), call: "profile pic" }
-    axios.post("http://localhost:3001/students/studentData", data).then(res => {
-      this.setState({
-        data: res.data[0],
-        profile_pic: res.data[0].profile_pic,
-      });
-      console.log(this.state.data)
+  // componentDidMount() {
+  //   let data = { sid: localStorage.getItem('id'), call: "profile pic" }
+  //   axios.post("http://localhost:3001/students/studentData", data).then(res => {
+  //     this.setState({
+  //       data: res.data[0],
+  //       profile_pic: res.data[0].profile_pic,
+  //     });
+  //     console.log(this.state.data)
 
-    }).catch(e => console.log(e));
+  //   }).catch(e => console.log(e));
+  // }
+  componentDidUpdate(prevProps, prevState) {
+    console.log("PROFILE PICTURE : componentDidUpdate CALLED")
+    if (prevProps.profile_pic !== this.props.profile_pic) {
+      this.setState({ profile_pic : this.props.profile_pic})
+    }
   }
   generalInfoHandler = () => {
     if (this.state.update_general_info === true)
@@ -52,22 +59,7 @@ class ProfilePic extends React.Component {
     formData.append('file', this.state.profile_pic);
     formData.append('sid' , localStorage.getItem('id'));
     
-    axios.post('http://localhost:3001/student_profile_pic',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    ).then( res => {
-      this.setState({
-        profile_pic : res.data
-      })
-      console.log('SUCCESS!!');
-    })
-      .catch(function () {
-        console.log('FAILURE!!');
-      });
+    this.props.uploadProfile( formData );
     this.generalInfoHandler();
   }
 
@@ -84,7 +76,7 @@ class ProfilePic extends React.Component {
       </div>
     }
     else {
-      generalInfo = <div><img src={this.state.profile_pic} className="rounded-circle" width="100px" height="100px" alt="Not Uploaded!!!" />
+      generalInfo = <div><img src={this.state.profile_pic} className="rounded-circle" width="100px" height="100px" alt="Not Uploaded!!!" /><br/><br/>
         </div>;
     }
     return <div>
@@ -93,4 +85,10 @@ class ProfilePic extends React.Component {
     </div>
   }
 }
-export default ProfilePic;
+
+const mapStateToProps = state => {
+  return { 
+      profile_pic: state.SProfile.profile_pic
+  };
+};
+export default connect( mapStateToProps , { uploadProfile } )(ProfilePic);

@@ -52,7 +52,7 @@ class Profile extends React.Component {
     //  console.log("ID:"+JSON.stringify(store.getState()))
     //  await this.props.getStudentData({id : this.props.id});
     //  this.update();
-    await this.props.getStudent()
+    await this.props.getStudent({ "sid": localStorage.getItem("id") })
     await this.setState({ data: true })
 
   }
