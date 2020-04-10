@@ -33,12 +33,14 @@ import { combineReducers } from 'redux';
 import loginReducer from './loginReducer';
 import SprofileReducer from './studentProfile';
 import CprofileReducer from './companyProfile';
+import jobReducer from './job';
 // import studentProfileReducer from './studentProfileReducer';
 
 const rootReducer = combineReducers({
     Login: loginReducer,
     SProfile : SprofileReducer,
-    CProfile : CprofileReducer
+    CProfile : CprofileReducer,
+    jobs : jobReducer
 })
 
 export default rootReducer;

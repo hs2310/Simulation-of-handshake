@@ -1,18 +1,25 @@
 import React from 'react'
-import axios from 'axios';
+// import axios from 'axios';
+import {connect} from 'react-redux';
+import { apply , setApplied } from '../../js/actions/job-action' 
 class ApplicationForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             selectedFile: null,
-            loaded: 0
+            loaded: 0,
+            applied : ''
         }
         this.onChangeHandler = this.onChangeHandler.bind(this)
         this.onSubmitHandler = this.onSubmitHandler.bind(this)
         // this.fileUpload =  this.fileUpload.bind(this)
     }
-    componentDidMount() {
-        // alert(this.props.cid)
+    componentDidUpdate(nextProps , nextState) {
+        if(nextProps.applied !== this.props.applied)
+        this.setState({applied : this.props.applied})
+    }
+    componentDidMount(){
+        this.props.setApplied("");
     }
     onChangeHandler = event => {
         this.setState({
@@ -23,20 +30,11 @@ class ApplicationForm extends React.Component {
     }
     onSubmitHandler = e =>{
         e.preventDefault();
-        const url = 'http://localhost:3001/applyJobs';
         const formData = new FormData();
         formData.append('file', this.state.selectedFile)
-        formData.append('jid', this.props.jobs.jid)
+        formData.append('jid', this.props.jobs._id)
         formData.append('sid', localStorage.getItem('id'))
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-        axios.post(url,formData,config).then((response)=>{
-            console.log(response.data);
-            alert("Applied")
-          })
+        this.props.apply(formData);
     }
     // fileUpload() 
     // {
@@ -64,11 +62,16 @@ class ApplicationForm extends React.Component {
                         <input type="file" name="resume" className="form-control" onChange={this.onChangeHandler} />
                     </div>
                     <button className="btn btn-primary" >Upload</button>
-                    </form>
+                </form>
+                {this.state.applied}
                 </div>
             </div>
         
     }
 }
-
-export default ApplicationForm;
+const mapStateToProps = state => {
+    return{
+        applied : state.jobs.applied
+    }
+}
+export default connect( mapStateToProps,{apply , setApplied})(ApplicationForm);

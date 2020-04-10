@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+
 import CProfilePic from '../CProfilePic/CProfilePic';
 import {connect} from 'react-redux';
 import {updateGenInfo} from '../../../../js/actions/Cprofile-action'

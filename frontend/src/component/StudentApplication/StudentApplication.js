@@ -1,66 +1,109 @@
 import React from 'react';
 import Jobs from '../Jobs/Jobs';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { getApp } from '../../js/actions/job-action';
 class StudentApplication extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             application: [],
-            filteredApplicaion: [],
+            filteredApplication: [],
+            limit: 3,
+            pageNo: 1,
+            filter: '',
         }
         this.applicationSearch = this.applicationSearch.bind(this)
         this.showall = this.showall.bind(this)
+        this.prev = this.prev.bind(this)
+        this.next = this.next.bind(this)
     }
-    async componentDidMount() {
+    prev = () => {
+        this.setState({
+            pageNo: this.state.pageNo - 1
+        }, () => {
+            let data = {
+                limit: this.state.limit,
+                pageNo: this.state.pageNo,
+                filter: this.state.filter,
+                sid : localStorage.getItem("id")
+            }
+            this.props.getApp(data)
+        });
+    }
+    next = () => {
+        this.setState({
+            pageNo: this.state.pageNo + 1
+        }, () => {
+            let data = {
+                limit: this.state.limit,
+                pageNo: this.state.pageNo,
+                filter: this.state.filter,
+                sid : localStorage.getItem("id")
+            }
+            this.props.getApp(data)
+        });
+    }
+    componentDidUpdate(nextProps, nextState) {
+        if (nextProps.application !== this.props.application) {
+            this.setState({
+                application: this.props.application,
+                filteredApplication: this.props.application
+            })
+        }
+    }
+    componentDidMount() {
         //get applied Jobs
         let data = {
-            sid: 1
+            limit: this.state.limit,
+            pageNo: this.state.pageNo,
+            filter: this.state.filter,
+            sid: localStorage.getItem('id')
         }
-        await axios.post("http://localhost:3001/getApplicaion", data).then(r => {
-            this.setState({
-                application: r.data,
-                filteredApplicaion: r.data,
-            })
-            // console.log(this.state.application[0].jid+"\n"+r.data[0].name)
-        })
+        this.props.getApp(data);
     }
     applicationSearch(val) {
-
-        let filteredSearchJobs = this.state.application;
-
         this.setState({
-            filteredApplicaion: filteredSearchJobs.filter((job) => {
-                
-                return job.status.replace(/\s+/g, '').toLowerCase().includes(val.replace(/\s+/g, '').toLowerCase())
+            filter: val
+        }, () => {
+            let data = {
+                limit: this.state.limit,
+                pageNo: this.state.pageNo,
+                filter: this.state.filter,
+                sid: localStorage.getItem('id')
             }
-            )
+            this.props.getApp(data);
         })
 
     }
     showall() {
         this.setState({
-            filteredApplicaion: this.state.application
+            filter: ""
+        }, () => {
+            let data = {
+                limit: this.state.limit,
+                pageNo: this.state.pageNo,
+                filter: this.state.filter,
+                sid: localStorage.getItem('id')
+            }
+            this.props.getApp(data);
         })
     }
     render() {
-        // let applications = Object.keys(this.state.application).map(function (key){
-        //     var item = <div>
-        //         {this.state.application[key].name}
-        //     </div>
-        //     return item
-        // })
-        let application = this.state.filteredApplicaion.map((i, index) => {
-            return (
-                <div key={index} className="card">
-                    <div className="card-body">
-                        <h5>{i.title}</h5>
-                        <h6>{i.name}</h6>
-                        <h6>STATUS : {i.status}</h6>
+        let application = JSON.stringify(this.state.filteredApplication)
+        // let application = null
+        if (this.state.filteredApplication) {
+            application = this.state.filteredApplication.map((i, index) => {
+                return (
+                    <div key={index} className="card">
+                        <div className="card-body">
+                            <h5>{i.title}</h5>
+                            <h6>{i.cid.name}</h6>
+                            <h6>STATUS : {i.status}</h6>
+                        </div>
                     </div>
-                </div>
-            );
-        })
-
+                );
+            })
+        }
         return <div>
             <Jobs />
             <div className="container" style={{ marginTop: "5%" }}>
@@ -68,9 +111,9 @@ class StudentApplication extends React.Component {
                     <div className="col-md-12">
                         <div class="btn-group" role="group" style={{ alignItems: "center" }} >
                             <button type="button" ref="IT" className={this.state.internshipStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="all" onClick={() => { this.showall() }}>All Applications</button>
-                            <button type="button" ref="FT" className={this.state.fullTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="pending" onClick={() => { this.applicationSearch("pending") }}>Pending</button>
-                            <button type="button" ref="IT" className={this.state.internshipStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="reviewed" onClick={() => { this.applicationSearch("reviewed") }}>Reviewed</button>
-                            <button type="button" ref="PT" className={this.state.partTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="declined" onClick={() => { this.applicationSearch("declined") }}>Declined</button>
+                            <button type="button" ref="FT" className={this.state.fullTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="pending" onClick={() => { this.applicationSearch("PENDING") }}>Pending</button>
+                            <button type="button" ref="IT" className={this.state.internshipStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="reviewed" onClick={() => { this.applicationSearch("REVIEWED") }}>Reviewed</button>
+                            <button type="button" ref="PT" className={this.state.partTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="declined" onClick={() => { this.applicationSearch("DECLINED") }}>Declined</button>
                         </div>
 
                     </div>
@@ -78,10 +121,20 @@ class StudentApplication extends React.Component {
                 <div className="row">
                     <div className="col-md-12">
                         {application}
+                        <div style={{ width: "100%" }}>
+                            <button type="button" onClick={this.prev} className="btn btn-primary btn-inverse"> <b>&larr;</b> </button>
+                            <button type="button" onClick={this.next} style={{ float: "right" }} className="btn btn-primary btn-inverse"> <b>&rarr;</b> </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     }
 }
-export default StudentApplication;
+const mapStateToProps = state => {
+    return {
+        application: state.jobs.application
+    }
+}
+export default connect(mapStateToProps, { getApp })(StudentApplication);
