@@ -13,7 +13,12 @@ export const getJobs = (data) => {
         axios.post('http://localhost:3001/jobs/getJobs',data)
             .then(res => {
                 console.log("response : GET JOBS", res.data)
-                dispatch(setJobs(res.data))
+                let data = res.data;
+                for(var i; i<res.data.length ; i++){
+                    data[i].posting_date = new Date(data[i].posting_date);
+                    data[i].deadline = new Date(data[i].deadline);
+                }
+                dispatch(setJobs(data))
             })
     }
 }

@@ -1,6 +1,6 @@
 var express = require('express')
 var app = express.Router()
-
+var bodyParser = require('body-parser');
 const multer = require('multer');
 var path = require('path');
 
@@ -21,14 +21,17 @@ const upload = multer({
     storage: storage,
 })
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
-
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 app.post("/postJob", (req, res) => {
 
     var newJob = new Jobs({
         "title": req.body.title,
-        "posting_date": req.body.posting_date,
-        "deadline": req.body.deadline,
+        "posting_date": new Date(req.body.posting_date),
+        "deadline": new Date(req.body.deadline),
         "location": req.body.location,
         "salary": req.body.salary,
         "job_description": req.body.job_description,
@@ -42,15 +45,22 @@ app.post("/postJob", (req, res) => {
 app.post('/getJobs', (req, res) => {
     let limit = parseInt(req.body.limit)
     let pageNo = parseInt(req.body.pageNo)
+    let sort = req.body.sort
+    console.log("======\nSort : " + JSON.stringify(sort))
+    
     let condition = {};
         condition.title = {$regex : '.*' + req.body.title + '.*'}  
         condition.location = { $regex : '.*'+req.body.location+'.*'}
         if(req.body.filter.length > 0)
             condition.job_category = {$in : req.body.filter}
-    Jobs.find(condition).limit(limit).skip((pageNo - 1) * limit).populate("cid").exec((err, results) => {
+            try{
+    Jobs.find(condition).limit(limit).skip((pageNo - 1) * limit).populate("cid").sort(sort).exec((err, results) => {
         if (err) res.send(err)
         res.send(results);
     })
+    } catch (e){
+        res.send(e)
+    }
 })
 
 app.get('/getCompany', (req, res) => {

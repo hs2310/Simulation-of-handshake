@@ -4,12 +4,12 @@ import React from 'react'
 // import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 // import Navigate from '../Navigate/Navigate';
-import { getJobs, setApply , checkApply } from '../../js/actions/job-action';
+import { getJobs, setApply, checkApply } from '../../js/actions/job-action';
 import { connect } from 'react-redux';
 
 import ApplicationForm from './ApplicationForm';
 import Jobs from '../Jobs/Jobs';
-import axios from 'axios';
+// import axios from 'axios';
 class JobSearch extends React.Component {
 	constructor(props) {
 		super(props)
@@ -28,6 +28,7 @@ class JobSearch extends React.Component {
 			title: "",
 			pageNo: 1,
 			limit: 3,
+			sort: ""
 		}
 		this.prev = this.prev.bind(this);
 		this.next = this.next.bind(this);
@@ -35,6 +36,23 @@ class JobSearch extends React.Component {
 		this.changeStatusHandler = this.changeStatusHandler.bind(this)
 		this.SelectedFilterArray = this.SelectedFilterArray.bind(this)
 		this.jobSearch = this.jobSearch.bind(this)
+		this.sortHandler = this.sortHandler.bind(this)
+	}
+	sortHandler = (e) => {
+		console.log("SORT : " + e.target.value)
+		this.setState({
+			sort: e.target.value
+		}, () => {
+			let data = {
+				limit: this.state.limit,
+				pageNo: this.state.pageNo,
+				filter: this.state.appliedFilters,
+				title: this.state.title,
+				location: this.state.location,
+				sort: this.state.sort
+			}
+			this.props.getJobs(data)
+		})
 	}
 	prev = () => {
 		this.setState({
@@ -45,7 +63,8 @@ class JobSearch extends React.Component {
 				pageNo: this.state.pageNo,
 				filter: this.state.appliedFilters,
 				title: this.state.title,
-				location: this.state.location
+				location: this.state.location,
+				sort: this.state.sort
 			}
 			this.props.getJobs(data)
 		});
@@ -59,7 +78,8 @@ class JobSearch extends React.Component {
 				pageNo: this.state.pageNo,
 				filter: this.state.appliedFilters,
 				title: this.state.title,
-				location: this.state.location
+				location: this.state.location,
+				sort: this.state.sort
 			}
 			this.props.getJobs(data)
 		});
@@ -72,8 +92,8 @@ class JobSearch extends React.Component {
 				displayJobs: this.props.jobs[0]
 			})
 		}
-		if(nextProps.apply !== this.props.apply)
-			this.setState({apply : this.props.apply})
+		if (nextProps.apply !== this.props.apply)
+			this.setState({ apply: this.props.apply })
 	}
 	componentDidMount() {
 		let data = {
@@ -81,7 +101,8 @@ class JobSearch extends React.Component {
 			pageNo: this.state.pageNo,
 			filter: this.state.appliedFilters,
 			title: this.state.title,
-			location: this.state.location
+			location: this.state.location,
+			sort: this.state.sort
 		}
 		this.props.getJobs(data);
 	}
@@ -94,15 +115,17 @@ class JobSearch extends React.Component {
 			internshipStatus: false,
 			appliedFilters: [],
 			filteredJobs: this.state.jobs
-		})
+		},() => {
 		let data = {
 			limit: this.state.limit,
 			pageNo: this.state.pageNo,
 			filter: this.state.appliedFilters,
 			title: this.state.title,
-			location: this.state.location
+			location: this.state.location,
+			sort: this.state.sort
 		}
 		this.props.getJobs(data);
+		})
 	}
 	display(i) {
 		console.log(i)
@@ -118,7 +141,7 @@ class JobSearch extends React.Component {
 			sid: localStorage.getItem('id')
 		}
 		this.props.checkApply(data);
-		
+
 	}
 	// filter1handler = e => {
 	//   this.setState({
@@ -194,30 +217,11 @@ class JobSearch extends React.Component {
 				pageNo: this.state.pageNo,
 				filter: this.state.appliedFilters,
 				title: this.state.title,
-				location: this.state.location
+				location: this.state.location,
+				sort: this.state.sort
 			}
 			this.props.getJobs(data)
 		})
-
-		// let tempJobs;
-		// if (filters.length > 0) {
-		//   tempJobs = this.state.jobs.filter((job) => {
-		//     return (filters.includes(job.job_category))
-		//   }
-		//   )
-		// }
-		// else {
-		//   tempJobs = this.state.jobs;
-		// }
-		// this.setState({
-		//   appliedFilters: filters,
-		//   filteredJobs: tempJobs,
-		//   displayJobs: tempJobs[0]
-		// })
-
-
-		// return tempJobs;
-
 	}
 
 	jobSearch = (e) => {
@@ -229,7 +233,8 @@ class JobSearch extends React.Component {
 				pageNo: this.state.pageNo,
 				filter: this.state.appliedFilters,
 				title: this.state.title,
-				location: this.state.location
+				location: this.state.location,
+				sort: this.state.sort
 			}
 			this.props.getJobs(data)
 		})
@@ -259,27 +264,52 @@ class JobSearch extends React.Component {
 			clear = <button onClick={() => { this.filterClear() }} className="btn">Clear All</button>
 		}
 		var gtJobs = null
+		let displayJobs = null;
+		let applyForm = null;
+		if (this.props.apply === true)
+			applyForm = <ApplicationForm jobs={displayJobs} />
+		else if (this.props.apply === false)
+			applyForm = <div className="alert alert-primary">Already Applied!!</div>
 
 		if (this.state.filteredJobs.length === 0) {
 			gtJobs = "No Jobs Available"
+			displayJobs = ""
 		}
 		else {
 			gtJobs = Object.keys(this.state.filteredJobs).map((item, i) => {
 				return <div className="card" key={i} onClick={() => { this.display(item) }}>
 					<div className="card-body">
 						<h5 className="card-title">{this.state.filteredJobs[item].title}</h5>
-						<h6 className="card-subtitle mb-2 text-muted">{this.state.filteredJobs[item].name}</h6>
+						<h6 className="card-subtitle mb-2 text-muted">{this.state.filteredJobs[item].cid.name}</h6>
+						<p className="card-text">Posting Date : {new Date(this.state.filteredJobs[item].posting_date).getMonth() + 1}/{new Date(this.state.filteredJobs[item].posting_date).getDate()}/{new Date(this.state.filteredJobs[item].posting_date).getFullYear()}</p>
+						<p className="card-text">Deadline : {new Date(this.state.filteredJobs[item].deadline).getMonth() + 1}/{new Date(this.state.filteredJobs[item].deadline).getDate()}/{new Date(this.state.filteredJobs[item].deadline).getFullYear()}</p>
 						<p className="card-text">{this.state.filteredJobs[item].location}</p>
 						<p className="card-text">{this.state.filteredJobs[item].job_category}</p>
 					</div>
 				</div>
 
 			})
+			if (this.state.displayJobs) {
+				displayJobs = <div className="card"><div className="card-body">
+					
+					<h5 className="card-title">{this.state.displayJobs.title}</h5>
+					<h6 className="card-subtitle mb-2 text-muted">
+						<Link to={"/displayCompany/" + this.state.displayJobs.cid._id}>{this.state.displayJobs.cid.name}</Link>
+					</h6>
+					<p className="card-text">{this.state.displayJobs.salary}</p>
+					<p className="card-text">{this.state.displayJobs.location}</p>
+					<p className="card-text">{this.state.displayJobs.job_category}</p>
+					<p className="card-text">{this.state.displayJobs.job_description}</p>
+					<button type="button" onClick={() => this.checkApplied(this.state.displayJobs._id)} className="btn btn-primary">Apply</button>
+					{applyForm}
+				</div>
+				</div>
+			}
 		}
 
-		let applyForm = null;
 
-		let displayJobs = this.state.displayJobs;
+
+
 		// let jobList = Object.keys(this.state.jobs).map((item, i) => (
 		//   <div className="card" key={i} onClick={() => { this.display(item) }}>
 		//     <div className="card-body">
@@ -291,10 +321,7 @@ class JobSearch extends React.Component {
 		//   </div>
 
 		// ))
-		if (this.props.apply === true)
-			applyForm = <ApplicationForm jobs={displayJobs} />
-		else if (this.props.apply === false)
-			applyForm = <div className="alert alert-primary">Already Applied!!</div>
+
 		return <div>
 
 			<Jobs />
@@ -327,23 +354,25 @@ class JobSearch extends React.Component {
 					<div className="row">
 						<div className="col-md-4">
 							{gtJobs}
-							
+							<div style={{ width: "100%" }}>
+								<button type="button" onClick={this.prev} className="btn btn-primary btn-inverse"> <b>&larr;</b> </button>
+								<select name="sort" onChange={this.sortHandler} defaultValue="">
+									<option value=""></option>
+									<option value="posting_date "> Posting Date - Low To High</option>
+									<option value="-posting_date"> Posting Date - High To Low</option>
+									<option value="deadline"> Deadline - Low To High</option>
+									<option value="-deadline"> Deadline - High To Low</option>
+									<option value="location"> Location - A To Z</option>
+									<option value="-location"> Location - Z To A</option>
+								</select>
+								<button type="button" onClick={this.next} style={{ float: "right" }} className="btn btn-primary btn-inverse"> <b>&rarr;</b> </button>
+							</div>
+
 						</div>
 						<div className="col-md-8">
-							<div className="card">
-								<div className="card-body">
-									<h5 className="card-title">{displayJobs.title}</h5>
-									<h6 className="card-subtitle mb-2 text-muted">
-										<Link to={"/displayCompany/" + displayJobs.cid}>{displayJobs.name}</Link>
-									</h6>
-									<p className="card-text">{displayJobs.salary}</p>
-									<p className="card-text">{displayJobs.location}</p>
-									<p className="card-text">{displayJobs.job_category}</p>
-									<p className="card-text">{displayJobs.job_description}</p>
-									<button type="button" onClick={() => this.checkApplied(displayJobs._id)} className="btn btn-primary">Apply</button>
-									{applyForm}
-								</div>
-							</div>
+
+							{displayJobs}
+
 						</div>
 					</div>
 				</div>
@@ -355,7 +384,7 @@ class JobSearch extends React.Component {
 const mapStateToProps = state => {
 	return {
 		jobs: state.jobs.jobs,
-		apply : state.jobs.apply
+		apply: state.jobs.apply
 	};
 };
 
@@ -365,4 +394,4 @@ const mapStateToProps = state => {
 //   };
 // }
 // export default connect(mapStateToProps, mapDispatchToProps)(JobSearch);
-export default connect(mapStateToProps, { getJobs , setApply , checkApply })(JobSearch);
+export default connect(mapStateToProps, { getJobs, setApply, checkApply })(JobSearch);
