@@ -1,9 +1,9 @@
 var connection =  new require('./kafka/Connection');
 //topics files
-var login = require('./services/login.js');
+var login = require('./services/login');
 var student = require('./services/student');
 var company = require('./services/company');
-
+var job = require('./services/jobs'); 
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
     var consumer = connection.getConsumer(topic_name);
@@ -39,3 +39,4 @@ function handleTopicRequest(topic_name,fname){
 handleTopicRequest("login", login)
 handleTopicRequest("student", student)
 handleTopicRequest("company" , company)
+handleTopicRequest("job" , job)

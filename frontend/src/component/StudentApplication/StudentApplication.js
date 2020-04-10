@@ -98,7 +98,7 @@ class StudentApplication extends React.Component {
                         <div className="card-body">
                             <h5>{i.title}</h5>
                             <h6>{i.cid.name}</h6>
-                            <h6>STATUS : {i.status}</h6>
+                            <h6>STATUS : {i.applications[0].status}</h6>
                         </div>
                     </div>
                 );

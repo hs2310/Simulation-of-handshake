@@ -1,15 +1,9 @@
 import React from 'react'
-// import axios from 'axios';
-// import cookie from 'react-cookies';
-// import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
-// import Navigate from '../Navigate/Navigate';
 import { getJobs, setApply, checkApply } from '../../js/actions/job-action';
 import { connect } from 'react-redux';
-
 import ApplicationForm from './ApplicationForm';
 import Jobs from '../Jobs/Jobs';
-// import axios from 'axios';
 class JobSearch extends React.Component {
 	constructor(props) {
 		super(props)
@@ -143,19 +137,6 @@ class JobSearch extends React.Component {
 		this.props.checkApply(data);
 
 	}
-	// filter1handler = e => {
-	//   this.setState({
-	//     filter1: e.target.value
-	//   })
-	//   let data = {
-	//     filter: this.state.filter1
-	//   }
-	//   axios.post("http://localhost:3001/jobfilter1", data).then(res => {
-	//     this.setState({
-	//       jobs: res.data
-	//     })
-	//   })
-	// }
 	changeStatusHandler = (e) => {
 		console.log(" this.changeStatusHandler called " + e)
 		switch (e) {
@@ -238,24 +219,6 @@ class JobSearch extends React.Component {
 			}
 			this.props.getJobs(data)
 		})
-
-		// let filteredSearchJobs = this.SelectedFilterArray();
-		// if (e.target.value) {
-		//   this.setState({
-		//     filteredJobs: filteredSearchJobs.filter((job) => {
-		//       return (job.title.replace(/\s+/g, '').toLowerCase().includes(e.target.value.replace(/\s+/g, '').toLowerCase()) || job.name.replace(/\s+/g, '').toLowerCase().includes(e.target.value.replace(/\s+/g, '').toLowerCase()) || job.location.replace(/\s+/g, '').toLowerCase().includes(e.target.value.replace(/\s+/g, '').toLowerCase()))
-		//     }
-		//     )
-		//   })
-		//   if (this.state.filteredJobs.length > 0)
-		//     this.setState({
-		//       displayJobs: this.state.filteredJobs[0]
-		//     })
-		//   else
-		//     this.setState({
-		//       displayJobs: ''
-		//     })
-		// }
 	}
 
 	render() {
@@ -266,11 +229,7 @@ class JobSearch extends React.Component {
 		var gtJobs = null
 		let displayJobs = null;
 		let applyForm = null;
-		if (this.props.apply === true)
-			applyForm = <ApplicationForm jobs={displayJobs} />
-		else if (this.props.apply === false)
-			applyForm = <div className="alert alert-primary">Already Applied!!</div>
-
+		
 		if (this.state.filteredJobs.length === 0) {
 			gtJobs = "No Jobs Available"
 			displayJobs = ""
@@ -290,6 +249,11 @@ class JobSearch extends React.Component {
 
 			})
 			if (this.state.displayJobs) {
+				if (this.props.apply === true)
+			applyForm = <ApplicationForm jobs={this.state.displayJobs} />
+		else if (this.props.apply === false)
+			applyForm = <div className="alert alert-primary">Already Applied!!</div>
+
 				displayJobs = <div className="card"><div className="card-body">
 					
 					<h5 className="card-title">{this.state.displayJobs.title}</h5>
@@ -306,22 +270,6 @@ class JobSearch extends React.Component {
 				</div>
 			}
 		}
-
-
-
-
-		// let jobList = Object.keys(this.state.jobs).map((item, i) => (
-		//   <div className="card" key={i} onClick={() => { this.display(item) }}>
-		//     <div className="card-body">
-		//       <h5 className="card-title">{this.props.jobs[item].title}</h5>
-		//       <h6 className="card-subtitle mb-2 text-muted">{this.props.jobs[item].name}</h6>
-		//       <p className="card-text">{this.props.jobs[item].location}</p>
-		//       <p className="card-text">{this.props.jobs[item].job_category}</p>
-		//     </div>
-		//   </div>
-
-		// ))
-
 		return <div>
 
 			<Jobs />
@@ -388,10 +336,4 @@ const mapStateToProps = state => {
 	};
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     getJobs: rootReducer => dispatch(getJobs(rootReducer))
-//   };
-// }
-// export default connect(mapStateToProps, mapDispatchToProps)(JobSearch);
 export default connect(mapStateToProps, { getJobs, setApply, checkApply })(JobSearch);

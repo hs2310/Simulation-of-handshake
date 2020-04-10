@@ -3,6 +3,7 @@ var app = express.Router()
 var bodyParser = require('body-parser');
 const multer = require('multer');
 var path = require('path');
+var kafka = require('../kafka/client');
 
 const Students = require('../Models/StudentModel');
 const Company = require('../Models/CompanyModel');
@@ -43,24 +44,20 @@ app.post("/postJob", (req, res) => {
 })
 
 app.post('/getJobs', (req, res) => {
-    let limit = parseInt(req.body.limit)
-    let pageNo = parseInt(req.body.pageNo)
-    let sort = req.body.sort
-    console.log("======\nSort : " + JSON.stringify(sort))
-    
-    let condition = {};
-        condition.title = {$regex : '.*' + req.body.title + '.*'}  
-        condition.location = { $regex : '.*'+req.body.location+'.*'}
-        if(req.body.filter.length > 0)
-            condition.job_category = {$in : req.body.filter}
-            try{
-    Jobs.find(condition).limit(limit).skip((pageNo - 1) * limit).populate("cid").sort(sort).exec((err, results) => {
-        if (err) res.send(err)
-        res.send(results);
-    })
-    } catch (e){
-        res.send(e)
-    }
+    kafka.make_request('job', {"path" : "getJobs", "body" : req.body}, function (err, results) {
+        console.log('in result');
+        console.log(results);
+        if (err) {
+            console.log("Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("Inside else");
+            res.send(results.value)
+        }
+    });
 })
 
 app.get('/getCompany', (req, res) => {
@@ -71,21 +68,20 @@ app.get('/getCompany', (req, res) => {
 })
 
 app.post("/checkapplied", (req, res) => {
-
-    Jobs.findOne({ _id: req.body.jid }, { applications: 1 },
-        {
-            arrayFilters: [
-                { "element._id": req.body.sid }
-            ]
-        }, (err, results) => {
-            if (err) res.send(err)
-            else{
-                if(results)
-                    res.send(true)
-                else    
-                    res.send(false)
-            }
-        })
+    kafka.make_request('job', {"path" : "checkapplied", "body" : req.body}, function (err, results) {
+        console.log('in result');
+        console.log(results);
+        if (err) {
+            console.log("Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("Inside else");
+            res.send(results.value)
+        }
+    });
 })
 app.post('/applyJobs', upload.single('file'), function (req, res) {
     console.log(req.body)
@@ -95,35 +91,37 @@ app.post('/applyJobs', upload.single('file'), function (req, res) {
     console.log("File", req.file)
     // req.body.studentId = 1
     var imagepath = req.protocol + "://" + host + ':3001/' + req.file.destination + req.file.filename;
-
-    Jobs.findOneAndUpdate({ _id: req.body.jid }, { "$push": { "applications": { sid: req.body.sid, status: "PENDING", resume_url: imagepath } } }, { new: true }, (err, results) => {
-        if (err) res.send(err)
-        else
-            res.send("Applied");
-    })
+    kafka.make_request('job', {"path" : "applyJobs", "body" : req.body , "imagepath" : imagepath}, function (err, results) {
+        console.log('in result');
+        console.log(results);
+        if (err) {
+            console.log("Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("Inside else");
+            res.send(results.value)
+        }
+    });
+    
 });
 app.post("/getApplication", (req, res) => {
-    console.log("======\n"+req.body)
-    let limit = parseInt(req.body.limit)
-    let pageNo = parseInt(req.body.pageNo)
-    let condition = null;
-        if(req.body.filter !== ''){
-           condition = {
-                "applications.sid" : req.body.sid ,
-                "applications.status" : req.body.filter
-            };
-        }else if (req.body.filter === '')
-        {
-            condition = {
-                "applications.sid" : req.body.sid
-            };
+    kafka.make_request('job', {"path" : "getApplication", "body" : req.body }, function (err, results) {
+        console.log('in result');
+        console.log(results);
+        if (err) {
+            console.log("Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("Inside else");
+            res.send(results.value)
         }
-    Jobs.find(condition,{applications : 1,title : 1}).limit(limit).skip((pageNo - 1) * limit).populate("cid").exec((err, results) => {
-        if (err)
-            res.send(err)
-        else
-            res.send(results);
-    })
+    });
 });
 app.post("/getPostedJobs", (req, res) => {
     Jobs.find({ cid: req.body.cid }, (err, results) => {
