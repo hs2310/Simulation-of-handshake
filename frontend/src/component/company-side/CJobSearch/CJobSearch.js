@@ -1,6 +1,7 @@
 import React from 'react';
 import Jobs from '../../Jobs/Jobs';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { getPostedJobs, postJob } from '../../../js/actions/Cjob-action';
 
 class CJobSearch extends React.Component {
     constructor(props) {
@@ -15,26 +16,58 @@ class CJobSearch extends React.Component {
             location: '',
             salary: '',
             job_description: '',
-            job_category: ''
+            job_category: '',
+            pageNo: 1,
+            limit: 3
         }
+        this.prev = this.prev.bind(this);
+        this.next = this.next.bind(this);
         this.toggle = this.toggle.bind(this)
         this.display = this.display.bind(this)
         this.changeHandler = this.changeHandler.bind(this)
         this.postJob = this.postJob.bind(this)
     }
-    async componentDidMount() {
+    prev = () => {
+        this.setState({
+            pageNo: this.state.pageNo - 1
+        }, () => {
+            let data = {
+                limit: this.state.limit,
+                pageNo: this.state.pageNo,
+                cid: localStorage.getItem("id")
+            }
+            this.props.getPostedJobs(data)
+        });
+    }
+    next = () => {
+        this.setState({
+            pageNo: this.state.pageNo + 1
+        }, () => {
+            let data = {
+                limit: this.state.limit,
+                pageNo: this.state.pageNo,
+                cid: localStorage.getItem("id")
+            }
+            this.props.getPostedJobs(data)
+        });
+    }
+
+    componentWillReceiveProps(nextProps, nextState) {
+        if (nextProps.posted_jobs !== this.props.posted_job) {
+            this.setState({
+                posted_jobs: nextProps.posted_jobs,
+                displayJobs: nextProps.posted_jobs[0]
+            })
+        }
+    }
+
+    componentDidMount() {
         let data = {
+            limit: this.state.limit,
+            pageNo: this.state.pageNo,
             cid: localStorage.getItem('id')
         }
-        await axios.post("http://localhost:3001/getPostedJobs", data).then(r => {
-            this.setState({
-                posted_jobs: r.data
-            })
-            console.log(this.state.posted_jobs)
-        })
-        this.setState({
-            displayJobs: { ...this.state.posted_jobs[0] }
-        })
+        this.props.getPostedJobs(data)
     }
     display(i) {
         console.log(i)
@@ -57,21 +90,12 @@ class CJobSearch extends React.Component {
             [e.target.name]: e.target.value
         })
     }
-    // checkchangeHandler = e =>{
-    //     const options = this.state.job_category
-    //     let index
-    //     if(e.target.checked){
-    //         options.push(e.target.value)
-    //     } else {
-    //         // or remove the value from the unchecked checkbox from the array
-    //         index = options.indexOf(e.target.value)
-    //         options.splice(index, 1)
-    //       }
-    //       this.setState({ job_category: options })
-    // }
+
     postJob = async (e) => {
         e.preventDefault();
         let data = {
+            limit: this.state.limit,
+            pageNo: this.state.pageNo,
             cid: localStorage.getItem('id'),
             title: this.state.title,
             posting_date: this.state.posting_date,
@@ -81,20 +105,36 @@ class CJobSearch extends React.Component {
             job_description: this.state.job_description,
             job_category: this.state.job_category
         }
-        console.log(data)
-        await axios.post("http://localhost:3001/postJob", data).then(res => {
-            console.log(res.data)
-        })
-        await axios.post("http://localhost:3001/getPostedJobs", data).then(r => {
-            this.setState({
-                posted_jobs: r.data
-            })
-            console.log(this.state.posted_jobs)
-        })
+        this.props.postJob(data);
+        // console.log(data)
+        // await axios.post("http://localhost:3001/jobs/postJob", data).then(res => {
+        //     console.log(res.data)
+        // })
+        // await axios.post("http://localhost:3001/jobs/getPostedJobs", data).then(r => {
+        //     this.setState({
+        //         posted_jobs: r.data
+        //     })
+        //     console.log(this.state.posted_jobs)
+        // })
         this.toggle()
     }
     render() {
-        let displayJobs = this.state.displayJobs;
+        let displayJobs = null;
+        if (this.state.displayJobs) {
+            displayJobs = <div className="card">
+                <div className="card-body">
+                    <h5 className="card-title">{this.state.displayJobs.title}</h5>
+                    <p className="card-text">Salary : {this.state.displayJobs.salary}$</p>
+                    <p className="card-text">Location : {this.state.displayJobs.location}</p>
+                    <p className="card-text">Posting Date : {new Date(this.state.displayJobs.posting_date).getMonth() + 1}/{new Date(this.state.displayJobs.posting_date).getDate()}/{new Date(this.state.displayJobs.posting_date).getFullYear()}</p>
+                    <p className="card-text">Deadline : {new Date(this.state.displayJobs.deadline).getMonth() + 1}/{new Date(this.state.displayJobs.deadline).getDate()}/{new Date(this.state.displayJobs.deadline).getFullYear()}</p>
+                    <p className="card-text">Job Category : {this.state.displayJobs.job_category}</p>
+                    <p className="card-text">Description : {this.state.displayJobs.job_description}</p>
+                </div>
+            </div>
+        }
+
+
         let postJob = null;
         let jobList = Object.keys(this.state.posted_jobs).map((item, i) => (
             <div className="card" key={i} onClick={() => { this.display(item) }}>
@@ -139,7 +179,7 @@ class CJobSearch extends React.Component {
                                         <option value="Internship">Internship</option>
                                         <option value="OnCampus">OnCampus</option>
                                     </select>
-                               </div>
+                                </div>
                                 <button className="btn btn-primary">Post a Job</button>
                             </form>
                         </div>
@@ -161,23 +201,23 @@ class CJobSearch extends React.Component {
                 <div className="row">
                     <div className="col-md-4">
                         {jobList}
+                        <div style={{ width: "100%" }}>
+                            <button type="button" onClick={this.prev} className="btn btn-primary btn-inverse"> <b>&larr;</b> </button>
+                            <button type="button" onClick={this.next} style={{ float: "right" }} className="btn btn-primary btn-inverse"> <b>&rarr;</b> </button>
+                        </div>
                     </div>
                     <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">{displayJobs.title}</h5>
-                                <p className="card-text">Salary : {displayJobs.salary}$</p>
-                                <p className="card-text">Location : {displayJobs.location}</p>
-                                <p className="card-text">Posted On : {displayJobs.posting_date}</p>
-                                <p className="card-text">Deadline : {displayJobs.deadline}</p>
-                                <p className="card-text">Job Category : {displayJobs.job_category}</p>
-                                <p className="card-text">Description : {displayJobs.job_description}</p>
-                            </div>
-                        </div>
+                        {displayJobs}
                     </div>
                 </div>
             </div>
         </div>
     }
 }
-export default CJobSearch;
+
+const mapStateToProps = state => {
+    return {
+        posted_jobs: state.Cjobs.posted_jobs
+    }
+}
+export default connect(mapStateToProps, { getPostedJobs, postJob })(CJobSearch);

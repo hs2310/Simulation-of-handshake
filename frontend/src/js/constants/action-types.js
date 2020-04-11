@@ -17,3 +17,4 @@ export const GET_JOBS              = "GET_JOBS";
 export const SET_APPLY             = "SET_APPLY";
 export const SET_APPLIED           = "SET_APPLIED";
 export const GET_APPLICATIONS      = "GET_APPLCATIONS";
+export const GET_POSTED_JOBS       = "GET_POSTED_JOBS";

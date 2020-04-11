@@ -8,8 +8,8 @@ var Schema = mongoose.Schema;
 
 var jobSchema = new Schema({ 
   title: {type: String},
-  posting_date: {type: String},
-  deadline: {type: String},
+  posting_date: {type: Date},
+  deadline: {type: Date},
   location: {type: String},
   salary: {type: String},
   job_description:{type: String},
@@ -21,7 +21,7 @@ var jobSchema = new Schema({
       resume_url : {type : String}
   }]
 },
-{
+{ 
     versionKey: false
 }
 );

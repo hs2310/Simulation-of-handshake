@@ -28,23 +28,24 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post("/postJob", (req, res) => {
-
-    var newJob = new Jobs({
-        "title": req.body.title,
-        "posting_date": new Date(req.body.posting_date),
-        "deadline": new Date(req.body.deadline),
-        "location": req.body.location,
-        "salary": req.body.salary,
-        "job_description": req.body.job_description,
-        "job_category": req.body.job_category,
-        "cid": req.body.cid
+    kafka.make_request('job', { "path": "postJob", "body": req.body }, function (err, results) {
+        console.log('in result');
+        console.log(results);
+        if (err) {
+            console.log("Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("Inside else");
+            res.send(results.value)
+        }
     });
-    newJob.save();
-    res.send("inserted");
 })
 
 app.post('/getJobs', (req, res) => {
-    kafka.make_request('job', {"path" : "getJobs", "body" : req.body}, function (err, results) {
+    kafka.make_request('job', { "path": "getJobs", "body": req.body }, function (err, results) {
         console.log('in result');
         console.log(results);
         if (err) {
@@ -68,7 +69,7 @@ app.get('/getCompany', (req, res) => {
 })
 
 app.post("/checkapplied", (req, res) => {
-    kafka.make_request('job', {"path" : "checkapplied", "body" : req.body}, function (err, results) {
+    kafka.make_request('job', { "path": "checkapplied", "body": req.body }, function (err, results) {
         console.log('in result');
         console.log(results);
         if (err) {
@@ -91,7 +92,7 @@ app.post('/applyJobs', upload.single('file'), function (req, res) {
     console.log("File", req.file)
     // req.body.studentId = 1
     var imagepath = req.protocol + "://" + host + ':3001/' + req.file.destination + req.file.filename;
-    kafka.make_request('job', {"path" : "applyJobs", "body" : req.body , "imagepath" : imagepath}, function (err, results) {
+    kafka.make_request('job', { "path": "applyJobs", "body": req.body, "imagepath": imagepath }, function (err, results) {
         console.log('in result');
         console.log(results);
         if (err) {
@@ -105,10 +106,10 @@ app.post('/applyJobs', upload.single('file'), function (req, res) {
             res.send(results.value)
         }
     });
-    
+
 });
 app.post("/getApplication", (req, res) => {
-    kafka.make_request('job', {"path" : "getApplication", "body" : req.body }, function (err, results) {
+    kafka.make_request('job', { "path": "getApplication", "body": req.body }, function (err, results) {
         console.log('in result');
         console.log(results);
         if (err) {
@@ -124,7 +125,9 @@ app.post("/getApplication", (req, res) => {
     });
 });
 app.post("/getPostedJobs", (req, res) => {
-    Jobs.find({ cid: req.body.cid }, (err, results) => {
+    let limit = parseInt(req.body.limit);
+    let pageNo = parseInt(req.body.pageNo);
+    Jobs.find({ cid: req.body.cid }).limit(limit).skip((pageNo - 1) * limit).exec((err, results) => {
         res.send(results);
     })
 });

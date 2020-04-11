@@ -68,7 +68,27 @@ function handle_request(req, callback) {
                 res.value = (results);
             callback(null, res);
         })
-    }
+    } else if (req.path === "postJob") {
+        let limit = parseInt(req.body.limit);
+        let pageNo = parseInt(req.body.pageNo);
 
+        var newJob = new Jobs({
+            "title": req.body.title,
+            "posting_date": req.body.posting_date,
+            "deadline": req.body.deadline,
+            "location": req.body.location,
+            "salary": req.body.salary,
+            "job_description": req.body.job_description,
+            "job_category": req.body.job_category,
+            "cid": req.body.cid
+        });
+
+        newJob.save((err, results) => {
+            Jobs.find({ cid: req.body.cid }).limit(limit).skip((pageNo - 1) * limit).exec((err, results) => {
+                res.value = (results)
+                callback(null, res)
+            });
+        });
+    }
 }
 exports.handle_request = handle_request;
