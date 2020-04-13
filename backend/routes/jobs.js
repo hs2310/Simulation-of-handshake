@@ -125,34 +125,56 @@ app.post("/getApplication", (req, res) => {
     });
 });
 app.post("/getPostedJobs", (req, res) => {
-    let limit = parseInt(req.body.limit);
-    let pageNo = parseInt(req.body.pageNo);
-    Jobs.find({ cid: req.body.cid }).limit(limit).skip((pageNo - 1) * limit).exec((err, results) => {
-        res.send(results);
-    })
+    kafka.make_request('job', { "path": "getPostedJobs", "body": req.body }, function (err, results) {
+        console.log('in result');
+        console.log(results);
+        if (err) {
+            console.log("Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("Inside else");
+            res.send(results.value)
+        }
+    });
+ 
+    
 });
 app.post("/getAllApplications", (req, res) => {
-    Jobs.find({ _id: req.body.jid }, { applications: 1 }).populate("applications.sid").exec((err, results) => {
-        res.send(results);
-    })
+    kafka.make_request('job', { "path": "getAllApplications", "body": req.body }, function (err, results) {
+        console.log('in result');
+        console.log(results);
+        if (err) {
+            console.log("Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("Inside else");
+            res.send(results.value)
+        }
+    });
+    
 })
 app.post("/updateStatus", (req, res) => {
-    Jobs.findOneAndUpdate({ "_id": req.body.jid },
-        {
-            "$set":
-            {
-                "applications.$[element].status": req.body.status
-            }
-        },
-        {
-            new: true,
-            arrayFilters: [
-                { "element.sid": req.body.sid }
-            ]
-        },
-        (error, results) => {
-            res.send(results);
-        })
+    kafka.make_request('job', { "path": "updateStatus", "body": req.body }, function (err, results) {
+        console.log('in result');
+        console.log(results);
+        if (err) {
+            console.log("Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("Inside else");
+            res.send(results.value)
+        }
+    });
+    
 })
 
 

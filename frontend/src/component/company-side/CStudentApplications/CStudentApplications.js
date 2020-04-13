@@ -1,7 +1,7 @@
 import React from 'react';
 import Jobs from '../../Jobs/Jobs';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 class CStudentApplications extends React.Component {
     constructor(props) {
         super(props)
@@ -10,17 +10,105 @@ class CStudentApplications extends React.Component {
             posted_jobs: '',
             displayJobs: '',
             applications: [],
-            status: 'PENDING'
+            status: 'PENDING',
+            jobId: '',
+            pageNo: 1,
+            limit: 3,
+            pageNoA: 1,
+            i : ''
         }
+        this.next = this.next.bind(this)
+        this.prev = this.prev.bind(this)
+        // this.nextA = this.nextA.bind(this)
+        // this.prevA = this.prevA.bind(this)
+    
         this.display = this.display.bind(this);
+        this.onSubmit = this.onSubmit.bind(this)
         // this.displayApplication = this.displayApplication.bind(this)
         this.changeHandler = this.changeHandler.bind(this);
     }
+    prev = () => {
+        this.setState({
+            pageNo: this.state.pageNo - 1
+        }, () => {
+            let data = {
+                limit: this.state.limit,
+                pageNo: this.state.pageNo,
+                cid: localStorage.getItem('id')
+            }
+            axios.post("http://localhost:3001/jobs/getPostedJobs", data).then(r => {
+                this.setState({
+                    posted_jobs: r.data
+                })
+
+            })
+        });
+    }
+    next = () => {
+        this.setState({
+            pageNo: this.state.pageNo + 1
+        }, () => {
+            let data = {
+                limit: this.state.limit,
+                pageNo: this.state.pageNo,
+                cid: localStorage.getItem('id')
+            }
+            axios.post("http://localhost:3001/jobs/getPostedJobs", data).then(r => {
+                this.setState({
+                    posted_jobs: r.data
+                })
+
+            })
+        });
+    }
+    // prevA = () => {
+    //     if(this.state.i){
+    //     this.setState({
+    //         pageNoA: this.state.pageNoA - 1
+    //     }, () => {
+            
+    //         let data = {
+    //             jid: this.state.posted_jobs[this.state.i]._id,
+    //             pageNo : this.state.pageNoA,
+    //             limit : this.state.limitA
+    //         }
+    //         axios.post("http://localhost:3001/jobs/getAllApplications", data).then(r => {
+    //             this.setState({
+    //                 jobId: this.state.posted_jobs[this.state.i]._id,
+    //                 applications: r.data[0].applications
+    //             }, () => { console.log(this.state.applications); })
+    //         })
+    //     });
+    // }
+    // }
+    // nextA = () => {
+    //     alert("CALLED")
+    //     if(this.state.i){
+    //     this.setState({
+    //         pageNoA: this.state.pageNoA + 1
+    //     }, () => {
+    //         let data = {
+    //             jid: this.state.posted_jobs[this.state.i]._id,
+    //             pageNo : this.state.pageNoA,
+    //             limit : this.state.limitA
+    //         }
+    //         axios.post("http://localhost:3001/jobs/getAllApplications", data).then(r => {
+    //             this.setState({
+    //                 jobId: this.state.posted_jobs[this.state.i]._id,
+    //                 applications: r.data[0].applications
+    //             }, () => { console.log(this.state.applications); })
+    //         })
+    //     });
+    // }
+    // }
+
     async componentDidMount() {
         let data = {
+            limit: this.state.limit,
+            pageNo: this.state.pageNo,
             cid: localStorage.getItem('id')
         }
-        await axios.post("http://localhost:3001/getPostedJobs", data).then(r => {
+        await axios.post("http://localhost:3001/jobs/getPostedJobs", data).then(r => {
             this.setState({
                 posted_jobs: r.data
             })
@@ -35,18 +123,21 @@ class CStudentApplications extends React.Component {
     }
     display(i) {
         console.log(i)
-        // this.setState({
-        //     displayJobs: { ...this.state.application[i] }
-        // })
-        let data = {
-            jid: this.state.posted_jobs[i].jid
-        }
-        axios.post("http://localhost:3001/getAllApplications", data).then(r => {
-            this.setState({
-                applications: r.data
-            })
+        this.setState({
+            pageNoA: 0
         })
-        console.log(this.state.applications);
+        let data = {
+            jid: this.state.posted_jobs[i]._id,
+            pageNo : this.state.pageNoA,
+            limit : this.state.limitA
+        }
+        axios.post("http://localhost:3001/jobs/getAllApplications", data).then(r => {
+            this.setState({
+                jobId: this.state.posted_jobs[i]._id,
+                applications: r.data[0].applications
+            }, () => { console.log(this.state.applications); })
+        })
+
     }
     changeHandler = (e) => {
         this.setState({
@@ -55,16 +146,18 @@ class CStudentApplications extends React.Component {
     }
     onSubmit = (e, sid, jid, i) => {
         e.preventDefault();
+
         let data = {
             status: this.state.status,
             sid: sid,
             jid: jid
         }
-        axios.post("http://localhost:3001/updateStatus", data).then(r => {
+        axios.post("http://localhost:3001/jobs/updateStatus", data).then(r => {
             // this.display(jid)
             // this.setState({
             //     applications: 
             // })
+
             var stateCopy = Object.assign({}, this.state);
             stateCopy.applications = stateCopy.applications.slice();
             stateCopy.applications[i] = Object.assign({}, stateCopy.applications[i]);
@@ -73,14 +166,15 @@ class CStudentApplications extends React.Component {
         })
     };
     render() {
-        let displayApplication = Object.keys(this.state.applications).map((item, i) => (
+        // let displayApplication = JSON.stringify(this.state.applications);
+        let displayApplication = <div>{Object.keys(this.state.applications).map((item, i) => (
             <div className="card" key={i}>
                 <div className="card-body">
-                    <h5 className="card-title"><Link to={"/displayStudent/" + this.state.applications[item].sid}>{this.state.applications[item].name}</Link></h5>
+                    <h5 className="card-title"><Link to={"/displayStudent/" + this.state.applications[item].sid._id}>{this.state.applications[item].sid.name}</Link></h5>
                     {/* <h6 className="card-subtitle mb-2 text-muted">{this.state.applications[item].resume_url}</h6> */}
-                    <a href = {this.state.applications[item].resume_url} rel="noopener noreferrer" target="_blank">Resume</a>
-                    <p className="card-text">{this.state.applications[item].status}</p>
-                    <form onSubmit={e => this.onSubmit(e, this.state.applications[item].sid, this.state.applications[item].jid, item)}>
+                    <a href={this.state.applications[item].resume_url} rel="noopener noreferrer" target="_blank">Resume</a>
+
+                    <form onSubmit={e => this.onSubmit(e, this.state.applications[item].sid._id, this.state.jobId, item)}>
                         <input type="radio" name="status" value="PENDING" onChange={this.changeHandler} /><label>PENDING</label>
                         <input type="radio" name="status" value="DECLINED" onChange={this.changeHandler} /><label>DECLINED</label>
                         <input type="radio" name="status" value="REVIEWED" onChange={this.changeHandler} /><label>REVIEWED</label>
@@ -90,11 +184,17 @@ class CStudentApplications extends React.Component {
                     </form>
                 </div>
             </div>
-        ));
+        ))}
+        <div style={{ width: "100%" }}>
+                <button type="button" onClick={this.prevA} className="btn btn-primary btn-inverse"> <b>&larr;</b> </button>
+                <button type="button" onClick={this.nextA} style={{ float: "right" }} className="btn btn-primary btn-inverse"> <b>&rarr;</b> </button>
+            </div>
+        </div>
         let jobList = Object.keys(this.state.posted_jobs).map((item, i) => (
-            <div className="card" key={i} onClick={() => { this.display(item) }}>
+            <div className="card" key={i} onClick={() => { this.display(item); this.setState({ i : item}) }}>
                 <div className="card-body">
                     <h5 className="card-title">{this.state.posted_jobs[item].title}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">{this.state.posted_jobs[item]._id}</h6>
                     <h6 className="card-subtitle mb-2 text-muted">{this.state.posted_jobs[item].name}</h6>
                     <p className="card-text">{this.state.posted_jobs[item].location}</p>
                     <p className="card-text">{this.state.posted_jobs[item].job_category}</p>
@@ -107,6 +207,10 @@ class CStudentApplications extends React.Component {
                 <div className="row">
                     <div className="col-md-4">
                         {jobList}
+                        <div style={{ width: "100%" }}>
+                            <button type="button" onClick={this.prev} className="btn btn-primary btn-inverse"> <b>&larr;</b> </button>
+                            <button type="button" onClick={this.next} style={{ float: "right" }} className="btn btn-primary btn-inverse"> <b>&rarr;</b> </button>
+                        </div>
                     </div>
                     <div className="col-md-8">
                         {displayApplication}

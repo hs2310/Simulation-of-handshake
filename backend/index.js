@@ -236,7 +236,7 @@ app.use("/events", events);
 //         // console.log(r);
 //     }) 
 // })
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 
 app.listen(3001);
 console.log("Server Listening on port 3001"); 

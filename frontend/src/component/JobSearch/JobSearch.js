@@ -303,7 +303,8 @@
 								{gtJobs}
 								<div style={{ width: "100%" }}>
 									<button type="button" onClick={this.prev} className="btn btn-primary btn-inverse"> <b>&larr;</b> </button>
-									<select name="sort" onChange={this.sortHandler} defaultValue="">
+									<div className="form-group" style={{display : "inline-block" , width : "76%"}}>
+									<select name="sort" onChange={this.sortHandler} defaultValue="" className="form-control">
 										<option value=""></option>
 										<option value="posting_date"> Posting Date - Low To High</option>
 										<option value="-posting_date"> Posting Date - High To Low</option>
@@ -312,6 +313,7 @@
 										<option value="location"> Location - A To Z</option>
 										<option value="-location"> Location - Z To A</option>
 									</select>
+									</div>
 									<button type="button" onClick={this.next} style={{ float: "right" }} className="btn btn-primary btn-inverse"> <b>&rarr;</b> </button>
 								</div>
 
@@ -319,7 +321,7 @@
 							<div className="col-md-8">
 
 								{displayJobs}
-
+								<span style={{float : "right" , marginTop : "5%"}}>Page No : {this.state.pageNo}</span>
 							</div>
 						</div>
 					</div>

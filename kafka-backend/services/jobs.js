@@ -89,6 +89,42 @@ function handle_request(req, callback) {
                 callback(null, res)
             });
         });
+    } else if (req.path === "getPostedJobs") {
+        let limit = parseInt(req.body.limit);
+        let pageNo = parseInt(req.body.pageNo);
+        Jobs.find({ cid: req.body.cid }).limit(limit).skip((pageNo - 1) * limit).exec((err, results) => {
+            res.value = (results);
+            callback(null,res)
+        })
+    } else if (req.path === "getAllApplications"){
+        let limit = parseInt(req.body.limit);
+        let pageNo = parseInt(req.body.pageNo);
+        Jobs.find({ _id: req.body.jid }).populate("applications.sid").limit(limit).skip((pageNo - 1) * limit).exec((err, results) => {
+            res.value = (results);
+            callback(null , res)
+        })
+    } else if( req.path === "updateStatus"){
+        Jobs.findOneAndUpdate({ "_id": req.body.jid },
+        {
+            $set:
+            {
+                "applications.$[element].status": req.body.status
+            }
+        },
+        {
+            arrayFilters: [
+                { "element.sid": req.body.sid }
+            ]
+        },
+        (err, results) => {
+            // Jobs.findOne({ _id : req.body.sid}, (err,result) => {
+                if(err) res.value = (err)
+                else
+                res.value = (results);
+            // })
+            callback(null,res)
+        })
+    
     }
 }
 exports.handle_request = handle_request;
