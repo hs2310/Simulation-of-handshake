@@ -94,7 +94,7 @@ class StudentApplication extends React.Component {
         if (this.state.filteredApplication) {
             application = this.state.filteredApplication.map((i, index) => {
                 return (
-                    <div key={index} className="card">
+                    <div key={index} className="card" style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}>
                         <div className="card-body">
                             <h5>{i.title}</h5>
                             <h6>{i.cid.name}</h6>
@@ -106,10 +106,10 @@ class StudentApplication extends React.Component {
         }
         return <div>
             <Jobs />
-            <div className="container" style={{ marginTop: "5%" }}>
+            <div className="container" >
                 <div className="row">
                     <div className="col-md-12">
-                        <div class="btn-group" role="group" style={{ alignItems: "center" }} >
+                        <div class="btn-group" role="group" style={{ width: "100%" , alignItems: "center" ,boxShadow: "1px 3px 5px grey" , marginBottom : "2%"  }} >
                             <button type="button" ref="IT" className={this.state.internshipStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="all" onClick={() => { this.showall() }}>All Applications</button>
                             <button type="button" ref="FT" className={this.state.fullTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="pending" onClick={() => { this.applicationSearch("PENDING") }}>Pending</button>
                             <button type="button" ref="IT" className={this.state.internshipStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="reviewed" onClick={() => { this.applicationSearch("REVIEWED") }}>Reviewed</button>

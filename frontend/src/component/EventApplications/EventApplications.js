@@ -13,7 +13,7 @@ class EventApplications extends React.Component {
         let data = {
             sid: localStorage.getItem("id")
         }
-        await axios.post("http://localhost:3001/getAppliedEvents", data).then(res => {
+        await axios.post("http://localhost:3001/events/getAppliedEvents", data).then(res => {
             this.setState({
                 events: res.data
             })
@@ -22,7 +22,7 @@ class EventApplications extends React.Component {
     render() {
         let eventList = this.state.events.map((i, index) => {
             return (
-                <div key={index} className="card">
+                <div key={index} className="card" style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}>
                     <div className="card-body">
                         <h5>{i.name}</h5>
                         <h6>{i.description}</h6>
@@ -35,7 +35,7 @@ class EventApplications extends React.Component {
         });
 
         return <div><Navigate />
-            <nav className="navbar navbar-expand-sm bg-light navbar-light">
+            <nav className="navbar navbar-expand-sm bg-light navbar-light" style={{ boxShadow: "1px 3px 5px grey", marginBottom : "2%" }}>
                 <ul className="navbar-nav">
                     <li className="nav-item active">
                         <Link className="nav-link" to="/events">View Events</Link>

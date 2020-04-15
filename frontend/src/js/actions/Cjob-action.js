@@ -18,6 +18,15 @@ export const postJob = data => {
     }
 }
 
+export const updateStatus = data => {
+    return dispatch => {
+        axios.post("http://localhost:3001/jobs/updateStatus",data).then(res => {
+            console.log("response UPDATE STATUS : " + res.data)
+            dispatch(getPostedJobs(data))
+        })
+    }
+} 
+
 export const setPostedJobs = (data) => {
     return {
         type : GET_POSTED_JOBS , 

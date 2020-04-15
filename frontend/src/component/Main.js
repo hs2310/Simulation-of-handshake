@@ -22,6 +22,7 @@ import Events from './Event/Event';
 import CEvents from './company-side/CEvents/CEvents';
 import EventApplications from './EventApplications/EventApplications';
 import CEventApplications from './company-side/CEventApplications/CEventApplications';
+import Messages from './Messages/Messages'
 //Main Component
 class Main extends Component {
   render() {
@@ -88,6 +89,9 @@ class Main extends Component {
             return <CEventApplications />
           else
             return <EventApplications />    
+        }}/>
+        <Route path="/messages" render={ () => {
+            return <Messages />    
         }}/>
         {/* <DisplayCompany/>
         </Route> */}

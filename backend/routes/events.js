@@ -6,7 +6,10 @@ const Company = require('../Models/CompanyModel');
 const Events = require('../Models/EventsModel');
 
 app.post('/getPostedEvents', (req, res) => {
-    Events.find({cid : req.body.cid}, ( err , results ) => {
+    let pageNo = parseInt(req.body.pageNo);
+    let limit = parseInt(req.body.limit);
+
+    Events.find({cid : req.body.cid}).populate("applications.sid").limit(limit).skip((pageNo - 1)*limit).exec(( err , results ) => {
         res.send(results)
     })
 })
@@ -16,7 +19,7 @@ app.post("/postEvent", (req, res) => {
         "name" : req.body.name,
         "description" : req.body.description,
         "time" : req.body.time,
-        "date" : req.body.date,
+        "date" : new Date(req.body.date),
         "location" : req.body.location,
         "eligibility" : req.body.eligibility
     });
@@ -26,7 +29,15 @@ app.post("/postEvent", (req, res) => {
         res.send("Error")    
 })
 app.post('/getEvents', (req, res) => {
-    Events.find({}, ( err , results ) => {
+    console.log("=====\n Events Called \n=====")
+    let limit = parseInt(req.body.limit)
+    let pageNo = parseInt(req.body.pageNo)
+    let condition = {};
+    if(req.body.events)
+    condition.name = { $regex: '.*' + req.body.events + '.*' }
+    
+    Events.find(condition).limit(limit).skip((pageNo - 1) * limit).sort('date').exec(( err , results ) => {
+        console.log(results)
         res.send(results)
     })
 })
@@ -56,5 +67,10 @@ app.post("/getAppliedEvents", (req, res) => {
 })
 app.post("/getEventStudents", (req, res) => {
     Events.find({"_id" : req.body.eid},{"applications" : 1}).populate("applications.sid").exec((err,results) => res.send(results))
+})
+app.post("/getMajor" , (req,res) => {
+    Students.findOne({_id: req.body.sid},(err,results) => {
+        res.send(results.education)
+    })
 })
 module.exports = app;

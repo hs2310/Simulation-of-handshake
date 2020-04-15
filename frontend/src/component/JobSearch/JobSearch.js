@@ -236,7 +236,7 @@
 			}
 			else {
 				gtJobs = Object.keys(this.state.filteredJobs).map((item, i) => {
-					return <div className="card" key={i} onClick={() => { this.display(item) }}>
+					return <div className="card" key={i} onClick={() => { this.display(item) }} style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}>
 						<div className="card-body">
 							<h5 className="card-title">{this.state.filteredJobs[item].title}</h5>
 							<h6 className="card-subtitle mb-2 text-muted">{this.state.filteredJobs[item].cid.name}</h6>
@@ -254,7 +254,7 @@
 					else if (this.props.apply === false)
 						applyForm = <div className="alert alert-primary">Already Applied!!</div>
 
-					displayJobs = <div className="card"><div className="card-body">
+					displayJobs = <div className="card" style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}><div className="card-body">
 
 						<h5 className="card-title">{this.state.displayJobs.title}</h5>
 						<h6 className="card-subtitle mb-2 text-muted">
@@ -279,17 +279,17 @@
 							<div className="col-md-6">
 								<form>
 									<i className="glyphicon glyphicon-search"></i>
-									<input class="form-control" name="title" type="text" onChange={this.jobSearch} placeholder="Enter Job Title or Company Name " />
+									<input class="form-control" name="title" type="text" onChange={this.jobSearch} placeholder="Enter Job Title or Company Name " style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}/>
 								</form>
 							</div>
 							<div className="col-md-6">
 								<i className="glyphicon glyphicon-search"></i>
-								<input class="form-control" name="location" type="text" onChange={this.jobSearch} placeholder="Enter Location" />
+								<input class="form-control" name="location" type="text" onChange={this.jobSearch} placeholder="Enter Location" style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}/>
 							</div>
 						</div>
 						<div className="row">
 							<div className="col-md-12">
-								<div class="btn-group" role="group" style={{ alignItems: "center" }} >
+								<div class="btn-group" role="group" style={{ width: "100%",alignItems: "center" ,boxShadow: "1px 3px 5px grey", marginBottom : "2%" }} >
 									<button type="button" ref="FT" className={this.state.fullTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="fullTime" onClick={() => { this.changeStatusHandler("FullTime") }}>Full Time</button>
 									<button type="button" ref="PT" className={this.state.partTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="partTime" onClick={() => { this.changeStatusHandler("PartTime") }}>Part Time</button>
 									<button type="button" ref="IT" className={this.state.internshipStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="internship" onClick={() => { this.changeStatusHandler("Internship") }}>Internship</button>

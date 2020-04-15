@@ -4,6 +4,8 @@ import SprofileReducer from './studentProfile';
 import CprofileReducer from './companyProfile';
 import jobReducer from './job';
 import CjobReducer from './Cjob';
+import CeventReducer from './Cevents';
+import eventReducer from './event'
 // import studentProfileReducer from './studentProfileReducer';
 
 const rootReducer = combineReducers({
@@ -11,7 +13,9 @@ const rootReducer = combineReducers({
     SProfile : SprofileReducer,
     CProfile : CprofileReducer,
     jobs : jobReducer,
-    Cjobs : CjobReducer
+    Cjobs : CjobReducer,
+    Cevents : CeventReducer,
+    events : eventReducer
 })
 
 export default rootReducer;

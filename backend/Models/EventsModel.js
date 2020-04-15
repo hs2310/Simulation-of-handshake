@@ -13,7 +13,7 @@ var eventsSchema = new Schema({
     name: { type: String },
     description: { type: String },
     time: { type: String },
-    date: { type: String },
+    date: { type: Date },
     location: { type: String },
     eligibility: { type: String }
     },

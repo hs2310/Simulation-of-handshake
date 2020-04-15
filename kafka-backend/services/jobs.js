@@ -12,14 +12,16 @@ function handle_request(req, callback) {
         let sort = req.body.sort
         console.log("======\nSort : " + JSON.stringify(sort))
 
-        let condition = {};
-        condition.title = { $regex: '.*' + req.body.title + '.*' }
+        let condition = {
+            $or : [{title : {$regex: '.*'+req.body.title+'.*' }},{ name : {$regex: '.*'+req.body.title+'.*' }}]
+        };
         condition.location = { $regex: '.*' + req.body.location + '.*' }
+        //  {"cid.name" : { $regex: '.*' + req.body.location + '.*' }}
         if (req.body.filter.length > 0)
             condition.job_category = { $in: req.body.filter }
-
         Jobs.find(condition).limit(limit).skip((pageNo - 1) * limit).populate("cid").sort(sort).exec((err, results) => {
             // if (err) res.value =(err)
+            
             res.value = (results);
             callback(null, res)
         })
@@ -80,6 +82,7 @@ function handle_request(req, callback) {
             "salary": req.body.salary,
             "job_description": req.body.job_description,
             "job_category": req.body.job_category,
+            "name" : req.body.name,
             "cid": req.body.cid
         });
 
@@ -92,7 +95,7 @@ function handle_request(req, callback) {
     } else if (req.path === "getPostedJobs") {
         let limit = parseInt(req.body.limit);
         let pageNo = parseInt(req.body.pageNo);
-        Jobs.find({ cid: req.body.cid }).limit(limit).skip((pageNo - 1) * limit).exec((err, results) => {
+        Jobs.find({ cid: req.body.cid }).limit(limit).skip((pageNo - 1) * limit).populate("applications.sid").exec((err, results) => {
             res.value = (results);
             callback(null,res)
         })

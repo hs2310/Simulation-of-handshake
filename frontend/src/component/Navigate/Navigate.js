@@ -25,13 +25,10 @@ class Navigate extends React.Component {
     }
       return <div>
         {redirectVar}
-        <bs.Navbar bg="primary" variant="dark">
+        <bs.Navbar bg="primary" variant="dark" style={{ boxShadow: "1px 3px 5px grey"}}>
           <Link className="navbar-brand" to="/home">Handshake</Link>
           {/* <bs.Navbar.Brand to="/home">Handshake</bs.Navbar.Brand> */}
-          <bs.Form inline>
-            <bs.FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <bs.Button variant="outline-light">Search</bs.Button>
-          </bs.Form>
+  
           <bs.Nav className="mr-auto">
           <Link to ="/jobs" className="nav-link">Jobs</Link>
           <Link to ="/events" className="nav-link">Events</Link>

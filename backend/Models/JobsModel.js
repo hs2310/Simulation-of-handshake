@@ -14,6 +14,7 @@ var jobSchema = new Schema({
   salary: {type: String},
   job_description:{type: String},
   job_category: {type: String},
+  name : {type : String},
   cid: {type : Schema.ObjectId , ref : Company },
   applications : [{
       sid : {type : Schema.ObjectId , ref : Student},

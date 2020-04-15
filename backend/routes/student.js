@@ -267,8 +267,8 @@ app.post('/UpdateJourney', (req, res) => {
         }
     });
 })
-app.get('/getAllStudents', (req, res) => {
-    kafka.make_request('student', {"path" : "getAllStudents"}, function (err, results) {
+app.post('/getAllStudents', (req, res) => {
+    kafka.make_request('student', {"path" : "getAllStudents", "body" : req.body}, function (err, results) {
         console.log('in result');
         console.log(results);
         if (err) {

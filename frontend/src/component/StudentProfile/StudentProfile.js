@@ -12,7 +12,7 @@ class StudentProfile extends React.Component {
         super(props);
         this.state = {
             experience: [],
-            skill: [],
+            skills: [],
             education: [],
             data: []
         }
@@ -27,35 +27,15 @@ class StudentProfile extends React.Component {
         let data = {
             sid: this.props.match.params.id
         }
-        // const { match: { params } } = this.props;
-        await axios.post("http://localhost:3001/studentExperience", data).then(
-            res => {
-                console.log(res.data)
-                this.setState({
-                    experience: res.data
-                })
-            })
-        console.log(this.state.experience)
-        await axios.post("http://localhost:3001/studentSkills", data).then(
-            res => {
-                this.setState({
-                    skill: res.data
-                })
-            }
-        )
-        console.log(this.state.skill)
-        await axios.post("http://localhost:3001/studentEducation", data).then(
-            res => {
-                this.setState({
-                    education: res.data
-                })
-            }
-        )
+        
         console.log(this.state.education)
         await axios.post("http://localhost:3001/students/studentData", data).then(
             res => {
                 this.setState({
-                    data: res.data[0]
+                    data: res.data,
+                    education : res.data.education,
+                    experience : res.data.experience,
+                    skills : res.data.skills
                 })
             }
         )
@@ -70,7 +50,7 @@ class StudentProfile extends React.Component {
                     <div className="col-md-4" style={style_box}>
                     
                         <h4>General Information</h4>
-                        <img src={this.state.data.profile_pic} alt="Not Uploaded!!!" className="rounded-circle" height="100px" width="100px" style={{float : "left"}}/> 
+                        <img src={this.state.data.profile_pic} alt="Not Uploaded!!!"  className="rounded-circle" height="100px" width="100px" style={{float : "left"}}/> 
                         <h5>{this.state.data.name}</h5>
                         
                         <h6>{this.state.data.college}</h6>
@@ -112,7 +92,7 @@ class StudentProfile extends React.Component {
                 <div className="row">
                     <div className="col-md-4" style={style_box}>
                         <h4>Skills</h4>
-                        <div>{this.state.skill.map(item => <div key={item.id}>{item.name}</div>)}</div>
+                        <div>{this.state.skills.map(item => <div key={item.id}>{item.name}</div>)}</div>
                     </div>
                     <div className="col-md-8" style={style_box}>
                         <h4>

@@ -18,3 +18,5 @@ export const SET_APPLY             = "SET_APPLY";
 export const SET_APPLIED           = "SET_APPLIED";
 export const GET_APPLICATIONS      = "GET_APPLCATIONS";
 export const GET_POSTED_JOBS       = "GET_POSTED_JOBS";
+export const GET_POSTED_EVENTS     = "GET_POSTED_EVENTS";
+export const GET_EVENTS     = "GET_EVENTS";

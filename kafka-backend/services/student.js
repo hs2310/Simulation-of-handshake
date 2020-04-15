@@ -162,10 +162,26 @@ function handle_request(msg, callback) {
             callback(null, res);
         })
     } else if ( msg.path === "getAllStudents" ){
-        Students.find({},(err,results) =>{
+        console.log("msg : "+msg)
+        let pageNo = parseInt(msg.body.pageNo)
+        let limit = parseInt(msg.body.limit)
+        let condition = {}
+        if(msg.body.filter !== "")
+            condition = { $or :[
+                {"skills.name" : { $regex : '.*' +msg.body.filter+'.*'}},
+                {"name" :  {$regex : '.*' +msg.body.filter+'.*'}},
+                {"college" : {$regex : '.*' +msg.body.filter+'.*'}}
+            ]
+            }
+        console.log("condition : " + JSON.stringify(condition))
+        Students.find(condition).limit(limit).skip((pageNo - 1)*limit).exec((err,results) =>{
             res.value = (results);
             callback(null, res);
         })
+        // Students.find({}).exec((err,results) =>{
+        //     res.value = (results);
+        //     callback(null, res);
+        // })
     }
 
 }

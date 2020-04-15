@@ -7,7 +7,8 @@ var cookieParser = require('cookie-parser');
 var cors = require('cors');
 const multer = require('multer');
 var path = require('path');
-
+const http = require('http');
+const socketio = require('socket.io');
 
 
 
@@ -70,6 +71,57 @@ app.use("/company", company);
 app.use("/jobs", jobs);
 app.use("/events", events);
 
+var Messages = require("./Models/MessageModel")
+app.post('/getPostedMessages', (req,res)=>{
+    Messages.find({ users : req.sender }).sort("messages.timestamp").exec((err,results) => {
+        if(err) res.send(err)
+        else    
+            res.results
+    })
+})
+const server = http.createServer(app);
+const io = socketio(server);
+let online = []
+io.on('connection', socket =>{
+    console.log("=====> WS CONNECTED <=====")
+    socket.on("join", function (data){
+        
+        let d = {id : socket.id , data : data}
+        online.push(d)
+        console.log("online : " + JSON.stringify(online))
+    })
+    // socket.emit("message" , "HI THERE !!!!")
+    socket.on("message" , (msg) => {
+        console.log("====="+ msg + "======")
+        let flag = false;
+        Messages.findOneAndUpdate({$or : [{ users : [msg.sender , msg.reciever]} ,{ users : [msg.reciever , msg.sender]} ]}).exec((err,results) => {
+            if(err) console.log(err)
+            else {
+                if (results === null){
+                    let newMessage = new Messages({
+                        
+                    })
+                }
+            }
+        })
+        for( let i = 0 ; i < online.length ; i++ )
+        {
+            if(online[i].data === msg.reciever){
+                flag = true
+            }
+        }
+        if(flag)
+        socket.broadcast.to(online[Object.keys(online).find(key => online[key].data === msg.reciever)].id).emit("message",msg)   
+        console.log("ID - > " + socket)  
+    })
+
+    socket.on("disconnect" , (msg) => {
+       console.log("online: " + online)
+       delete online[(Object.keys(online).find(key => online[key].id === socket.id))];
+       console.log("online: "+ online)
+    })
+
+})
 // //start your server on port 3001
 
 
@@ -238,5 +290,5 @@ app.use("/events", events);
 // })
 // mongoose.set('debug', true);
 
-app.listen(3001);
+server.listen(3001);
 console.log("Server Listening on port 3001"); 

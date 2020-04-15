@@ -2,7 +2,7 @@ import React from 'react';
 import Jobs from '../../Jobs/Jobs';
 import { connect } from 'react-redux';
 import { getPostedJobs, postJob } from '../../../js/actions/Cjob-action';
-
+import { getCompany } from '../../../js/actions/Cprofile-action';
 class CJobSearch extends React.Component {
     constructor(props) {
         super(props);
@@ -11,6 +11,7 @@ class CJobSearch extends React.Component {
             toggle_post: false,
             displayJobs: '',
             title: '',
+            name: '',
             posting_date: '',
             deadline: '',
             location: '',
@@ -52,12 +53,18 @@ class CJobSearch extends React.Component {
         });
     }
 
-    componentWillReceiveProps(nextProps, nextState) {
-        if (nextProps.posted_jobs !== this.props.posted_job) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.posted_jobs !== this.props.posted_jobs) {
             this.setState({
-                posted_jobs: nextProps.posted_jobs,
-                displayJobs: nextProps.posted_jobs[0]
+                posted_jobs: this.props.posted_jobs
+            },() => {
+                this.setState({
+                displayJobs: this.state.posted_jobs[0]
             })
+            })
+        }
+        if(prevProps.name !== this.props.name){
+            this.setState({name : this.props.name})
         }
     }
 
@@ -68,6 +75,7 @@ class CJobSearch extends React.Component {
             cid: localStorage.getItem('id')
         }
         this.props.getPostedJobs(data)
+        this.props.getCompany(data)
     }
     display(i) {
         console.log(i)
@@ -98,6 +106,7 @@ class CJobSearch extends React.Component {
             pageNo: this.state.pageNo,
             cid: localStorage.getItem('id'),
             title: this.state.title,
+            name : this.state.name,
             posting_date: this.state.posting_date,
             deadline: this.state.deadline,
             location: this.state.location,
@@ -121,7 +130,7 @@ class CJobSearch extends React.Component {
     render() {
         let displayJobs = null;
         if (this.state.displayJobs) {
-            displayJobs = <div className="card">
+            displayJobs = <div className="card" style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}>
                 <div className="card-body">
                     <h5 className="card-title">{this.state.displayJobs.title}</h5>
                     <p className="card-text">Salary : {this.state.displayJobs.salary}$</p>
@@ -137,7 +146,7 @@ class CJobSearch extends React.Component {
 
         let postJob = null;
         let jobList = Object.keys(this.state.posted_jobs).map((item, i) => (
-            <div className="card" key={i} onClick={() => { this.display(item) }}>
+            <div className="card" key={i} onClick={() => { this.display(item) }} style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}>
                 <div className="card-body">
                     <h5 className="card-title">{this.state.posted_jobs[item].title}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">{this.state.posted_jobs[item].name}</h6>
@@ -149,7 +158,7 @@ class CJobSearch extends React.Component {
         if (this.state.toggle_post === true)
             postJob = <div className="row">
                 <div className="col-md-12">
-                    <div className="card">
+                    <div className="card" style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}>
                         <div className="card-body">
                             <h4>Post a Job</h4>
                             <form onSubmit={this.postJob}>
@@ -217,7 +226,8 @@ class CJobSearch extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        name : state.CProfile.name,
         posted_jobs: state.Cjobs.posted_jobs
     }
 }
-export default connect(mapStateToProps, { getPostedJobs, postJob })(CJobSearch);
+export default connect(mapStateToProps, { getPostedJobs, postJob , getCompany })(CJobSearch);

@@ -27,14 +27,14 @@ class CompanyProfile extends React.Component {
         // const { match: { params } } = this.props;
         axios.post("http://localhost:3001/company/getCompanyDetails",data).then(
            res=>{ 
-                console.log(res.data[0])   
+                console.log(res.data)   
             this.setState({
-                name : res.data[0].name,
-                description : res.data[0].description,
-                email : res.data[0].email,
-                location : res.data[0].location,
-                mob : res.data[0].mob,
-                profile_pic : res.data[0].profile_pic
+                name : res.data.name,
+                description : res.data.description,
+                email : res.data.email,
+                location : res.data.location,
+                mob : res.data.mob,
+                profile_pic : res.data.profile_pic
             })
         })
     }
@@ -46,7 +46,7 @@ class CompanyProfile extends React.Component {
                     <Row>
                         <Col sm={4} style={style_box}>
                         <h4>General Information</h4>
-                            <img src={this.state.profile_pic} alt ="Not Uploaded!!!" className="rounded-circle" height="100px" width="100px" style={{float: 'left'}}/>
+                            <img src={this.state.profile_pic} alt ="Not Uploaded!!!" className="rounded-circle" height="100px" width="100px" style={{float: 'left',marginRight : "2%"}}/>
                             <h4>{this.state.name}</h4>
                             <p>
                                 {this.state.location}

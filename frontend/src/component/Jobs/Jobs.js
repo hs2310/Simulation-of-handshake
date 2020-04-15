@@ -14,7 +14,7 @@ class Jobs extends React.Component {
   render() {
     return <div>
       <Navigate />
-      <nav className="navbar navbar-expand-sm bg-light navbar-light">
+      <nav className="navbar navbar-expand-sm bg-light navbar-light" style={{ boxShadow: "1px 3px 5px grey", marginBottom : "2%" }}>
         <ul className="navbar-nav">
           <li className="nav-item active">
             <Link className="nav-link" to="/jobSearch">Job Search</Link>
