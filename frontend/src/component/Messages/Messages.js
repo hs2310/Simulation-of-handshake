@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { getStudent } from '../../js/actions/profile-action'
 import { getCompany } from '../../js/actions/Cprofile-action'
 //import { connect } from 'react-redux';
-import { getPostedMessages, getMessages } from '../../js/actions/message-action'
+import { setPostedMessages , getPostedMessages, getMessages, setMessages} from '../../js/actions/message-action'
 class Messages extends React.Component {
     constructor(props) {
         super(props);
@@ -42,18 +42,64 @@ class Messages extends React.Component {
     }
     componentDidUpdate(prevProps , prevState) {
         if (prevProps.list !== this.props.list) {
-            let l = this.props.list
+            if(this.props.list !== undefined){
+	    let l = this.props.list
             let list1 = []
-            for (let i = 0; i < l.length; i++) {
-                let index = l[i].users.indexOf(localStorage.getItem('id'))
+            for (let i = 0; i < this.props.list.length; i++) {
+                let index = this.props.list[i].users.indexOf(localStorage.getItem('id'))
                 if (index === 0) index = 1;
                 else index = 0;
-                let data = { user: l[i].users[index], name: l[i].name[index] }
+                let data = { user: this.props.list[i].users[index], name: this.props.list[i].name[index] }
                 list1.push(data)
             }
             this.setState({
                 list: list1
-            })
+            },()=>{
+		if (this.props.match!== undefined) {
+                this.setState({
+                    reciever: this.props.match.params.id,
+                    reciever_name: this.props.match.params.name
+                },() => {
+                    let flag = false;
+                    let list2 = this.state.list
+                    list2.forEach(k => {
+                        if(k.user === this.state.reciever){
+                            flag = true;
+                        }
+                    })
+                    if(!flag){
+                        let data = { user :this.state.reciever , name : this.state.reciever_name}
+                        list2.push(data)
+                        this.props.setPostedMessages(list2)
+                        //this.setState({
+                          //  list : list2
+                        //})
+                    } else {
+                        let data = {
+                            user1: localStorage.getItem('id'),
+                            user2: this.state.reciever
+                        }
+                        this.props.getMessages(data);
+                        //if(this.props.res){
+                          //  this.setState({
+                        //      res: this.props.res
+                          //  })
+//                      }   
+                    }
+                })
+            } else {
+                if(this.state.list.length > 0){
+                        console.log("CALLED")
+                    this.setState({
+                        reciever_name: this.state.list[0].name,
+                        reciever: this.state.list[0].user
+                    })
+                    this.props.setMessages(this.props.list[0].messages)
+                    this.scrollToBottom();
+                }
+            }
+	})
+	    }
         }
         if(prevProps.res !== this.props.res){
             this.setState({
@@ -135,25 +181,31 @@ class Messages extends React.Component {
                     if(!flag){
                         let data = { user :this.state.reciever , name : this.state.reciever_name}
                         list2.push(data)
-                        this.setState({
-                            list : list2
-                        })
+                        this.props.setPostedMessages(list2)
+			//this.setState({
+                          //  list : list2
+                        //})
                     } else {
                         let data = {
                             user1: localStorage.getItem('id'),
                             user2: this.state.reciever
                         }
                         this.props.getMessages(data);
-                        
+                     	//if(this.props.res){
+			  //  this.setState({
+			//	res: this.props.res
+			  //  })
+//			}   
                     }
                 })
             } else {
                 if(this.state.list.length > 0){
-                    this.setState({
+			console.log("CALLED")
+		    this.setState({
                         reciever_name: this.state.list[0].name,
-                        reciever: this.state.list[0].user,
-                        res: this.props.list[0].messages
+                        reciever: this.state.list[0].user
                     })
+		    this.props.setMessages(this.props.list[0].messages)	
                     this.scrollToBottom();
                 }
             }
@@ -252,7 +304,8 @@ const mapStateToProps = state => {
     return {
         name: state.SProfile.name,
         nameC : state.CProfile.name,
-        list : state.msg.list
+        list : state.msg.list,
+	res : state.msg.res 
     }
 }
-export default connect(mapStateToProps, { getStudent,getCompany , getPostedMessages ,getMessages})(Messages);
+export default connect(mapStateToProps, { getStudent,getCompany,setPostedMessages , getPostedMessages ,getMessages,setMessages})(Messages);
