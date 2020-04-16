@@ -9,7 +9,7 @@ export const getPostedMessages = (data) => {
     }
 }
 
-export const getPostedMessages = (data) => {
+export const getMessages = (data) => {
     return dispatch => {
         axios.post("http://54.158.111.198:3001/getMessages", data).then(res => {
             dispatch(setMessages(res.data.messages))
