@@ -45,7 +45,8 @@ class Messages extends React.Component {
             if (this.props.list !== undefined) {
                 let l = this.props.list
                 let list1 = []
-                for (let i = 0; i < this.props.list.length; i++) {
+                console.log("LIST : " + this.props.list)
+		for (let i = 0; i < this.props.list.length; i++) {
                     let index = this.props.list[i].users.indexOf(localStorage.getItem('id'))
                     if (index === 0) index = 1;
                     else index = 0;
@@ -70,10 +71,10 @@ class Messages extends React.Component {
                             if (!flag) {
                                 let data = { user: this.state.reciever, name: this.state.reciever_name }
                                 list2.push(data)
-                                this.props.setPostedMessages(list2)
-                                //this.setState({
-                                //  list : list2
-                                //})
+                                //this.props.setPostedMessages(list2)
+                                this.setState({
+                                  list : list2
+                                })
                             } else {
                                 let data = {
                                     user1: localStorage.getItem('id'),
