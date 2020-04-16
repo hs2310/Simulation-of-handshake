@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const getEvents = data => {
     return (dispatch) => {
-        axios.post("http://localhost:3001/events/getEvents", data).then(r => {
+        axios.post("http://54.158.111.198:3001/events/getEvents", data).then(r => {
                 dispatch(setEvents(r.data))
             })
     }

@@ -2,7 +2,7 @@ import {GET_POSTED_JOBS} from "../constants/action-types";
 import axios from 'axios';
 export const getPostedJobs = data => {
     return (dispatch) => {
-        axios.post("http://localhost:3001/jobs/getPostedJobs", data).then(res => {
+        axios.post("http://54.158.111.198:3001/jobs/getPostedJobs", data).then(res => {
             console.log("response GET POSTED JOBS " + res.data);
             dispatch(setPostedJobs(res.data))
         })
@@ -11,7 +11,7 @@ export const getPostedJobs = data => {
 
 export const postJob = data => {
     return dispatch => {
-        axios.post("http://localhost:3001/jobs/postJob",data).then(res => {
+        axios.post("http://54.158.111.198:3001/jobs/postJob",data).then(res => {
             console.log("response POST JOB" + res.data)
             dispatch(setPostedJobs(res.data))
         })
@@ -20,7 +20,7 @@ export const postJob = data => {
 
 export const updateStatus = data => {
     return dispatch => {
-        axios.post("http://localhost:3001/jobs/updateStatus",data).then(res => {
+        axios.post("http://54.158.111.198:3001/jobs/updateStatus",data).then(res => {
             console.log("response UPDATE STATUS : " + res.data)
             dispatch(getPostedJobs(data))
         })

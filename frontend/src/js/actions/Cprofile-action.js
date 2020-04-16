@@ -7,7 +7,7 @@ export const getCompany = (data) => {
         // let data1 = {};
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/company/getCompanyDetails', data)
+        axios.post('http://54.158.111.198:3001/company/getCompanyDetails', data)
             .then(response => {
                 console.log("response : ", response.data);
                 dispatch(setCompanyData(response.data))
@@ -25,7 +25,7 @@ export const setCompanyData = (data) => {
 export const updateGenInfo = (data) => {
     return (dispatch) => {
         console.log("Inside update general information");
-        axios.post('http://localhost:3001/company/UpdateCompanyInfo', data)
+        axios.post('http://54.158.111.198:3001/company/UpdateCompanyInfo', data)
             .then(res => {
                 console.log("response : ", res.data)
                 dispatch(setGenInfo(res.data))
@@ -43,7 +43,7 @@ export const setGenInfo = (data) => {
 export const updateConInfo = (data) => {
     return (dispatch) => {
         console.log("Inside update general information");
-        axios.post('http://localhost:3001/company/UpdateCompanyContactInfo', data)
+        axios.post('http://54.158.111.198:3001/company/UpdateCompanyContactInfo', data)
             .then(res => {
                 console.log("response CONTACT: ", res.data)
                 dispatch(setConInfo(res.data))
@@ -61,7 +61,7 @@ export const setConInfo = (data) => {
 export const updateJourney = (data) => {
     return (dispatch) => {
         console.log("Inside update journey");
-        axios.post('http://localhost:3001/company/UpdateCompanyJourney', data)
+        axios.post('http://54.158.111.198:3001/company/UpdateCompanyJourney', data)
             .then(res => {
                 console.log("response MYJOURNEY: ", res.data)
                 dispatch(setJourney(res.data))
@@ -79,7 +79,7 @@ export const setJourney = (data) => {
 export const uploadProfile = (data) => {
     return (dispatch) => {
         console.log("Inside Upload Profile Picture : " + data);
-        axios.post('http://localhost:3001/company/company_profile_pic',
+        axios.post('http://54.158.111.198:3001/company/company_profile_pic',
             data,
             {
                 headers: {

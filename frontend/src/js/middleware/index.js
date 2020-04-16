@@ -6,7 +6,7 @@
 //       if (action.type === LOGIN) {
 //         console.log("LOGIN Called")
 //         axios.defaults.withCredentials = true;
-//         await axios.post("http://localhost:3001/login", action.payload).then(response => {
+//         await axios.post("http://54.158.111.198:3001/login", action.payload).then(response => {
 //           console.log("Status Code : ", response.status);
 //           if (response.status === 200) {
 //             action.payload.authFlag = true;

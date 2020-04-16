@@ -29,7 +29,7 @@ class StudentProfile extends React.Component {
         }
         
         console.log(this.state.education)
-        await axios.post("http://localhost:3001/students/studentData", data).then(
+        await axios.post("http://54.158.111.198:3001/students/studentData", data).then(
             res => {
                 this.setState({
                     data: res.data,

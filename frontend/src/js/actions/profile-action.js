@@ -15,7 +15,7 @@ export const getStudent = (data) => {
         // let data1 = {};
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/students/StudentData', data)
+        axios.post('http://54.158.111.198:3001/students/StudentData', data)
             .then(response => {
                 console.log("response : ", response.data);
                 dispatch(setStudentData(response.data))
@@ -33,7 +33,7 @@ export const setStudentData = (data) => {
 export const updateGenInfo = (data) => {
     return (dispatch) => {
         console.log("Inside update general information");
-        axios.post('http://localhost:3001/students/UpdateInfo', data)
+        axios.post('http://54.158.111.198:3001/students/UpdateInfo', data)
             .then(res => {
                 console.log("response : ", res.data)
                 dispatch(setGenInfo(res.data))
@@ -51,7 +51,7 @@ export const setGenInfo = (data) => {
 export const updateConInfo = (data) => {
     return (dispatch) => {
         console.log("Inside update general information");
-        axios.post('http://localhost:3001/students/UpdateContactInfo', data)
+        axios.post('http://54.158.111.198:3001/students/UpdateContactInfo', data)
             .then(res => {
                 console.log("response CONTACT: ", res.data)
                 dispatch(setConInfo(res.data))
@@ -69,7 +69,7 @@ export const setConInfo = (data) => {
 export const updateJourney = (data) => {
     return (dispatch) => {
         console.log("Inside update journey");
-        axios.post('http://localhost:3001/students/updateJourney', data)
+        axios.post('http://54.158.111.198:3001/students/updateJourney', data)
             .then(res => {
                 console.log("response MYJOURNEY: ", res.data)
                 dispatch(setJourney(res.data))
@@ -87,7 +87,7 @@ export const setJourney = (data) => {
 export const insertEduc = (data) => {
     return (dispatch) => {
         console.log("Inside insert education");
-        axios.post('http://localhost:3001/students/insertEducation', data)
+        axios.post('http://54.158.111.198:3001/students/insertEducation', data)
             .then(res => {
                 console.log("response INSERT EDUCATION: ", res.data)
                 dispatch(setEducation(res.data))
@@ -97,7 +97,7 @@ export const insertEduc = (data) => {
 export const updateEduc = (data) => {
     return (dispatch) => {
         console.log("Inside insert education");
-        axios.post('http://localhost:3001/students/updateEducation', data)
+        axios.post('http://54.158.111.198:3001/students/updateEducation', data)
             .then(res => {
                 console.log("response UPDATE EDUCATION: ", res.data)
                 dispatch(setEducation(res.data))
@@ -109,7 +109,7 @@ export const deleteEduc = (data) => {
     return (dispatch) => {
         console.log("Inside delete education");
 
-        axios.post('http://localhost:3001/students/deleteEducation', data)
+        axios.post('http://54.158.111.198:3001/students/deleteEducation', data)
             .then(res => {
                 console.log("response DELETE EDUCATION: ", res.data)
                 dispatch(setEducation(res.data))
@@ -128,7 +128,7 @@ export const setEducation = (data) => {
 export const insertEx = (data) => {
     return (dispatch) => {
         console.log("Inside insert education");
-        axios.post('http://localhost:3001/students/insertExperience', data)
+        axios.post('http://54.158.111.198:3001/students/insertExperience', data)
             .then(res => {
                 console.log("response INSERT EXPERIENCE: ", res.data)
                 dispatch(setExperience(res.data))
@@ -138,7 +138,7 @@ export const insertEx = (data) => {
 export const updateEx = (data) => {
     return (dispatch) => {
         console.log("Inside insert education");
-        axios.post('http://localhost:3001/students/updateExperience', data)
+        axios.post('http://54.158.111.198:3001/students/updateExperience', data)
             .then(res => {
                 console.log("response UPDATE EXPERIENCE: ", res.data)
                 dispatch(setExperience(res.data))
@@ -150,7 +150,7 @@ export const deleteEx = (data) => {
     return (dispatch) => {
         console.log("Inside delete experience");
 
-        axios.post('http://localhost:3001/students/deleteExperience', data)
+        axios.post('http://54.158.111.198:3001/students/deleteExperience', data)
             .then(res => {
                 console.log("response DELETE EXPERIENCE: ", res.data)
                 dispatch(setExperience(res.data))
@@ -168,7 +168,7 @@ export const setExperience = (data) => {
 export const updateSkil = (data) => {
     return (dispatch) => {
         console.log("Inside insert education");
-        axios.post('http://localhost:3001/students/UpdateSkill', data)
+        axios.post('http://54.158.111.198:3001/students/UpdateSkill', data)
             .then(res => {
                 console.log("response UPDATE SKILLS: ", res.data)
                 dispatch(setSkill(res.data))
@@ -180,7 +180,7 @@ export const deleteSkil = (data) => {
     return (dispatch) => {
         console.log("Inside delete experience");
 
-        axios.post('http://localhost:3001/students/DeleteSkill', data)
+        axios.post('http://54.158.111.198:3001/students/DeleteSkill', data)
             .then(res => {
                 console.log("response DELETE SKILLS: ", res.data)
                 dispatch(setSkill(res.data))
@@ -199,7 +199,7 @@ export const setSkill = (data) => {
 export const uploadProfile = (data) => {
     return (dispatch) => {
         console.log("Inside Upload Profile Picture : " + data);
-        axios.post('http://localhost:3001/students/student_profile_pic',
+        axios.post('http://54.158.111.198:3001/students/student_profile_pic',
             data,
             {
                 headers: {

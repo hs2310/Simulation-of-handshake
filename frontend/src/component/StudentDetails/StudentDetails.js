@@ -26,7 +26,7 @@ class StudentDetails extends React.Component {
                 limit: this.state.limit,
                 filter: this.state.filterStudent
             }
-            axios.post("http://localhost:3001/students/getAllStudents", data ).then(r => {
+            axios.post("http://54.158.111.198:3001/students/getAllStudents", data ).then(r => {
                 this.setState({
                     student: r.data,
                     filtered_student: r.data
@@ -43,7 +43,7 @@ class StudentDetails extends React.Component {
                 limit: this.state.limit,
                 filter: this.state.filterStudent
             }
-            axios.post("http://localhost:3001/students/getAllStudents",data).then(r => {
+            axios.post("http://54.158.111.198:3001/students/getAllStudents",data).then(r => {
                 this.setState({
                     student: r.data,
                     filtered_student: r.data
@@ -57,7 +57,7 @@ class StudentDetails extends React.Component {
             limit : this.state.limit,
             filter: this.state.filterStudent
         }
-        axios.post("http://localhost:3001/students/getAllStudents",data).then(r => {
+        axios.post("http://54.158.111.198:3001/students/getAllStudents",data).then(r => {
             this.setState({
                 student: r.data,
                 filtered_student: r.data
@@ -73,7 +73,7 @@ class StudentDetails extends React.Component {
                 limit : this.state.limit,
                 filter: this.state.filterStudent
             }
-            axios.post("http://localhost:3001/students/getAllStudents", data).then(r => {
+            axios.post("http://54.158.111.198:3001/students/getAllStudents", data).then(r => {
                 this.setState({
                     student: r.data,
                     filtered_student: r.data

@@ -10,7 +10,7 @@ export const getJobs = (data) => {
     return (dispatch) => {
         console.log("Inside get jobs \n" + JSON.stringify(data));
 
-        axios.post('http://localhost:3001/jobs/getJobs',data)
+        axios.post('http://54.158.111.198:3001/jobs/getJobs',data)
             .then(res => {
                 console.log("response : GET JOBS", res.data)
                 let data = res.data;
@@ -26,7 +26,7 @@ export const getJobs = (data) => {
 export const checkApply = data => {
     return (dispatch) => {
         console.log("Inside check apply")
-        axios.post("http://localhost:3001/jobs/checkapplied", data).then(res => {
+        axios.post("http://54.158.111.198:3001/jobs/checkapplied", data).then(res => {
             console.log("response : CHECK APPLY" + res.data)    
             dispatch(setApply(res.data))
                 
@@ -44,7 +44,7 @@ export const setApply = data => {
 export const apply = data =>{
     return (dispatch) => {
         console.log("inside apply")
-        const url = 'http://localhost:3001/jobs/applyJobs';
+        const url = 'http://54.158.111.198:3001/jobs/applyJobs';
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -66,7 +66,7 @@ export const setApplied = data => {
 export const getApp = data => {
     return (dispatch) => {
         console.log("Inside get applications" + JSON.stringify(data))
-        axios.post("http://localhost:3001/jobs/getApplication", data).then(res => {
+        axios.post("http://54.158.111.198:3001/jobs/getApplication", data).then(res => {
             console.log("response : GET APPLICATIONS" + JSON.stringify(res.data))   
             
             dispatch(setApp(res.data))

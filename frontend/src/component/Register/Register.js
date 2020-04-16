@@ -65,7 +65,7 @@ class Register extends Component {
             company: this.state.company,
             location: this.state.location
         } 
-        let url = "http://localhost:3001/";
+        let url = "http://54.158.111.198:3001/";
         if (this.state.show === "block" && this.state.hide === "none")
             url = url + "company-signup";
         else if (this.state.show === "none" && this.state.hide ==="block")

@@ -75,9 +75,9 @@ class Events extends React.Component {
             sid: localStorage.getItem('id'),
             eid: eid
         }
-        axios.post('http://localhost:3001/events/getMajor', data).then(res => {
+        axios.post('http://54.158.111.198:3001/events/getMajor', data).then(res => {
             if (eligibility === res.data[0].major || eligibility === 'All Majors') {
-                axios.post("http://localhost:3001/events/registerEvent", data).then(res => {
+                axios.post("http://54.158.111.198:3001/events/registerEvent", data).then(res => {
                     this.setState({
                         applied: <div className="alert alert-primary" style={{ marginTop: '5%' }} >{res.data}</div>
                     })

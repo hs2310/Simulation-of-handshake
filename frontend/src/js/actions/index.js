@@ -8,7 +8,7 @@ export const login = (data) => {
     let data1 = {};
     axios.defaults.withCredentials = true;
     //make a post request with the user data
-    axios.post('http://localhost:3001/login', data)
+    axios.post('http://54.158.111.198:3001/login', data)
         .then(response => {
 
             console.log("response : ", response.data);

@@ -17,7 +17,7 @@ class Messages extends React.Component {
             list: [],
             name: ''
         };
-        this.socket = socketIOClient("http://localhost:3001");
+        this.socket = socketIOClient("http://54.158.111.198:3001");
         this.socket.emit("join", localStorage.getItem('id'))
         this.submit = this.submit.bind(this)
         this.messageHandler = this.messageHandler.bind(this)
@@ -101,7 +101,7 @@ class Messages extends React.Component {
         let data = {
             id: localStorage.getItem('id')
         }
-        axios.post("http://localhost:3001/getPostedMessages", data).then(res => {
+        axios.post("http://54.158.111.198:3001/getPostedMessages", data).then(res => {
             let l = res.data
             let list1 = []
             for (let i = 0; i < l.length; i++) {
@@ -137,7 +137,7 @@ class Messages extends React.Component {
                                 user1: localStorage.getItem('id'),
                                 user2: this.state.reciever
                             }
-                            axios.post("http://localhost:3001/getMessages", data).then(res => {
+                            axios.post("http://54.158.111.198:3001/getMessages", data).then(res => {
                                 this.setState({
                                     res: res.data.messages
                                 })
@@ -168,7 +168,7 @@ class Messages extends React.Component {
                 user1: localStorage.getItem('id'),
                 user2: this.state.reciever
             }
-            axios.post("http://localhost:3001/getMessages", data).then(res => {
+            axios.post("http://54.158.111.198:3001/getMessages", data).then(res => {
                 this.setState({
                     res: res.data.messages
                 })

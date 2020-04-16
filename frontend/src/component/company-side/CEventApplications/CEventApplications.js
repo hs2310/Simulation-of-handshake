@@ -58,7 +58,7 @@ class CEventApplications extends React.Component {
     }
     display(i) {
         
-        // axios.post("http://localhost:3001/events/getEventStudents", data).then(res => {
+        // axios.post("http://54.158.111.198:3001/events/getEventStudents", data).then(res => {
             this.setState({
                 display: this.state.posted_events[i].applications
             })
