@@ -115,8 +115,8 @@ class CEvents extends React.Component {
         <div className="card-body">
             <h5 className="card-title mb-2">{this.state.displayJobs.name}</h5>
             <h6 className="card-subtitle mb-2 text-muted">{this.state.displayJobs.description}</h6>
-            <p className="card-text">{this.state.displayJobs.time}</p>
-            <p className="card-text">{this.state.displayJobs.date}</p>
+            
+            <p className="card-text">{new Date(this.state.displayJobs.date).getMonth()+1}/{new Date(this.state.displayJobs.date).getDate()}/{new Date(this.state.displayJobs.date).getFullYear()} {("0" + new Date(this.state.displayJobs.date).getHours()).slice(-2)} : {("0" + new Date(this.state.displayJobs.date).getMinutes()).slice(-2)}</p>
             <p className="card-text">Location : {this.state.displayJobs.location}</p>
             <p className="card-text">Eligibility : {this.state.displayJobs.eligibility}</p>
         </div>
@@ -128,8 +128,8 @@ class CEvents extends React.Component {
                 <div className="card-body">
                     <h5 className="card-title">{this.state.posted_events[item].name}</h5>
                     {/* <h6 className="card-subtitle mb-2 text-muted">{this.state.posted_events[item].description}</h6> */}
-                    <p className="card-text">{this.state.posted_events[item].time}</p>
-                    <p className="card-text">{this.state.posted_events[item].date}</p>
+                    <p className="card-text">{("0" + new Date(this.state.posted_events[item].date).getHours()).slice(-2)} : {("0" + new Date(this.state.posted_events[item].date).getMinutes()).slice(-2)}</p>
+                    <p className="card-text">{new Date(this.state.posted_events[item].date).getMonth()+1}/{new Date(this.state.posted_events[item].date).getDate()}/{new Date(this.state.posted_events[item].date).getFullYear()}</p>
                     {/* <p className="card-text">{this.state.posted_events[item].location}</p> */}
                     {/* <p className="card-text">{this.state.posted_events[item].eligibility}</p> */}
                 </div>

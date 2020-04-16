@@ -64,6 +64,7 @@ class Main extends Component {
         }}/>
         <Route path = "/displayCompany/:id" component={CompanyProfile} />
         <Route path = "/displayStudent/:id" component={StudentProfile} />
+        
         {/* <Route path = "/studentApplications" component={StudentApplication} /> */}
         <Route path="/studentApplications" render={ () => {
           if(localStorage.getItem('type') === 'company')
@@ -90,9 +91,11 @@ class Main extends Component {
           else
             return <EventApplications />    
         }}/>
+        <Route path = "/messages/:id/:name" component={Messages} />
         <Route path="/messages" render={ () => {
             return <Messages />    
         }}/>
+        
         {/* <DisplayCompany/>
         </Route> */}
         {/* <Route path="/home" component={Home}/>

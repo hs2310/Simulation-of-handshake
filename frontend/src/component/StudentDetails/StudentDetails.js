@@ -26,7 +26,7 @@ class StudentDetails extends React.Component {
                 limit: this.state.limit,
                 filter: this.state.filterStudent
             }
-            axios.post("http://localhost:3001/students/getAllStudents",data).then(r => {
+            axios.post("http://localhost:3001/students/getAllStudents", data ).then(r => {
                 this.setState({
                     student: r.data,
                     filtered_student: r.data
@@ -104,7 +104,7 @@ class StudentDetails extends React.Component {
                     <div className="card-body">
                         <img src={i.profile_pic} alt="Not Uploaded" className="rounded-circle" width="100px" height="100px" style={{ float: "left" }} />
                         <Link to={"/displayStudent/" + i._id} style={{  marginLeft: "15%"  }}>{i.name}</Link>
-                        
+                        <Link to={"/messages/" + i._id + "/" +i.name} style={{ float : "right" }} className="btn btn-primary">Message</Link>
                         <h6 style={{marginLeft: "30%"  }}>{i.college}</h6>
                     </div>
                 </div>

@@ -184,8 +184,8 @@ class Events extends React.Component {
                                 <h5 className="card-title mb-2">{displayJobs.name}</h5>
                                 <br />
                                 <h6 className="card-subtitle mb-2 text-muted">{displayJobs.description}</h6>
-                                <p className="card-text">Time : {displayJobs.time}</p>
-                                <p className="card-text">Date : {displayJobs.date}</p>
+                                
+                                <p className="card-text">Date & Time: {new Date(displayJobs.date).getMonth()+1}/{new Date(displayJobs.date).getDate()}/{new Date(displayJobs.date).getFullYear()} {("0" + new Date(displayJobs.date).getHours()).slice(-2)} : {("0" + new Date(displayJobs.date).getMinutes()).slice(-2)}</p>
                                 <p className="card-text">Location : {displayJobs.location}</p>
                                 <p className="card-text">Eligibility : {displayJobs.eligibility}</p>
 

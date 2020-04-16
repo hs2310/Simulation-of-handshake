@@ -26,9 +26,8 @@ class EventApplications extends React.Component {
                     <div className="card-body">
                         <h5>{i.name}</h5>
                         <h6>{i.description}</h6>
-                        <p className="card-text">{i.time}</p>
-                        <p className="card-text">{i.date}</p>
-                        <p className="card-text">{i.location}</p>
+                        <p className="card-text">Date & Time: {new Date(i.date).getMonth()+1}/{new Date(i.date).getDate()}/{new Date(i.date).getFullYear()} {("0" + new Date(i.date).getHours()).slice(-2)} : {("0" + new Date(i.date).getMinutes()).slice(-2)}</p>
+                        <p className="card-text">Location : {i.location}</p>
                     </div>
                 </div>
             );

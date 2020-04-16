@@ -73,10 +73,20 @@ app.use("/events", events);
 
 var Messages = require("./Models/MessageModel")
 app.post('/getPostedMessages', (req,res)=>{
-    Messages.find({ users : req.sender }).sort("messages.timestamp").exec((err,results) => {
+    console.log("+++++++ INSIDE GETPOSTED MESSAGES +++++++")
+    Messages.find({ users : {$in : [req.body.id]} }).sort("messages.timestamp").exec((err,results) => {
         if(err) res.send(err)
         else    
-            res.results
+            console.log("+++++" , results)
+            res.send(results)
+    })
+})
+app.post('/getMessages', (req,res)=> {
+    Messages.findOne({$and : [ { users : { "$in" : [req.body.user1]}} , { users : { "$in" : [req.body.user2]}}]}).sort("messages.timestamp").exec((err,results)=>{
+        if(err) res.send(err)
+        else    
+            console.log("+++++" , results)
+            res.send(results)
     })
 })
 const server = http.createServer(app);
@@ -94,30 +104,64 @@ io.on('connection', socket =>{
     socket.on("message" , (msg) => {
         console.log("====="+ msg + "======")
         let flag = false;
-        Messages.findOneAndUpdate({$or : [{ users : [msg.sender , msg.reciever]} ,{ users : [msg.reciever , msg.sender]} ]}).exec((err,results) => {
+        Messages.findOne({$and : [ { users : { "$in" : [msg.sender]}} , { users : { "$in" : [msg.reciever]}}]},{new :true}).exec((err,results) => {
             if(err) console.log(err)
             else {
-                if (results === null){
+                if (!results){
                     let newMessage = new Messages({
+                        users : [msg.sender , msg.reciever],
+                        name : msg.names
+                    })
+                    newMessage.messages.push(msg.message)
+                    if(newMessage.save()){
+                        for( let i = 0 ; i < online.length ; i++ )
+                        {
+                            if(online[i].data === msg.reciever){
+                                flag = true
+                            }
+                        }
+                        if(flag)
+                           socket.broadcast.to(online[Object.keys(online).find(key => online[key].data === msg.reciever)].id).emit("message",newMessage)   
+                        console.log("NULL ID - > " + socket)              
+                        socket.emit("message",newMessage)   
+                        console.log("NULL ID - > " + socket)              
+                    }
+                } else {
+                    Messages.findOneAndUpdate({$and : [ { users : { "$in" : [msg.sender]}} , { users : { "$in" : [msg.reciever]}}]},{
+                        "$push":
+                        {
+                            "messages": msg.message
+                        }
+                    },{new :true}).exec((err , results)=> {
                         
+                        for( let i = 0 ; i < online.length ; i++ )
+                        {
+                            if(online[i] !== null){
+                                if(online[i].data === msg.reciever){
+                                    flag = true
+                                }
+                            }
+                        }
+                        if(flag)
+                           socket.broadcast.to(online[Object.keys(online).find(key => online[key].data === msg.reciever)].id).emit("message",results)   
+                        console.log("NOT NULL ID - > " + socket)              
+                        socket.emit("message",results)   
+                        console.log("NULL ID - > " + socket)              
                     })
                 }
             }
+        
+            
         })
-        for( let i = 0 ; i < online.length ; i++ )
-        {
-            if(online[i].data === msg.reciever){
-                flag = true
-            }
-        }
-        if(flag)
-        socket.broadcast.to(online[Object.keys(online).find(key => online[key].data === msg.reciever)].id).emit("message",msg)   
-        console.log("ID - > " + socket)  
     })
 
     socket.on("disconnect" , (msg) => {
        console.log("online: " + online)
        delete online[(Object.keys(online).find(key => online[key].id === socket.id))];
+       var filtered = online.filter(function (el) {
+        return el != null;
+      });
+      online = filtered
        console.log("online: "+ online)
     })
 
