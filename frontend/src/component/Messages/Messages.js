@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { getStudent } from '../../js/actions/profile-action'
 import { getCompany } from '../../js/actions/Cprofile-action'
 //import { connect } from 'react-redux';
-import { setPostedMessages , getPostedMessages, getMessages, setMessages} from '../../js/actions/message-action'
+import { setPostedMessages, getPostedMessages, getMessages, setMessages } from '../../js/actions/message-action'
 class Messages extends React.Component {
     constructor(props) {
         super(props);
@@ -29,7 +29,7 @@ class Messages extends React.Component {
     }
     scrollToBottom = () => {
         this.node.scrollIntoView({ behavior: "smooth" });
-      }
+    }
     recieverHandler = e => {
         this.setState({
             reciever: e.target.value
@@ -40,81 +40,81 @@ class Messages extends React.Component {
             message: e.target.value
         })
     }
-    componentDidUpdate(prevProps , prevState) {
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.list !== this.props.list) {
-            if(this.props.list !== undefined){
-	    let l = this.props.list
-            let list1 = []
-            for (let i = 0; i < this.props.list.length; i++) {
-                let index = this.props.list[i].users.indexOf(localStorage.getItem('id'))
-                if (index === 0) index = 1;
-                else index = 0;
-                let data = { user: this.props.list[i].users[index], name: this.props.list[i].name[index] }
-                list1.push(data)
-            }
-            this.setState({
-                list: list1
-            },()=>{
-		if (this.props.match!== undefined) {
+            if (this.props.list !== undefined) {
+                let l = this.props.list
+                let list1 = []
+                for (let i = 0; i < this.props.list.length; i++) {
+                    let index = this.props.list[i].users.indexOf(localStorage.getItem('id'))
+                    if (index === 0) index = 1;
+                    else index = 0;
+                    let data = { user: this.props.list[i].users[index], name: this.props.list[i].name[index] }
+                    list1.push(data)
+                }
                 this.setState({
-                    reciever: this.props.match.params.id,
-                    reciever_name: this.props.match.params.name
-                },() => {
-                    let flag = false;
-                    let list2 = this.state.list
-                    list2.forEach(k => {
-                        if(k.user === this.state.reciever){
-                            flag = true;
-                        }
-                    })
-                    if(!flag){
-                        let data = { user :this.state.reciever , name : this.state.reciever_name}
-                        list2.push(data)
-                        this.props.setPostedMessages(list2)
-                        //this.setState({
-                          //  list : list2
-                        //})
+                    list: list1
+                }, () => {
+                    if (this.props.match !== undefined) {
+                        this.setState({
+                            reciever: this.props.match.params.id,
+                            reciever_name: this.props.match.params.name
+                        }, () => {
+                            let flag = false;
+                            let list2 = this.state.list
+                            list2.forEach(k => {
+                                if (k.user === this.state.reciever) {
+                                    flag = true;
+                                }
+                            })
+                            if (!flag) {
+                                let data = { user: this.state.reciever, name: this.state.reciever_name }
+                                list2.push(data)
+                                this.props.setPostedMessages(list2)
+                                //this.setState({
+                                //  list : list2
+                                //})
+                            } else {
+                                let data = {
+                                    user1: localStorage.getItem('id'),
+                                    user2: this.state.reciever
+                                }
+                                this.props.getMessages(data);
+                                //if(this.props.res){
+                                //  this.setState({
+                                //      res: this.props.res
+                                //  })
+                                //                      }   
+                            }
+                        })
                     } else {
-                        let data = {
-                            user1: localStorage.getItem('id'),
-                            user2: this.state.reciever
+                        if (this.state.list.length > 0) {
+                            console.log("CALLED")
+                            this.setState({
+                                reciever_name: this.state.list[0].name,
+                                reciever: this.state.list[0].user
+                            })
+                            this.props.setMessages(this.props.list[0].messages)
+                            this.scrollToBottom();
                         }
-                        this.props.getMessages(data);
-                        //if(this.props.res){
-                          //  this.setState({
-                        //      res: this.props.res
-                          //  })
-//                      }   
                     }
                 })
-            } else {
-                if(this.state.list.length > 0){
-                        console.log("CALLED")
-                    this.setState({
-                        reciever_name: this.state.list[0].name,
-                        reciever: this.state.list[0].user
-                    })
-                    this.props.setMessages(this.props.list[0].messages)
-                    this.scrollToBottom();
-                }
             }
-	})
-	    }
         }
-        if(prevProps.res !== this.props.res){
+        if (prevProps.res !== this.props.res) {
             this.setState({
-                res : this.props.res
+                res: this.props.res
             })
         }
         this.scrollToBottom()
     }
-    componentWillMount(){
-        if(localStorage.getItem("type") === "student")
+    componentWillMount() {
+        if (localStorage.getItem("type") === "student")
             this.props.getStudent({ sid: localStorage.getItem('id') })
         else
-            this.props.getCompany({cid : localStorage.getItem('id')})
+            this.props.getCompany({ cid: localStorage.getItem('id') })
     }
-    componentDidMount() {       
+    componentDidMount() {
         this.socket.on("message", msg => {
             this.setState({
                 res: ''
@@ -163,53 +163,53 @@ class Messages extends React.Component {
         }
         this.props.getPostedMessages(data)
         // axios.post("http://54.158.111.198:3001/getPostedMessages", data).then(res => {
-       
+
         // })
-        
-        if (this.props.match!== undefined) {
-                this.setState({
-                    reciever: this.props.match.params.id,
-                    reciever_name: this.props.match.params.name
-                },() => {
-                    let flag = false;
-                    let list2 = this.state.list
-                    list2.forEach(k => {
-                        if(k.user === this.state.reciever){
-                            flag = true;
-                        }
-                    })
-                    if(!flag){
-                        let data = { user :this.state.reciever , name : this.state.reciever_name}
-                        list2.push(data)
-                        this.props.setPostedMessages(list2)
-			//this.setState({
-                          //  list : list2
-                        //})
-                    } else {
-                        let data = {
-                            user1: localStorage.getItem('id'),
-                            user2: this.state.reciever
-                        }
-                        this.props.getMessages(data);
-                     	//if(this.props.res){
-			  //  this.setState({
-			//	res: this.props.res
-			  //  })
-//			}   
-                    }
-                })
-            } else {
-                if(this.state.list.length > 0){
-			console.log("CALLED")
-		    this.setState({
-                        reciever_name: this.state.list[0].name,
-                        reciever: this.state.list[0].user
-                    })
-		    this.props.setMessages(this.props.list[0].messages)	
-                    this.scrollToBottom();
-                }
-            }
-        
+
+        // if (this.props.match !== undefined) {
+        //     this.setState({
+        //         reciever: this.props.match.params.id,
+        //         reciever_name: this.props.match.params.name
+        //     }, () => {
+        //         let flag = false;
+        //         let list2 = this.state.list
+        //         list2.forEach(k => {
+        //             if (k.user === this.state.reciever) {
+        //                 flag = true;
+        //             }
+        //         })
+        //         if (!flag) {
+        //             let data = { user: this.state.reciever, name: this.state.reciever_name }
+        //             list2.push(data)
+        //             this.props.setPostedMessages(list2)
+        //             //this.setState({
+        //             //  list : list2
+        //             //})
+        //         } else {
+        //             let data = {
+        //                 user1: localStorage.getItem('id'),
+        //                 user2: this.state.reciever
+        //             }
+        //             this.props.getMessages(data);
+        //             //if(this.props.res){
+        //             //  this.setState({
+        //             //	res: this.props.res
+        //             //  })
+        //             //			}   
+        //         }
+        //     })
+        // } else {
+        //     if (this.state.list.length > 0) {
+        //         console.log("CALLED")
+        //         this.setState({
+        //             reciever_name: this.state.list[0].name,
+        //             reciever: this.state.list[0].user
+        //         })
+        //         this.props.setMessages(this.props.list[0].messages)
+        //         this.scrollToBottom();
+        //     }
+        // }
+
         this.scrollToBottom();
     }
     display = i => {
@@ -229,33 +229,33 @@ class Messages extends React.Component {
             // })
             this.scrollToBottom();
         })
-        
+
     }
     submit = e => {
         e.preventDefault();
-        
-        if(localStorage.getItem("type") === "student"){
+
+        if (localStorage.getItem("type") === "student") {
             let packet = {
                 sender: localStorage.getItem('id'),
                 reciever: this.state.reciever,
                 names: [this.props.name, this.state.reciever_name],
                 message: { msg: this.state.message, timestamp: Date.now(), sentBy: localStorage.getItem('id') }
             }
-    
+
             this.socket.emit("message", packet)
             this.setState({ message: '' })
-        }else{
+        } else {
             let packet = {
                 sender: localStorage.getItem('id'),
                 reciever: this.state.reciever,
                 names: [this.props.nameC, this.state.reciever_name],
                 message: { msg: this.state.message, timestamp: Date.now(), sentBy: localStorage.getItem('id') }
             }
-    
+
             this.socket.emit("message", packet)
             this.setState({ message: '' })
         }
-        
+
     }
     render() {
         let style_box = { boxShadow: "1px 3px 5px grey", padding: "2%" };
@@ -270,9 +270,9 @@ class Messages extends React.Component {
         if (this.state.res) {
             res = Object.keys(this.state.res).map((item, i) => {
                 if (this.state.res[item].sentBy === localStorage.getItem('id'))
-                    return <div className="text-right">{this.state.res[item].msg}<br/> <span style={{fontSize: ".9em"}}>{new Date(this.state.res[item].timestamp).getMonth()+1}/{new Date(this.state.res[item].timestamp).getDate()}/{new Date(this.state.res[item].timestamp).getFullYear()} {new Date(this.state.res[item].timestamp).getHours()}:{new Date(this.state.res[item].timestamp).getMinutes()}</span></div>
+                    return <div className="text-right">{this.state.res[item].msg}<br /> <span style={{ fontSize: ".9em" }}>{new Date(this.state.res[item].timestamp).getMonth() + 1}/{new Date(this.state.res[item].timestamp).getDate()}/{new Date(this.state.res[item].timestamp).getFullYear()} {new Date(this.state.res[item].timestamp).getHours()}:{new Date(this.state.res[item].timestamp).getMinutes()}</span></div>
                 else
-                    return <div className="text-left">{this.state.res[item].msg}<br/><span style={{fontSize: ".9em"}}>{new Date(this.state.res[item].timestamp).getMonth()+1}/{new Date(this.state.res[item].timestamp).getDate()}/{new Date(this.state.res[item].timestamp).getFullYear()} {new Date(this.state.res[item].timestamp).getHours()}:{new Date(this.state.res[item].timestamp).getMinutes()}</span></div>
+                    return <div className="text-left">{this.state.res[item].msg}<br /><span style={{ fontSize: ".9em" }}>{new Date(this.state.res[item].timestamp).getMonth() + 1}/{new Date(this.state.res[item].timestamp).getDate()}/{new Date(this.state.res[item].timestamp).getFullYear()} {new Date(this.state.res[item].timestamp).getHours()}:{new Date(this.state.res[item].timestamp).getMinutes()}</span></div>
             })
         }
         return <div>
@@ -283,15 +283,15 @@ class Messages extends React.Component {
                         {list}
                     </Col>
                     <Col sm={{ span: 7, offset: 1 }} style={style_box}>
-                        <div> 
+                        <div>
                             <div className="navbar navbar-expand-sm bg-primary navbar-light " style={{ boxShadow: "1px 3px 5px grey", marginBottom: "2%" }}><span className="text-light"><strong>{this.state.reciever_name}</strong></span></div>
-                            <div style={{height: "25em" ,overflowY: "scroll", padding: "2%"}}>{res}<div ref={(node) => { this.node = node; }}></div></div>
+                            <div style={{ height: "25em", overflowY: "scroll", padding: "2%" }}>{res}<div ref={(node) => { this.node = node; }}></div></div>
                         </div>
                         <form onSubmit={this.submit}>
-                            <div className="form-group" style={{width:"100%"}}>
-                            
-                                <input type="text" name="message" onChange={this.messageHandler} value={this.state.message} className="form-control" style={{ boxShadow: "1px 3px 5px grey", padding: "2%", width : "89.5%", display : "inline"}}/>
-                                <button className="btn btn-primary" style={{boxShadow: "1px 3px 5px grey"}}>Send</button>    
+                            <div className="form-group" style={{ width: "100%" }}>
+
+                                <input type="text" name="message" onChange={this.messageHandler} value={this.state.message} className="form-control" style={{ boxShadow: "1px 3px 5px grey", padding: "2%", width: "89.5%", display: "inline" }} />
+                                <button className="btn btn-primary" style={{ boxShadow: "1px 3px 5px grey" }}>Send</button>
                             </div>
                         </form>
                     </Col>
@@ -303,9 +303,9 @@ class Messages extends React.Component {
 const mapStateToProps = state => {
     return {
         name: state.SProfile.name,
-        nameC : state.CProfile.name,
-        list : state.msg.list,
-	res : state.msg.res 
+        nameC: state.CProfile.name,
+        list: state.msg.list,
+        res: state.msg.res
     }
 }
-export default connect(mapStateToProps, { getStudent,getCompany,setPostedMessages , getPostedMessages ,getMessages,setMessages})(Messages);
+export default connect(mapStateToProps, { getStudent, getCompany, setPostedMessages, getPostedMessages, getMessages, setMessages })(Messages);
