@@ -16,6 +16,14 @@ class CGeneralInfo extends React.Component {
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
+    componentWillReceiveProps(prevProps){
+      if (prevProps.name !== this.props.name) {
+        this.setState({ name : prevProps.name})
+      }
+      if (prevProps.location !== this.props.location) {
+        this.setState({ location : prevProps.location})
+      }
+    }
     componentDidUpdate(prevProps, prevState) {
       console.log("GENERAL INFO : componentDidUpdate CALLED")
       if (prevProps.name !== this.props.name) {
@@ -44,7 +52,10 @@ class CGeneralInfo extends React.Component {
     }
     updateInfo = (e) => {
         e.preventDefault();
-        let data = this.state;
+        let data = {
+          name : this.state.name,
+          location : this.state.location
+        }
         data.cid = localStorage.getItem("id");
         // console.log(this.state);
         // axios.post("http://localhost:3001/company/UpdateCompanyInfo", data).then(res => console.log(res.data));
