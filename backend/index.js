@@ -105,6 +105,12 @@ app.post('/getMessages', (req, res) => {
         }
     });
 })
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+//                                  REAL TIME MESSAGING NOT IN LAB2                                       //
+//                                   SO NO KAFKA INTEGRATION                                              //   
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 const server = http.createServer(app);
 const io = socketio(server);
 let online = []
