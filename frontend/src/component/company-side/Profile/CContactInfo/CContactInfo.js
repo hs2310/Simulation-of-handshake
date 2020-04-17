@@ -15,15 +15,7 @@ class CContactInfo extends React.Component {
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
-	componentWillReceiveProps(nextProps){
-		if (nextProps.mob !== this.props.mob) {
-          this.setState({ mob : nextProps.mob})
-        }
-        if (nextProps.email !== this.props.email) {
-            this.setState({ email : nextProps.email})
-          }
-
-	}
+	
     componentDidUpdate(prevProps, prevState) {
         console.log("CONTACT INFO  : componentDidUpdate CALLED")
         if (prevProps.mob !== this.props.mob) {
@@ -33,9 +25,7 @@ class CContactInfo extends React.Component {
             this.setState({ email : this.props.email})
           }    
       }
-	componentDidMount(){
-		this.props.getCompany({cid : localStorage.getItem("id")})
-	}
+	
     contactInfoHandler = () => {
         if (this.state.update_contact_info === true)
             this.setState({
@@ -54,7 +44,10 @@ class CContactInfo extends React.Component {
     }
     updateInfo = (e) => {
         e.preventDefault();
-        let data = this.state;
+        let data = {
+            email : this.state.email,
+            mob : this.state.mob
+        }
         data.cid = localStorage.getItem('id');
         this.props.updateConInfo(data);
         this.contactInfoHandler();
