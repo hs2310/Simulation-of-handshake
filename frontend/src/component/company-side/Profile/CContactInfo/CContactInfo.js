@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateConInfo } from '../../../../js/actions/Cprofile-action'
+import { updateConInfo,getCompany } from '../../../../js/actions/Cprofile-action'
 
 
 class CContactInfo extends React.Component {
@@ -15,6 +15,15 @@ class CContactInfo extends React.Component {
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
+	componentWillRecieveProps(nextProps){
+		if (nextProps.mob !== this.props.mob) {
+          this.setState({ mob : nextProps.mob})
+        }
+        if (nextProps.email !== this.props.email) {
+            this.setState({ email : nextProps.email})
+          }
+
+	}
     componentDidUpdate(prevProps, prevState) {
         console.log("CONTACT INFO  : componentDidUpdate CALLED")
         if (prevProps.mob !== this.props.mob) {
@@ -24,6 +33,9 @@ class CContactInfo extends React.Component {
             this.setState({ email : this.props.email})
           }    
       }
+	componentDidMount(){
+		this.props.getCompany({cid : localStorage.getItem("id")})
+	}
     contactInfoHandler = () => {
         if (this.state.update_contact_info === true)
             this.setState({
@@ -81,4 +93,4 @@ const mapStateToProps = state => {
         email : state.CProfile.email
     }
 }
-export default connect( mapStateToProps , { updateConInfo } )(CContactInfo);
+export default connect( mapStateToProps , { updateConInfo,getCompany } )(CContactInfo);
