@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 // import cookie from 'react-cookies';
 // import { useParams } from 'react-router-dom';
 // import * as bs from 'react-bootstrap';
@@ -52,6 +53,7 @@ class StudentProfile extends React.Component {
                         <h4>General Information</h4>
                         <img src={this.state.data.profile_pic} alt="Not Uploaded!!!"  className="rounded-circle" height="100px" width="100px" style={{float : "left"}}/> 
                         <h5>{this.state.data.name}</h5>
+			<Link to={"/messages/" + this.props.match.params.id + "/" +this.state.data.name} style={{ float : "right" }} className="btn btn-primary">Message</Link>
                         
                         <h6>{this.state.data.college}</h6>
                     </div>

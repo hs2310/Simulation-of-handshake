@@ -78,7 +78,8 @@ class Messages extends React.Component {
                             } else {
                                 let data = {
                                     user1: localStorage.getItem('id'),
-                                    user2: this.state.reciever
+                                    user2: this.state.reciever,
+				    res : this.state.res
                                 }
                                 this.props.getMessages(data);
                                 //if(this.props.res){
@@ -220,7 +221,8 @@ class Messages extends React.Component {
         }, () => {
             let data = {
                 user1: localStorage.getItem('id'),
-                user2: this.state.reciever
+                user2: this.state.reciever,
+		res : this.state.res
             }
             this.props.getMessages(data)
             // axios.post("http://54.158.111.198:3001/getMessages", data).then(res => {
