@@ -122,12 +122,13 @@ class Login extends Component {
                         <h6>Students & Alumni</h6>
                         Please select your school to sign in.
                         <div className="form-group" style={{ width: "30%" }}>
-                            <select name="college" onChange={this.selecthandleChange} className="form-control">
-                                <option value=""></option>
-                                <option value="San Jose State University">San Jose State University</option>
-                                <option value="University of Hogwarts">University of Hogwarts</option>
-                                <option value="Standford University">Standford University</option>
-                            </select>
+                        <input type="text" name="college" onChange={this.selecthandleChange} className="form-control"/>   
+		    	{/*// <select name="college" onChange={this.selecthandleChange} className="form-control">
+                             //   <option value=""></option>
+                               // <option value="San Jose State University">San Jose State University</option>
+                                //<option value="University of Hogwarts">University of Hogwarts</option>
+                               // <option value="Standford University">Standford University</option>
+                           // </select>*/}
                         </div>
                         <div>
                             <strong>New to handshake?</strong>Select your school to get started.

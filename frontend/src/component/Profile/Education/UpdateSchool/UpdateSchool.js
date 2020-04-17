@@ -90,10 +90,10 @@ class UpdateSchool extends React.Component {
                         <input type="text" name="edu_level" placeholder="Enter Education Level" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.edu_level} />
                     </div>
                     <div className="form-group">
-                        <input type="text" name="start" placeholder="Enter Start Date DD-MM-YYYY" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.start} pattern= "^(0[1-9]|1[0-9]|2[0-9]|3[0,1])([/+-])(0[1-9]|1[0-2])([/+-])(19|20)[0-9]{2}$"/>
+                        <input type="text" name="start" placeholder="Enter Start" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.start}/>
                     </div>
                     <div className="form-group">
-                        <input type="text" name="end" placeholder="Enter End Date DD-MM-YYYY" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.end} pattern= "^(0[1-9]|1[0-9]|2[0-9]|3[0,1])([/+-])(0[1-9]|1[0-2])([/+-])(19|20)[0-9]{2}$"/>
+                        <input type="text" name="end" placeholder="Enter End" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.end} />
                     </div>
                     <div className="form-group">
                         <input type="text" name="major" placeholder="Enter Major" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.major} />

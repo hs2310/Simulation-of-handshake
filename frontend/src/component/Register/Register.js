@@ -148,13 +148,14 @@ class Register extends Component {
                         />
                     </div>
                     <div className="form-group" style={{ display : this.state.hide}}>
-                            <select name="college" onChange={this.selecthandleChange} className="form-control">
+		{/*  <select name="college" onChange={this.selecthandleChange} className="form-control">
                                 <option value=""></option>
                                 <option value="San Jose State University">San Jose State University</option>
                                 <option value="University of Hogwarts">University of Hogwarts</option>
                                 <option value="Standford University">Standford University</option>
                             </select>
-                    </div>
+                   */}<input type="text" name="college" onChange={this.selecthandleChange} className="form-control"/>
+		</div>
                     <div className="form-group">
                         <br />
                         <button className="btn btn-primary form-control">Sign In</button>

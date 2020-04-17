@@ -220,7 +220,7 @@ class CStudentApplications extends React.Component {
             <div className="card" key={i} onClick={() => { this.display(item); this.setState({ i: item }) }} style={style_box} >
                 <div className="card-body">
                     <h5 className="card-title">{this.state.posted_jobs[item].title}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">{this.state.posted_jobs[item]._id}</h6>
+		{/*<h6 className="card-subtitle mb-2 text-muted">{this.state.posted_jobs[item]._id}</h6>*/}
                     <h6 className="card-subtitle mb-2 text-muted">{this.state.posted_jobs[item].name}</h6>
                     <p className="card-text">{this.state.posted_jobs[item].location}</p>
                     <p className="card-text">{this.state.posted_jobs[item].job_category}</p>

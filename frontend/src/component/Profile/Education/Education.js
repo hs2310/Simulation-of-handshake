@@ -96,10 +96,10 @@ class Education extends React.Component {
 						<input type="text" name="edu_level" placeholder="Enter Education Level" className="form-control" onChange={this.educationChangeHandler} />
 					</div>
 					<div className="form-group">
-						<input type="text" name="start" placeholder="Enter Start Date DD-MM-YYYY" className="form-control" pattern="^(0[1-9]|1[0-9]|2[0-9]|3[0,1])([/+-])(0[1-9]|1[0-2])([/+-])(19|20)[0-9]{2}$" onChange={this.educationChangeHandler} />
+						<input type="text" name="start" placeholder="Enter Start" className="form-control" onChange={this.educationChangeHandler} />
 					</div>
 					<div className="form-group">
-						<input type="text" name="end" placeholder="Enter End Date DD-MM-YYYY" className="form-control" pattern="^(0[1-9]|1[0-9]|2[0-9]|3[0,1])([/+-])(0[1-9]|1[0-2])([/+-])(19|20)[0-9]{2}$" onChange={this.educationChangeHandler} />
+						<input type="text" name="end" placeholder="Enter End" className="form-control" onChange={this.educationChangeHandler} />
 					</div>
 					<div className="form-group">
 						<input type="text" name="major" placeholder="Enter Major" className="form-control" onChange={this.educationChangeHandler} />
