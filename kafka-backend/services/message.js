@@ -4,7 +4,7 @@ const mongo = require('./dbconfig/connection');
 var Messages = require('./dbconfig/Models/MessageModel')
 function handle_request(req, callback) {
     var res = {};
-    console.log("In handle request:" + msg.path);
+    console.log("In handle request:" + req.path);
     if (req.path === "getPostedMessages") {
         Messages.find({ users : {$in : [req.body.id]} }).sort("messages.timestamp").exec((err,results) => {
                 console.log("+++++" , results)
