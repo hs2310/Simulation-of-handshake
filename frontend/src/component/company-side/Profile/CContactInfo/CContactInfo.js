@@ -15,7 +15,7 @@ class CContactInfo extends React.Component {
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
-	componentWillRecieveProps(nextProps){
+	componentWillReceiveProps(nextProps){
 		if (nextProps.mob !== this.props.mob) {
           this.setState({ mob : nextProps.mob})
         }
