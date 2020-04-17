@@ -60,10 +60,10 @@ class CGeneralInfo extends React.Component {
               <input type="file" name="profile_pic" className = "form-control" onChange={this.educationChangeHandler} />
             </div> */}
             <div className="form-group">
-              <input type="text" name="name" placeholder="Enter your Name" className="form-control" defaultValue={this.state.name} onChange={this.educationChangeHandler}/>
+              <input type="text" name="name" placeholder="Enter your Name" className="form-control" defaultValue={this.props.name} onChange={this.educationChangeHandler}/>
             </div>
             <div className="form-group">
-              <input type="text" name="location" placeholder="Enter Company Location" className="form-control" defaultValue={this.state.location} onChange={this.educationChangeHandler} required/>
+              <input type="text" name="location" placeholder="Enter Company Location" className="form-control" defaultValue={this.props.location} onChange={this.educationChangeHandler} required/>
             </div>
             <button type = "submit" className="btn btn-primary">Update</button>  
           </form>

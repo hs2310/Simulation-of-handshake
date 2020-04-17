@@ -54,7 +54,7 @@ class CMyJourney extends React.Component {
                 <form onSubmit={this.updateInfo}>
                     <div>
                         <div className="form-group">
-                            <textarea name="description" placeholder="Enter your Journey" className="form-control" defaultValue={this.state.description} onChange={this.educationChangeHandler}></textarea>
+                            <textarea name="description" placeholder="Enter your Journey" className="form-control" defaultValue={this.props.description} onChange={this.educationChangeHandler}></textarea>
                         </div>
                         <button type="submit" className="btn btn-primary">Update</button>
                     </div>
@@ -62,7 +62,7 @@ class CMyJourney extends React.Component {
             </div>
         }
         else {
-            myJourney = <div>{this.state.description}</div>;
+            myJourney = <div>{this.props.description}</div>;
         }
         return <div>
             <button onClick={this.myJourneyHandler} className="btn btn-primary" style={{ float: "right" }} type="button">edit</button>
