@@ -5,6 +5,7 @@ var student = require('./services/student');
 var company = require('./services/company');
 var job = require('./services/jobs'); 
 var msg  =  require('./services/message')
+var event  =  require('./services/event')
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
     var consumer = connection.getConsumer(topic_name);
@@ -42,3 +43,4 @@ handleTopicRequest("student", student)
 handleTopicRequest("company" , company)
 handleTopicRequest("job" , job)
 handleTopicRequest("msg" , msg)
+handleTopicRequest("event" , event)
