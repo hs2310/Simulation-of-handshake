@@ -43,17 +43,13 @@ class UpdateSchool extends React.Component {
     updateEdu = (e) => {
 
         e.preventDefault();
-        let data = this.state;
         data.id = this.props.item._id;
         data.sid = localStorage.getItem('id');
-        // console.log(data);
 
-        // axios.post("http://localhost:3001/students/updateEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
-        // this.props.updateEduc(data);
-        this.editSchool();
+
     }
     deleteSchool = () => {
-        
+
         let data = {};
         data.id = this.props.item._id;
         data.sid = localStorage.getItem('id');
@@ -90,7 +86,7 @@ class UpdateSchool extends React.Component {
                         <input type="text" name="edu_level" placeholder="Enter Education Level" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.edu_level} />
                     </div>
                     <div className="form-group">
-                        <input type="text" name="start" placeholder="Enter Start" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.start}/>
+                        <input type="text" name="start" placeholder="Enter Start" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.start} />
                     </div>
                     <div className="form-group">
                         <input type="text" name="end" placeholder="Enter End" className="form-control" onChange={this.educationChangeHandler} defaultValue={this.props.item.end} />

@@ -173,6 +173,16 @@ const RootQuery = new GraphQLObjectType({
                 console.log("CALLED")
                 return ({ status : 200 , message : JSON.stringify(results) })
             }
+        } , getJob : {
+            type : StatusType,
+            args : {
+                jid : {type : GraphQLString}
+            },
+            async resolve(parent, args){
+                let results =  await Jobs.findById({_id : args.jid}).populate("applications.sid")
+                console.log("CALLED")
+                return ({ status : 200 , message : JSON.stringify(results) })
+            }
         }
         
     }
@@ -351,8 +361,8 @@ const mutation = new GraphQLObjectType({
                 sid : {type : GraphQLString}
             },
             async resolve (parent, args){
-                let results = await Jobs.findById({_id : args.jid} , {
-                    $push  : { applications : { sid : args.sid}}
+                let results = await Jobs.findOneAndUpdate({_id : args.jid} , {
+                    "$push"  : { "applications" : { sid : args.sid}}
                 });
                 console.log()
                 return ({status : 200 , message : JSON.stringify(results)})

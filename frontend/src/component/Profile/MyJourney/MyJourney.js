@@ -1,6 +1,6 @@
 import React from 'react';
 // import axios from 'axios';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import { updateJourney } from '../../../js/actions/profile-action'
 class MyJourney extends React.Component {
     constructor(props) {
@@ -13,13 +13,6 @@ class MyJourney extends React.Component {
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
     }
-    
-    componentDidUpdate(prevProps, prevState) {
-        console.log("MY JOURNEY : componentDidUpdate CALLED")
-        if (prevProps.objective !== this.props.objective) {
-          this.setState({ objective : this.props.objective})
-        }
-      }
     myJourneyHandler = () => {
         if (this.state.update_journey === true)
             this.setState({
@@ -41,8 +34,19 @@ class MyJourney extends React.Component {
         let data = {};
         data.objective = this.state.objective;
         data.sid = localStorage.getItem('id')
-        // this.props.updateJourney(data);
-        this.myJourneyHandler();
+
+        updateCareerObjective
+        let mutationResponse = this.props.updateCareerObjective({
+            variables = {
+                id: data.sid,
+                objective: data.objective
+            }
+        });
+        if (mutationResponse.data.status === "200") {
+            this.setState({
+                update_journey: false
+            })
+        }
     }
 
     render() {
@@ -71,8 +75,8 @@ class MyJourney extends React.Component {
 }
 const mapStateToProps = state => {
 
-    return { 
+    return {
         objective: state.SProfile.objective
     };
-  };
-  export default MyJourney;
+};
+export default MyJourney;

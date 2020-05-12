@@ -9,6 +9,8 @@ import { Redirect, Link } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import {bindActionCreators} from 'redux'
 // const jwt_decode = require('jwt-decode');
+import { login } from '../../mutation/mutation'
+import { compose, graphql } from 'react-apollo'
 //Define a Login Component
 class Login extends Component {
     //call the constructor method
@@ -54,11 +56,18 @@ class Login extends Component {
     }
     handleSubmit = async (e) => {
         e.preventDefault();
-        const data = {
-            email: this.state.email,
-            password: this.state.password,
-            college: this.state.college,
-            company: this.state.company
+        let mutationResponse = this.props.login({
+            variables = {
+                email: this.state.email,
+                password: this.state.password,
+                college: this.state.college,
+                company: this.state.company
+            }
+        });
+        if (mutationResponse.data.status === "200") {
+            this.setState({
+                show: false
+            })
         }
         // this.props.login(data);
         // //set the with credentials to true
@@ -77,7 +86,7 @@ class Login extends Component {
         //                 var decoded = jwt_decode(response.data.split(' ')[1]);
         //                 localStorage.setItem('id', decoded._id)
         //             }
-                    
+
         //             if (this.state.company) {
         //                 localStorage.setItem('type', 'company');
         //             }
@@ -92,7 +101,7 @@ class Login extends Component {
         //             authFlag: false
         //         });
         //     });
-        
+
     }
     render() {
 
@@ -102,8 +111,7 @@ class Login extends Component {
         if (localStorage.getItem('jwt')) {
             redirectVar = <Redirect to="/home" />
         }
-        
-        
+
         if (this.props.error === '')
             error = '';
         else {
@@ -122,8 +130,8 @@ class Login extends Component {
                         <h6>Students & Alumni</h6>
                         Please select your school to sign in.
                         <div className="form-group" style={{ width: "30%" }}>
-                        <input type="text" name="college" onChange={this.selecthandleChange} className="form-control"/>   
-		    	{/*// <select name="college" onChange={this.selecthandleChange} className="form-control">
+                            <input type="text" name="college" onChange={this.selecthandleChange} className="form-control" />
+                            {/*// <select name="college" onChange={this.selecthandleChange} className="form-control">
                              //   <option value=""></option>
                                // <option value="San Jose State University">San Jose State University</option>
                                 //<option value="University of Hogwarts">University of Hogwarts</option>
@@ -195,7 +203,7 @@ const mapStateToProps = state => {
 //         login: data => dispatch(login(data))
 //     };
 // }
-export default Login;
+export default graphql(login, { name: "login" })(Login);
 // export default Login;
 
 

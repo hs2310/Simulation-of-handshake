@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 // import { getJobs, setApply, checkApply } from '../../js/actions/job-action';
 // import { connect } from 'react-redux';
+import { getAllJobs } from '../../query/queries';
+import { compose, graphql } from 'react-apollo';
 import ApplicationForm from './ApplicationForm';
 import Jobs from '../Jobs/Jobs';
 class JobSearch extends React.Component {
@@ -78,28 +80,28 @@ class JobSearch extends React.Component {
 			// this.props.getJobs(data)
 		});
 	}
-	componentDidUpdate(nextProps, nextState) {
-		if (nextProps.jobs !== this.props.jobs) {
-			this.setState({
-				jobs: this.props.jobs,
-				filteredJobs: this.props.jobs,
-				displayJobs: this.props.jobs[0]
-			})
-		}
-		if (nextProps.apply !== this.props.apply)
-			this.setState({ apply: this.props.apply })
-	}
-	componentDidMount() {
-		let data = {
-			limit: this.state.limit,
-			pageNo: this.state.pageNo,
-			filter: this.state.appliedFilters,
-			title: this.state.title,
-			location: this.state.location,
-			sort: this.state.sort
-		}
-		// this.props.getJobs(data);
-	}
+	// componentDidUpdate(nextProps, nextState) {
+	// 	if (nextProps.jobs !== this.props.jobs) {
+	// 		this.setState({
+	// 			jobs: this.props.jobs,
+	// 			filteredJobs: this.props.jobs,
+	// 			displayJobs: this.props.jobs[0]
+	// 		})
+	// 	}
+	// 	if (nextProps.apply !== this.props.apply)
+	// 		this.setState({ apply: this.props.apply })
+	// }
+	// componentDidMount() {
+	// 	let data = {
+	// 		limit: this.state.limit,
+	// 		pageNo: this.state.pageNo,
+	// 		filter: this.state.appliedFilters,
+	// 		title: this.state.title,
+	// 		location: this.state.location,
+	// 		sort: this.state.sort
+	// 	}
+	// 	// this.props.getJobs(data);
+	// }
 
 	filterClear = () => {
 		this.setState({
@@ -229,6 +231,13 @@ class JobSearch extends React.Component {
 		var gtJobs = null
 		let displayJobs = null;
 		let applyForm = null;
+		let result = {}
+		if (this.props.data.getAllJobs) {
+			result = this.props.data.getAllJobs
+			this.setState({
+				filteredJobs: result.message
+			})
+		}
 
 		if (this.state.filteredJobs.length === 0) {
 			gtJobs = "No Jobs Available"
@@ -236,35 +245,35 @@ class JobSearch extends React.Component {
 		}
 		else {
 			gtJobs = Object.keys(this.state.filteredJobs).map((item, i) => {
-				return <div className="card" key={i} onClick={() => { this.display(item) }} style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}>
+				return <div className="card" key={i} onClick={() => { this.display(item) }} style={{ boxShadow: "1px 3px 5px grey", padding: "2%", marginBottom: "2%" }}>
 					<div className="card-body">
-						<h5 className="card-title">{this.state.filteredJobs[item].title}</h5>
-						<h6 className="card-subtitle mb-2 text-muted">{this.state.filteredJobs[item].cid.name}</h6>
-						<p className="card-text">Posting Date : {new Date(this.state.filteredJobs[item].posting_date).getMonth() + 1}/{new Date(this.state.filteredJobs[item].posting_date).getDate()}/{new Date(this.state.filteredJobs[item].posting_date).getFullYear()}</p>
-						<p className="card-text">Deadline : {new Date(this.state.filteredJobs[item].deadline).getMonth() + 1}/{new Date(this.state.filteredJobs[item].deadline).getDate()}/{new Date(this.state.filteredJobs[item].deadline).getFullYear()}</p>
-						<p className="card-text">{this.state.filteredJobs[item].location}</p>
-						<p className="card-text">{this.state.filteredJobs[item].job_category}</p>
+						<h5 className="card-title">{result.filteredJobs[item].title}</h5>
+						<h6 className="card-subtitle mb-2 text-muted">{result.filteredJobs[item].cid.name}</h6>
+						<p className="card-text">Posting Date : {new Date(result.filteredJobs[item].posting_date).getMonth() + 1}/{new Date(result.filteredJobs[item].posting_date).getDate()}/{new Date(result.filteredJobs[item].posting_date).getFullYear()}</p>
+						<p className="card-text">Deadline : {new Date(result.filteredJobs[item].deadline).getMonth() + 1}/{new Date(result.filteredJobs[item].deadline).getDate()}/{new Date(result.filteredJobs[item].deadline).getFullYear()}</p>
+						<p className="card-text">{result.filteredJobs[item].location}</p>
+						<p className="card-text">{result.filteredJobs[item].job_category}</p>
 					</div>
 				</div>
 
 			})
-			if (this.state.displayJobs) {
+			if (result.displayJobs) {
 				if (this.props.apply === true)
-					applyForm = <ApplicationForm jobs={this.state.displayJobs} />
+					applyForm = <ApplicationForm jobs={result.displayJobs} />
 				else if (this.props.apply === false)
 					applyForm = <div className="alert alert-primary">Already Applied!!</div>
 
-				displayJobs = <div className="card" style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}><div className="card-body">
+				displayJobs = <div className="card" style={{ boxShadow: "1px 3px 5px grey", padding: "2%", marginBottom: "2%" }}><div className="card-body">
 
-					<h5 className="card-title">{this.state.displayJobs.title}</h5>
+					<h5 className="card-title">{result.displayJobs.title}</h5>
 					<h6 className="card-subtitle mb-2 text-muted">
-						<Link to={"/displayCompany/" + this.state.displayJobs.cid._id}>{this.state.displayJobs.cid.name}</Link>
+						<Link to={"/displayCompany/" + result.displayJobs.cid._id}>{result.displayJobs.cid.name}</Link>
 					</h6>
-					<p className="card-text">{this.state.displayJobs.salary}</p>
-					<p className="card-text">{this.state.displayJobs.location}</p>
-					<p className="card-text">{this.state.displayJobs.job_category}</p>
-					<p className="card-text">{this.state.displayJobs.job_description}</p>
-					<button type="button" onClick={() => this.checkApplied(this.state.displayJobs._id)} className="btn btn-primary">Apply</button>
+					<p className="card-text">{result.displayJobs.salary}</p>
+					<p className="card-text">{result.displayJobs.location}</p>
+					<p className="card-text">{result.displayJobs.job_category}</p>
+					<p className="card-text">{result.displayJobs.job_description}</p>
+					<button type="button" onClick={() => this.checkApplied(result.displayJobs._id)} className="btn btn-primary">Apply</button>
 					{applyForm}
 				</div>
 				</div>
@@ -279,21 +288,21 @@ class JobSearch extends React.Component {
 						<div className="col-md-6">
 							<form>
 								<i className="glyphicon glyphicon-search"></i>
-								<input class="form-control" name="title" type="text" onChange={this.jobSearch} placeholder="Enter Job Title or Company Name " style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}/>
+								<input class="form-control" name="title" type="text" onChange={this.jobSearch} placeholder="Enter Job Title or Company Name " style={{ boxShadow: "1px 3px 5px grey", padding: "2%", marginBottom: "2%" }} />
 							</form>
 						</div>
 						<div className="col-md-6">
 							<i className="glyphicon glyphicon-search"></i>
-							<input class="form-control" name="location" type="text" onChange={this.jobSearch} placeholder="Enter Location" style={{ boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" }}/>
+							<input class="form-control" name="location" type="text" onChange={this.jobSearch} placeholder="Enter Location" style={{ boxShadow: "1px 3px 5px grey", padding: "2%", marginBottom: "2%" }} />
 						</div>
 					</div>
 					<div className="row">
 						<div className="col-md-12">
-							<div class="btn-group" role="group" style={{ width: "100%",alignItems: "center" ,boxShadow: "1px 3px 5px grey", marginBottom : "2%" }} >
-								<button type="button" ref="FT" className={this.state.fullTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="fullTime" onClick={() => { this.changeStatusHandler("FullTime") }}>Full Time</button>
-								<button type="button" ref="PT" className={this.state.partTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="partTime" onClick={() => { this.changeStatusHandler("PartTime") }}>Part Time</button>
-								<button type="button" ref="IT" className={this.state.internshipStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="internship" onClick={() => { this.changeStatusHandler("Internship") }}>Internship</button>
-								<button type="button" ref="OC" className={this.state.onCampusStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="onCampus" onClick={() => { this.changeStatusHandler("OnCampus") }}>On Campus</button>
+							<div class="btn-group" role="group" style={{ width: "100%", alignItems: "center", boxShadow: "1px 3px 5px grey", marginBottom: "2%" }} >
+								<button type="button" ref="FT" className={result.fullTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="fullTime" onClick={() => { this.changeStatusHandler("FullTime") }}>Full Time</button>
+								<button type="button" ref="PT" className={result.partTimeStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="partTime" onClick={() => { this.changeStatusHandler("PartTime") }}>Part Time</button>
+								<button type="button" ref="IT" className={result.internshipStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="internship" onClick={() => { this.changeStatusHandler("Internship") }}>Internship</button>
+								<button type="button" ref="OC" className={result.onCampusStatus ? 'btn btn-outline-colored' : 'btn btn-outline'} name="onCampus" onClick={() => { this.changeStatusHandler("OnCampus") }}>On Campus</button>
 								{clear}
 							</div>
 						</div>
@@ -303,16 +312,16 @@ class JobSearch extends React.Component {
 							{gtJobs}
 							<div style={{ width: "100%" }}>
 								<button type="button" onClick={this.prev} className="btn btn-primary btn-inverse"> <b>&larr;</b> </button>
-								<div className="form-group" style={{display : "inline-block" , width : "76%"}}>
-								<select name="sort" onChange={this.sortHandler} defaultValue="" className="form-control">
-									<option value=""></option>
-									<option value="posting_date"> Posting Date - Low To High</option>
-									<option value="-posting_date"> Posting Date - High To Low</option>
-									<option value="deadline"> Deadline - Low To High</option>
-									<option value="-deadline"> Deadline - High To Low</option>
-									<option value="location"> Location - A To Z</option>
-									<option value="-location"> Location - Z To A</option>
-								</select>
+								<div className="form-group" style={{ display: "inline-block", width: "76%" }}>
+									<select name="sort" onChange={this.sortHandler} defaultValue="" className="form-control">
+										<option value=""></option>
+										<option value="posting_date"> Posting Date - Low To High</option>
+										<option value="-posting_date"> Posting Date - High To Low</option>
+										<option value="deadline"> Deadline - Low To High</option>
+										<option value="-deadline"> Deadline - High To Low</option>
+										<option value="location"> Location - A To Z</option>
+										<option value="-location"> Location - Z To A</option>
+									</select>
 								</div>
 								<button type="button" onClick={this.next} style={{ float: "right" }} className="btn btn-primary btn-inverse"> <b>&rarr;</b> </button>
 							</div>
@@ -321,7 +330,7 @@ class JobSearch extends React.Component {
 						<div className="col-md-8">
 
 							{displayJobs}
-							<span style={{float : "right" , marginTop : "5%"}}>Page No : {this.state.pageNo}</span>
+							<span style={{ float: "right", marginTop: "5%" }}>Page No : {result.pageNo}</span>
 						</div>
 					</div>
 				</div>
@@ -330,11 +339,11 @@ class JobSearch extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
-	return {
-		jobs: state.jobs.jobs,
-		apply: state.jobs.apply
-	};
-};
-
-export default JobSearch;
+export default compose(graphql(getAllJobs, {
+	options: {
+		variables = {
+			name: this.state.name,
+			title: this.state.title
+		}
+	}
+})(JobSearch));

@@ -1,16 +1,13 @@
 import React from 'react';
-// import axios from 'axios';
-import {connect} from 'react-redux';
-// import store from '../../js/store/index';
-// import { updateConInfo } from '../../../js/actions/profile-action'
-// import {connect} from 'react-redux';
+import { compose, graphql } from 'react-apollo'
+
 class ContactInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             update_contact_info: false,
             mob: '',
-            email:''
+            email: ''
         }
         this.contactInfoHandler = this.contactInfoHandler.bind(this);
         this.educationChangeHandler = this.educationChangeHandler.bind(this);
@@ -22,15 +19,6 @@ class ContactInfo extends React.Component {
     //         email : this.props.email
     //     })
     // }
-    componentDidUpdate(prevProps, prevState) {
-        console.log("CONTACT INFO : componentDidUpdate CALLED")
-        if (prevProps.email !== this.props.email) {
-          this.setState({ email : this.props.email})
-        }
-        if (prevProps.mob !== this.props.mob) {
-          this.setState({ mob : this.props.mob})
-        }
-      }
     contactInfoHandler = () => {
         if (this.state.update_contact_info === true)
             this.setState({
@@ -48,22 +36,32 @@ class ContactInfo extends React.Component {
         })
     }
     updateInfo = (e) => {
-        
+
         e.preventDefault();
         let data = {
-            email : this.state.email,
-            mob : this.state.mob,
-            sid : localStorage.getItem('id')
+            email: this.state.email,
+            mob: this.state.mob,
+            sid: localStorage.getItem('id')
         }
-        
-        
-        // this.props.updateConInfo(data)
-        
-        this.contactInfoHandler();
+        let mutationResponse = this.props.updateContactInfo({
+            variables = {
+                id: data.sid,
+                email: data.email,
+                mob: data.mob
+            }
+        });
+        if (mutationResponse.data.status === "200") {
+            this.setState({
+                update_contact_info: false
+            })
+        }
+
     }
 
     render() {
         let contactInfo = null;
+        let response = {};
+
         if (this.state.update_contact_info === true) {
             contactInfo = <div>
                 <form onSubmit={this.updateInfo}>
@@ -78,7 +76,7 @@ class ContactInfo extends React.Component {
             </div>
         }
         else {
-            contactInfo = <div>{this.props.mob}<br/>{this.props.email}</div>;
+            contactInfo = <div>{this.props.mob}<br />{this.props.email}</div>;
         }
         return <div>
             <button onClick={this.contactInfoHandler} className="btn btn-primary" style={{ float: "right" }} type="button">edit</button>
@@ -89,11 +87,4 @@ class ContactInfo extends React.Component {
         </div>
     }
 }
-const mapStateToProps = state => {
-
-    return { 
-        email: state.SProfile.email,
-        mob: state.SProfile.mob
-    };
-  };
-export default ContactInfo;
+export default compose(graphql(updateContactInfo, { name: "updateContactInfo" })(ContactInfo));

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import cookie from 'react-cookies';
 // import { useParams } from 'react-router-dom';
 // import * as bs from 'react-bootstrap';
@@ -18,43 +18,23 @@ class StudentProfile extends React.Component {
             data: []
         }
     }
-    // static propTypes = {
-    //     match: PropTypes.object.isRequired,
-
-    //   };
-    async componentDidMount() {
-
-        console.log(this.props.match.params);
-        let data = {
-            sid: this.props.match.params.id
-        }
-        
-        console.log(this.state.education)
-        await axios.post("http://54.158.111.198:3001/students/studentData", data).then(
-            res => {
-                this.setState({
-                    data: res.data,
-                    education : res.data.education,
-                    experience : res.data.experience,
-                    skills : res.data.skills
-                })
-            }
-        )
-        console.log(this.state.data)
-    }
     render() {
         let style_box = { boxShadow: "1px 3px 5px grey", padding: "2%" };
+        let response = {};
+        if (this.props.data.student) {
+            response = this.props.data.student;
+        }
         return <div>
             <Navigate />
             <div className="container" style={{ marginTop: "5%" }}>
                 <div className="row">
                     <div className="col-md-4" style={style_box}>
-                    
+
                         <h4>General Information</h4>
-                        <img src={this.state.data.profile_pic} alt="Not Uploaded!!!"  className="rounded-circle" height="100px" width="100px" style={{float : "left"}}/> 
+                        <img src={this.state.data.profile_pic} alt="Not Uploaded!!!" className="rounded-circle" height="100px" width="100px" style={{ float: "left" }} />
                         <h5>{this.state.data.name}</h5>
-			<Link to={"/messages/" + this.props.match.params.id + "/" +this.state.data.name} style={{ float : "right" }} className="btn btn-primary">Message</Link>
-                        
+                        <Link to={"/messages/" + this.props.match.params.id + "/" + this.state.data.name} style={{ float: "right" }} className="btn btn-primary">Message</Link>
+
                         <h6>{this.state.data.college}</h6>
                     </div>
                     <div className="col-md-8" style={style_box}>
@@ -128,12 +108,6 @@ class StudentProfile extends React.Component {
         </div>
     }
 }
-// const mapStateToProps = state => {
-//     return {
-//         id: state.rootReducer.id,
-//         jobs: state.jobReducer.jobs
-//     };
-// };
 
-// export default connect(mapStateToProps)(CompanyProfile);
-export default StudentProfile;
+
+export default compose(graphql(student, { name: "student" })(StudentProfile));
