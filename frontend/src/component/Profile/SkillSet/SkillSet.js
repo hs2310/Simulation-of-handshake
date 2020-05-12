@@ -1,7 +1,7 @@
 import React from 'react';
 // import axios from 'axios';
 import {connect} from 'react-redux';
-import { deleteSkil , updateSkil } from '../../../js/actions/profile-action'
+// import { deleteSkil , updateSkil } from '../../../js/actions/profile-action'
 class SkillSet extends React.Component {
     constructor(props) {
         super(props);
@@ -84,7 +84,9 @@ class SkillSet extends React.Component {
             // });
             // this.update();
             // this.props.action();
-            this.props.updateSkil(data)
+            
+            // this.props.updateSkil(data)
+            
             this.skillHandler();
         }
     }
@@ -101,7 +103,7 @@ class SkillSet extends React.Component {
         // });
         // this.update();
         // this.props.action();
-        this.props.deleteSkil(data)
+        // this.props.deleteSkil(data)
         this.skillHandler();
     }
     render() {
@@ -136,4 +138,4 @@ const mapStateToProps = state => {
         skills: state.SProfile.skills
     };
   };
-export default connect( mapStateToProps, { updateSkil, deleteSkil } )(SkillSet);
+export default SkillSet;

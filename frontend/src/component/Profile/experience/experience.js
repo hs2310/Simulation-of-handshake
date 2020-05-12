@@ -2,7 +2,7 @@ import React from 'react';
 // import axios from 'axios';
 import UpdateExperience from './updateExperience/updateExperience';
 import {connect} from 'react-redux';
-import { insertEx } from '../../../js/actions/profile-action';
+// import { insertEx } from '../../../js/actions/profile-action';
 
 class Experience extends React.Component {
     constructor(props) {
@@ -46,7 +46,7 @@ class Experience extends React.Component {
             description: this.state.description
         }
         data.sid = localStorage.getItem('id')
-        this.props.insertEx(data);
+        // this.props.insertEx(data);
         // axios.post("http://localhost:3001/students/insertExperience", data).then(res => alert(res.data));
         
         this.experienceHandler();
@@ -125,4 +125,4 @@ const mapStateToProps = state => {
         experience : state.SProfile.experience
     };
   };
-export default connect(mapStateToProps , { insertEx })(Experience);
+export default Experience;

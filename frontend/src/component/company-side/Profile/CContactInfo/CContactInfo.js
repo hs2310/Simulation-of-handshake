@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateConInfo,getCompany } from '../../../../js/actions/Cprofile-action'
+// import { updateConInfo,getCompany } from '../../../../js/actions/Cprofile-action'
 
 
 class CContactInfo extends React.Component {
@@ -49,7 +49,7 @@ class CContactInfo extends React.Component {
             mob : this.state.mob
         }
         data.cid = localStorage.getItem('id');
-        this.props.updateConInfo(data);
+        // this.props.updateConInfo(data);
         this.contactInfoHandler();
     }
 
@@ -86,4 +86,5 @@ const mapStateToProps = state => {
         email : state.CProfile.email
     }
 }
-export default connect( mapStateToProps , { updateConInfo,getCompany } )(CContactInfo);
+// export default connect( mapStateToProps , { updateConInfo,getCompany } )(CContactInfo);
+export default CContactInfo;

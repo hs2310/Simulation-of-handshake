@@ -3,7 +3,7 @@ import Jobs from '../../Jobs/Jobs';
 // import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getPostedJobs, updateStatus } from '../../../js/actions/Cjob-action';
+// import { getPostedJobs, updateStatus } from '../../../js/actions/Cjob-action';
 class CStudentApplications extends React.Component {
     constructor(props) {
         super(props)
@@ -54,7 +54,7 @@ class CStudentApplications extends React.Component {
             //     })
 
             // })
-            this.props.getPostedJobs(data);
+            // this.props.getPostedJobs(data);
         });
     }
     next = () => {
@@ -72,7 +72,7 @@ class CStudentApplications extends React.Component {
             //     })
 
             // })
-            this.props.getPostedJobs(data);
+            // this.props.getPostedJobs(data);
         });
     }
     // prevA = () => {
@@ -128,7 +128,7 @@ class CStudentApplications extends React.Component {
         //     })
         //     console.log(this.state.posted_jobs)
         // })
-        this.props.getPostedJobs(data);
+        // this.props.getPostedJobs(data);
 
 
         // this.setState({
@@ -186,7 +186,7 @@ class CStudentApplications extends React.Component {
         //     stateCopy.applications[i].status = data.status;
         //     this.setState(stateCopy);
         // })
-        this.props.updateStatus(data);
+        // this.props.updateStatus(data);
     };
     render() {
         let style_box = { boxShadow: "1px 3px 5px grey", padding: "2%" , marginBottom : "2%" };
@@ -251,4 +251,4 @@ const mapStateToProps = state => {
         posted_jobs: state.Cjobs.posted_jobs
     }
 }
-export default connect(mapStateToProps, { getPostedJobs, updateStatus })(CStudentApplications);
+export default CStudentApplications;

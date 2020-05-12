@@ -1,8 +1,8 @@
 import React from 'react';
 import Jobs from '../../Jobs/Jobs';
 import { connect } from 'react-redux';
-import { getPostedJobs, postJob } from '../../../js/actions/Cjob-action';
-import { getCompany } from '../../../js/actions/Cprofile-action';
+// import { getPostedJobs, postJob } from '../../../js/actions/Cjob-action';
+// import { getCompany } from '../../../js/actions/Cprofile-action';
 class CJobSearch extends React.Component {
     constructor(props) {
         super(props);
@@ -37,7 +37,7 @@ class CJobSearch extends React.Component {
                 pageNo: this.state.pageNo,
                 cid: localStorage.getItem("id")
             }
-            this.props.getPostedJobs(data)
+            // this.props.getPostedJobs(data)
         });
     }
     next = () => {
@@ -49,7 +49,7 @@ class CJobSearch extends React.Component {
                 pageNo: this.state.pageNo,
                 cid: localStorage.getItem("id")
             }
-            this.props.getPostedJobs(data)
+            // this.props.getPostedJobs(data)
         });
     }
 
@@ -74,8 +74,8 @@ class CJobSearch extends React.Component {
             pageNo: this.state.pageNo,
             cid: localStorage.getItem('id')
         }
-        this.props.getPostedJobs(data)
-        this.props.getCompany(data)
+        // this.props.getPostedJobs(data)
+        // this.props.getCompany(data)
     }
     display(i) {
         console.log(i)
@@ -114,7 +114,7 @@ class CJobSearch extends React.Component {
             job_description: this.state.job_description,
             job_category: this.state.job_category
         }
-        this.props.postJob(data);
+        // this.props.postJob(data);
         // console.log(data)
         // await axios.post("http://localhost:3001/jobs/postJob", data).then(res => {
         //     console.log(res.data)
@@ -230,4 +230,4 @@ const mapStateToProps = state => {
         posted_jobs: state.Cjobs.posted_jobs
     }
 }
-export default connect(mapStateToProps, { getPostedJobs, postJob , getCompany })(CJobSearch);
+export default CJobSearch;

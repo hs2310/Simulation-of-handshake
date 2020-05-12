@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
-import './App.css';
-import Main from './component/Main';
-import {BrowserRouter} from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Main from './component/Main'
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 
-//App Component
-class App extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.store = this.props.store;
-  // }
-  render() {
+// apollo client setup
+const client = new ApolloClient({
+    uri: 'http://localhost:3001/graphql'
+});
+
+function App() {
     return (
-      //Use Browser Router to route to different pages
-      <BrowserRouter>
-        <div>
-          {/* App Component Has a Child Component called Main*/}
-          <Main/>
-        </div>
-      </BrowserRouter>
+        <ApolloProvider client={client}>
+            <div style={{ fontSize: "15px" }}>
+                <BrowserRouter>
+                    <Main />
+                </BrowserRouter>
+            </div>
+        </ApolloProvider>
     );
-  }
 }
-//Export the App component so that it can be used in index.js
+
 export default App;

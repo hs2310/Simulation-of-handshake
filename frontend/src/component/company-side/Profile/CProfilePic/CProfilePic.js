@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { uploadProfile } from '../../../../js/actions/Cprofile-action'
+// import { uploadProfile } from '../../../../js/actions/Cprofile-action'
 class CProfilePic extends React.Component {
   constructor(props) {
     super(props);
@@ -43,7 +43,7 @@ class CProfilePic extends React.Component {
     let formData = new FormData();
     formData.append('file', this.state.profile_pic);
     formData.append('cid' , localStorage.getItem('id'));
-    this.props.uploadProfile(formData);
+    // this.props.uploadProfile(formData);
     // console.log(formData.get('file'))
     
     // axios.post("http://localhost:3001/company/company_profile_pic",
@@ -92,4 +92,4 @@ const mapStateToProps = state => {
     profile_pic : state.CProfile.profile_pic
   }
 }
-export default connect(mapStateToProps,{uploadProfile})(CProfilePic);
+export default CProfilePic;

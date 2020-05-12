@@ -9,7 +9,7 @@ import CContactInfo from './CContactInfo/CContactInfo';
 import CMyJourney from './CMyJourney/CMyJourney';
 // import CProfilePic from './CProfilePic/CProfilePic';
 import { connect } from 'react-redux';
-import { getCompany } from '../../../js/actions/Cprofile-action'
+// import { getCompany } from '../../../js/actions/Cprofile-action'
 class CProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -30,7 +30,7 @@ class CProfile extends React.Component {
         //     })
         //     console.log(this.state.data)
         // })
-        this.props.getCompany(data);
+        // this.props.getCompany(data);
         this.setState({ data: true })
     }
     render() {
@@ -85,4 +85,4 @@ class CProfile extends React.Component {
         }
     }
 }
-export default connect(null, { getCompany })(CProfile);
+export default CProfile;

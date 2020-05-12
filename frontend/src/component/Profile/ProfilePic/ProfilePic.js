@@ -1,7 +1,7 @@
 import React from 'react';
 // import axios from 'axios';
 import { connect } from 'react-redux';
-import { uploadProfile } from '../../../js/actions/profile-action';
+// import { uploadProfile } from '../../../js/actions/profile-action';
 class ProfilePic extends React.Component {
   constructor(props) {
     super(props);
@@ -59,7 +59,7 @@ class ProfilePic extends React.Component {
     formData.append('file', this.state.profile_pic);
     formData.append('sid' , localStorage.getItem('id'));
     
-    this.props.uploadProfile( formData );
+    // this.props.uploadProfile( formData );
     this.generalInfoHandler();
   }
 
@@ -91,4 +91,4 @@ const mapStateToProps = state => {
       profile_pic: state.SProfile.profile_pic
   };
 };
-export default connect( mapStateToProps , { uploadProfile } )(ProfilePic);
+export default ProfilePic;

@@ -2,7 +2,7 @@ import React from 'react';
 // import axios from 'axios';
 import {connect} from 'react-redux';
 // import store from '../../js/store/index';
-import { updateConInfo } from '../../../js/actions/profile-action'
+// import { updateConInfo } from '../../../js/actions/profile-action'
 // import {connect} from 'react-redux';
 class ContactInfo extends React.Component {
     constructor(props) {
@@ -57,7 +57,7 @@ class ContactInfo extends React.Component {
         }
         
         
-        this.props.updateConInfo(data)
+        // this.props.updateConInfo(data)
         
         this.contactInfoHandler();
     }
@@ -96,4 +96,4 @@ const mapStateToProps = state => {
         mob: state.SProfile.mob
     };
   };
-export default connect(mapStateToProps, { updateConInfo })(ContactInfo);
+export default ContactInfo;

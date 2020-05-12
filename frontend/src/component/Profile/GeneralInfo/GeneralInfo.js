@@ -2,7 +2,7 @@ import React from 'react';
 // import axios from 'axios';
 import {connect} from 'react-redux';
 
-import { updateGenInfo } from '../../../js/actions/profile-action'
+// import { updateGenInfo } from '../../../js/actions/profile-action'
 
 import ProfilePic from '../ProfilePic/ProfilePic';
 class GeneralInfo extends React.Component {
@@ -62,7 +62,7 @@ class GeneralInfo extends React.Component {
         
         
         // axios.post("http://localhost:3001/students/UpdateInfo", data).then(res => alert(res.data));
-        this.props.updateGenInfo(data);
+        // this.props.updateGenInfo(data);
         this.generalInfoHandler();
     }
 
@@ -116,4 +116,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps,{ updateGenInfo })(GeneralInfo);
+export default GeneralInfo;

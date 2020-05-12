@@ -5,8 +5,8 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 // import cookie from 'react-cookies';
 import { Redirect, Link } from 'react-router-dom';
-import { login } from '../../js/actions/index';
-import { connect } from 'react-redux';
+// import { login } from '../../js/actions/index';
+// import { connect } from 'react-redux';
 // import {bindActionCreators} from 'redux'
 // const jwt_decode = require('jwt-decode');
 //Define a Login Component
@@ -60,7 +60,7 @@ class Login extends Component {
             college: this.state.college,
             company: this.state.company
         }
-        this.props.login(data);
+        // this.props.login(data);
         // //set the with credentials to true
         // axios.defaults.withCredentials = true;
         // //make a post request with the user data
@@ -195,7 +195,7 @@ const mapStateToProps = state => {
 //         login: data => dispatch(login(data))
 //     };
 // }
-export default connect(mapStateToProps, {login})(Login);
+export default Login;
 // export default Login;
 
 

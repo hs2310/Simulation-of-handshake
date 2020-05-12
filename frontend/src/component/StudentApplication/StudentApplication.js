@@ -1,7 +1,7 @@
 import React from 'react';
 import Jobs from '../Jobs/Jobs';
-import { connect } from 'react-redux';
-import { getApp } from '../../js/actions/job-action';
+// import { connect } from 'react-redux';
+// import { getApp } from '../../js/actions/job-action';
 class StudentApplication extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +27,7 @@ class StudentApplication extends React.Component {
                 filter: this.state.filter,
                 sid : localStorage.getItem("id")
             }
-            this.props.getApp(data)
+            // this.props.getApp(data)
         });
     }
     next = () => {
@@ -40,7 +40,7 @@ class StudentApplication extends React.Component {
                 filter: this.state.filter,
                 sid : localStorage.getItem("id")
             }
-            this.props.getApp(data)
+            // this.props.getApp(data)
         });
     }
     componentDidUpdate(nextProps, nextState) {
@@ -59,7 +59,7 @@ class StudentApplication extends React.Component {
             filter: this.state.filter,
             sid: localStorage.getItem('id')
         }
-        this.props.getApp(data);
+        // this.props.getApp(data);
     }
     applicationSearch(val) {
         this.setState({
@@ -71,7 +71,7 @@ class StudentApplication extends React.Component {
                 filter: this.state.filter,
                 sid: localStorage.getItem('id')
             }
-            this.props.getApp(data);
+            // this.props.getApp(data);
         })
 
     }
@@ -85,7 +85,7 @@ class StudentApplication extends React.Component {
                 filter: this.state.filter,
                 sid: localStorage.getItem('id')
             }
-            this.props.getApp(data);
+            // this.props.getApp(data);
         })
     }
     render() {
@@ -137,4 +137,4 @@ const mapStateToProps = state => {
         application: state.jobs.application
     }
 }
-export default connect(mapStateToProps, { getApp })(StudentApplication);
+export default StudentApplication;

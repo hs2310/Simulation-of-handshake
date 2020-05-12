@@ -1,7 +1,7 @@
 import React from 'react';
 // import axios from 'axios';
 import {connect} from 'react-redux';
-import { updateJourney } from '../../../js/actions/profile-action'
+// import { updateJourney } from '../../../js/actions/profile-action'
 class MyJourney extends React.Component {
     constructor(props) {
         super(props);
@@ -41,7 +41,7 @@ class MyJourney extends React.Component {
         let data = {};
         data.objective = this.state.objective;
         data.sid = localStorage.getItem('id')
-        this.props.updateJourney(data);
+        // this.props.updateJourney(data);
         this.myJourneyHandler();
     }
 
@@ -75,4 +75,4 @@ const mapStateToProps = state => {
         objective: state.SProfile.objective
     };
   };
-  export default connect(mapStateToProps , {updateJourney}) (MyJourney);
+  export default MyJourney;

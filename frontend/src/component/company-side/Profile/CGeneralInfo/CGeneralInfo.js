@@ -2,7 +2,7 @@ import React from 'react';
 
 import CProfilePic from '../CProfilePic/CProfilePic';
 import {connect} from 'react-redux';
-import {updateGenInfo} from '../../../../js/actions/Cprofile-action'
+// import {updateGenInfo} from '../../../../js/actions/Cprofile-action'
 class CGeneralInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -58,7 +58,7 @@ class CGeneralInfo extends React.Component {
         data.cid = localStorage.getItem("id");
         // console.log(this.state);
         // axios.post("http://localhost:3001/company/UpdateCompanyInfo", data).then(res => console.log(res.data));
-        this.props.updateGenInfo(data);
+        // this.props.updateGenInfo(data);
         this.generalInfoHandler();
     }
     render(){
@@ -97,4 +97,5 @@ const mapStateToProps = state => {
     location : state.CProfile.location
   }
 }
-export default connect(mapStateToProps , { updateGenInfo })(CGeneralInfo);
+// export default connect(mapStateToProps , { updateGenInfo })(CGeneralInfo);
+export default CGeneralInfo;

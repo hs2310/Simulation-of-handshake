@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateJourney } from '../../../../js/actions/Cprofile-action'
+// import { updateJourney } from '../../../../js/actions/Cprofile-action'
 
 
 class CMyJourney extends React.Component {
@@ -42,7 +42,7 @@ class CMyJourney extends React.Component {
         data.cid = localStorage.getItem("id");
         console.log(this.state);
         // axios.post("http://localhost:3001/company/UpdateCompanyJourney", data).then(res => console.log(res.data));
-        this.props.updateJourney(data);
+        // this.props.updateJourney(data);
         // this.props.action();
         this.myJourneyHandler();
     }
@@ -77,4 +77,4 @@ const mapStateToProps = state => {
     }
     
 }
-export default connect(mapStateToProps, {updateJourney})(CMyJourney);
+export default CMyJourney;

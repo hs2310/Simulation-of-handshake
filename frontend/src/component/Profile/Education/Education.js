@@ -2,7 +2,7 @@ import React from 'react';
 // import axios from 'axios';
 import UpdateSchool from './UpdateSchool/UpdateSchool';
 import { connect } from 'react-redux';
-import { insertEduc } from '../../../js/actions/profile-action';
+// import { insertEduc } from '../../../js/actions/profile-action';
 
 class Education extends React.Component {
 	constructor(props) {
@@ -66,7 +66,7 @@ class Education extends React.Component {
 		console.log(data.sid + localStorage.getItem('id'))
 		// axios.post("http://localhost:3001/students/insertEducation", data).then(res => console.log(res.data));
 		// this.update();
-		this.props.insertEduc(data)
+		// this.props.insertEduc(data)
 		this.educationHandler();
 	}
 	educationHandler = () => {
@@ -157,4 +157,4 @@ const mapStateToProps = state => {
 		education: state.SProfile.education
 	};
 };
-export default connect(mapStateToProps, { insertEduc })(Education);
+export default Education;

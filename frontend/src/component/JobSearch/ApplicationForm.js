@@ -1,7 +1,7 @@
 import React from 'react'
 // import axios from 'axios';
 import {connect} from 'react-redux';
-import { apply , setApplied } from '../../js/actions/job-action' 
+// import { apply , setApplied } from '../../js/actions/job-action' 
 class ApplicationForm extends React.Component {
     constructor(props) {
         super(props)
@@ -19,7 +19,7 @@ class ApplicationForm extends React.Component {
         this.setState({applied : this.props.applied})
     }
     componentDidMount(){
-        this.props.setApplied("");
+        // this.props.setApplied("");
     }
     onChangeHandler = event => {
         this.setState({
@@ -34,7 +34,7 @@ class ApplicationForm extends React.Component {
         formData.append('file', this.state.selectedFile)
         formData.append('jid', this.props.jobs._id)
         formData.append('sid', localStorage.getItem('id'))
-        this.props.apply(formData);
+        // this.props.apply(formData);
     }
     // fileUpload() 
     // {
@@ -74,4 +74,4 @@ const mapStateToProps = state => {
         applied : state.jobs.applied
     }
 }
-export default connect( mapStateToProps,{apply , setApplied})(ApplicationForm);
+export default ApplicationForm;

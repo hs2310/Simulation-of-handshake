@@ -1,7 +1,7 @@
 import React from 'react'
 // import axios from 'axios';
 import { connect } from 'react-redux';
-import { updateEx, deleteEx } from '../../../../js/actions/profile-action';
+// import { updateEx, deleteEx } from '../../../../js/actions/profile-action';
 
 class UpdateExperience extends React.Component {
     constructor(props) {
@@ -44,7 +44,7 @@ class UpdateExperience extends React.Component {
         
         // axios.put("http://localhost:3001/students/updateExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
         
-        this.props.updateEx(data);
+        // this.props.updateEx(data);
         this.editJob();
     }
     deleteJob = () => {
@@ -54,7 +54,7 @@ class UpdateExperience extends React.Component {
         data.sid = localStorage.getItem('id')   
         // axios.post("http://localhost:3001/students/deleteExperience", data).then(res => console.log(res.data)).catch(e => alert(e.message))
         
-        this.props.deleteEx(data);
+        // this.props.deleteEx(data);
         // this.editJob();
     }
     render() {
@@ -113,4 +113,4 @@ class UpdateExperience extends React.Component {
 //         type: state.rootReducer.type
 //     };
 //   };
-  export default connect(null, { updateEx, deleteEx })(UpdateExperience);
+  export default UpdateExperience;

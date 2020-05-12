@@ -1,7 +1,7 @@
 import React from 'react'
 // import axios from 'axios';
 import { connect } from 'react-redux';
-import { updateEduc , deleteEduc } from '../../../../js/actions/profile-action'
+// import { updateEduc , deleteEduc } from '../../../../js/actions/profile-action'
 class UpdateSchool extends React.Component {
     constructor(props) {
         super(props);
@@ -49,7 +49,7 @@ class UpdateSchool extends React.Component {
         // console.log(data);
 
         // axios.post("http://localhost:3001/students/updateEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
-        this.props.updateEduc(data);
+        // this.props.updateEduc(data);
         this.editSchool();
     }
     deleteSchool = () => {
@@ -57,7 +57,7 @@ class UpdateSchool extends React.Component {
         let data = {};
         data.id = this.props.item._id;
         data.sid = localStorage.getItem('id');
-        this.props.deleteEduc(data)
+        // this.props.deleteEduc(data)
         // axios.post("http://localhost:3001/students/deleteEducation", data).then(res => console.log(res.data)).catch(e => console.log(e.message))
         // this.props.action();
         this.editSchool();
@@ -125,4 +125,4 @@ class UpdateSchool extends React.Component {
     }
 }
 
-export default connect(null , { updateEduc, deleteEduc }) (UpdateSchool);
+export default UpdateSchool;
